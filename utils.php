@@ -1,5 +1,17 @@
 <?php
 
+function GetNextGameId(){	
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT Game_ID FROM GameStats ORDER BY Game_ID DESC";
+	
+	$tmr = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);	
+	
+	return $row['Game_ID'] + 1;
+
+}
+
 function CleanTable($tableName){
 
 	$conn = $GLOBALS['$conn'];

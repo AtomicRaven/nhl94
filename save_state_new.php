@@ -1,40 +1,18 @@
 <?php
 
+require_once("config.php");
 require_once("dbconnect.php");
 require_once("utils.php");
+require_once("errorchk.php");
 
-logMsg ("New Save State");
-
-// retrieve POST variables
-		
-	$gameid = $_GET['gameid'];
-	$teamid = $_GET['teamid'];
-	$seriesid = $_GET['seriesid'];
-
-	//$savefile = "GDL_Season_XV_final-mon-1.gs9";
-	$savefile = "nhl94.gs8";
-
-
-	logMsg("GameId: " . $gameid);
-	logMsg("TeamId: " . $teamid);
-
-	
-	
-	addgame($teamid, $gameid, $seriesid, $savefile);
-
-	//CleanTable("GameStats");	
-	//CleanTable("Schedule");
-	//CleanTable("PlayerStats");
-	
-	//UpdateRoster();
-
-	function addgame($teamid, $gameid, $seriesid, $savefile){	// add game to database
+	function addgame($seriesid){	// add game to database
 	
 		$conn = $GLOBALS['$conn'];
 		$stattype = "GENS";
-		//$file = $_SERVER['DOCUMENT_ROOT']. '/uploaded/'. $lg. '-'. $gameid. '.sv';  // game save
-		
-		$file = 'uploads/'. $savefile;  // game save
+		$nextGameId = GetNextGameId();
+		$filePath = $GLOBALS['$saveFilePath'] . "/" . $seriesid;
+
+		$file = $filePath . "/" . "Series-" . $seriesid. '-game-'. $nextGameId . '.sv';	
 		
 		$fr = fopen("$file", 'rb');	// reads file	
 		
@@ -65,13 +43,12 @@ logMsg ("New Save State");
 		//$homeid = getUserID($row['Home']);
 		//$awayid = getUserID($row['Away']);
 		
-		$H_User_ID = 1;  //Rob
-		$A_User_ID = 2;  //Matt	
-		
-		// Retrieve Blitz League Stats (some stats change)
-		
-		//$blitz = blitzChk($lg);
-		
+		//$H_User_ID = $_GET['homeuserid'];
+		//$A_User_ID = $_GET['awayuserid'];	
+
+		$H_User_ID = 1;
+		$A_User_ID = 2;
+				
 	//	echo $gameid. " ". $homeid. " ". $awayid;
 		
 		// Retreive Team List type
@@ -750,4 +727,34 @@ logMsg ("New Save State");
 	//mysqli_close($conn);	
 	}  // end of function
 	
+
+	logMsg ("New Save State");
+
+// retrieve POST variables	
+
+	//$teamid = $_POST['teamid'];
+	$seriesid = $_POST['seriesid'];
+	$pwd = $_POST['pwd'];
+	$userid = $_POST['userid'];
+
+	//echo "GameId: " . $gameid . "</br>";
+	echo "UserId: " . $userid . "</br>";
+	echo "Password: " . $pwd . "</br>";	
+	echo "SeriesId: " . $seriesid . "</br>";	
+	
+	$chk = errorcheck($userid, $pwd, $seriesid);
+	
+	if(!$chk)
+		$chk = addgame($seriesid);
+	else
+		$error = $chk;
+	
+	if(!$chk)  // pass OK
+		$error = 0;
+	else 
+		$error = $chk;	
+
+	//$host = $_SERVER['HTTP_HOST'];
+	//header("Location: http://".$host."/html/log_a_state.php?lg=". $lg. "&gmid=". $gameid. "&tmid=". $teamid. 
+	//	"&gn=". $gn. "&err=". $error);	
 ?>
