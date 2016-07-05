@@ -48,24 +48,25 @@ function UpdateRoster(){
 		
 }
 
-function getPlayerID($teamid, $offset, $list, $classic, $type){
-	
-	// Retrieve Abv first
-	
-	$abv = getAbv($teamid);
+function getPlayerID($teamid, $offset){
 
+	$conn = $GLOBALS['$conn'];
 	// Retrieve Player_ID	
-	$pq = "SELECT Player_ID FROM Roster WHERE League_ID='0' AND Abv='$abv' AND Type='$type' AND Offset='$offset' LIMIT 1";
+	$sql = "SELECT Player_ID, Last FROM Roster WHERE Team_ID = '$teamid'";
 	
-	
-/*	$pq = "SELECT Player_ID FROM NHLPlayer WHERE List='$list' AND Type='$type' AND Abv='$abv' AND Offset='$offset' AND Roster='N' LIMIT 1";
-*/
-	$pr = @mysqli_query($conn, $pq) or die("Could not retrieve Player_ID.");
-	
-	$row = mysql_fetch_array($pr, MYSQL_ASSOC);
-	
-	return $row['Player_ID'];
-	
+	$tmr = mysqli_query($conn, $sql);
+	$index = 0;
+
+	//logMsg("Offset:" . $offset);
+	while($row = mysqli_fetch_array($tmr, MYSQL_ASSOC)) {
+
+		if($index == $offset){
+			
+    		//logMsg($index.' '.$row['Last']);
+			return $row['Player_ID'];
+		}
+    	$index++;
+	}
 	
 }  // end of function
 

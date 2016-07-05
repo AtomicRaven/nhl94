@@ -20,7 +20,7 @@ logMsg ("New Save State");
 
 	
 	
-	//addgame($teamid, $gameid, $seriesid, $savefile);
+	addgame($teamid, $gameid, $seriesid, $savefile);
 
 	//CleanTable("GameStats");	
 	//CleanTable("Schedule");
@@ -558,7 +558,9 @@ logMsg ("New Save State");
 
 // Scoring Summary
 	
-	/* $tmpExtract = 59627;	// Scoring Summary Length Offset
+	logMsg("Scoring Summary<br/>");
+
+	 $tmpExtract = 59627;	// Scoring Summary Length Offset
 	fseek ($fr,59627);
 	$EndofSS = hexdec(bin2hex(fread($fr, 1)));	
 	
@@ -637,40 +639,114 @@ logMsg ("New Save State");
 		
 		
 		// Player that scored
-		fseek ($fr,$tmpExtract + 4);
-		$GoalPlayer = (hexdec(bin2hex(fread($fr, 1))));
-		
-		logMsg("GoalPlayer:" . $GoalPlayer);
-		$goalid = getPlayerID($team, $GoalPlayer, $stattype, $classic, 'G');
-		
-		// Assisters on Goal
-		fseek ($fr,$tmpExtract + 5);
-		$GoalAst1 = (hexdec(bin2hex(fread($fr, 1))));
-		if($GoalAst1 != 255)  // Assist occurred
-			$a1id = getPlayerID($team, $GoalAst1, $stattype, $classic, 'G');
-		else
-			$a1id = 0;
-		
-		fseek ($fr,$tmpExtract + 6);
-		$GoalAst2 = (hexdec(bin2hex(fread($fr, 1))));
-		if($GoalAst2 != 255)  // Assist occurred
-			$a2id = getPlayerID($team, $GoalAst2, $stattype, $classic, 'G');
-		else
-			$a2id = 0;
+			fseek ($fr,$tmpExtract + 4);
+ 			$GoalPlayer = (hexdec(bin2hex(fread($fr, 1))));			
+			$goalid = getPlayerID($team, $GoalPlayer);
+			
+			// Assisters on Goal
+			fseek ($fr,$tmpExtract + 5);
+ 			$GoalAst1 = (hexdec(bin2hex(fread($fr, 1))));
+			if($GoalAst1 != 255)  // Assist occurred
+				$a1id = getPlayerID($team, $GoalAst1);
+			else
+				$a1id = 0;
+			
+			fseek ($fr,$tmpExtract + 6);
+ 			$GoalAst2 = (hexdec(bin2hex(fread($fr, 1))));
+			if($GoalAst2 != 255)  // Assist occurred
+				$a2id = getPlayerID($team, $GoalAst2);
+			else
+				$a2id = 0;
 
-		// Enter Scoring Summary into database
+			// Enter Scoring Summary into database
 		
 		$ssq = "INSERT INTO ScoreSum (Game_ID, Team_ID, Period, Time, G, A1, A2, Type)
 				VALUES ('$gameid', '$team', '$Period', '$time', '$goalid', '$a1id', '$a2id', '$type')";
 		$ssr = @mysqli_query($conn, $ssq) or die("Could not enter Score Summary.");
 		
-		$tmpExtract = ($tmpExtract + 6);  // move to next goal summary */
+		$tmpExtract = ($tmpExtract + 6);  // move to next goal summary 
 	
-	//}
+	}
 	
 	/**********************************************************************************/
+		//Penalty Summary
+
+		$tmpExtract2 = 59989;		// Penalty Offset Start
+
+		fseek ($fr,59989);
+ 	  	$EndofPS = hexdec(bin2hex(fread($fr, 1)));
+
+		for ($i = 2; $i < (($EndofPS + 6) / 4); $i += 1){
+
+			// Period of Penalty
+			fseek ($fr,$tmpExtract2 + 1);
+	 		$PenPer = (int) (hexdec(bin2hex(fread($fr, 1))) / 64) + 1;
+ 
+			// Time of Penalty (in Seconds)
+			fseek ($fr,$tmpExtract2 + 1);
+		 	$PenSec =  (hexdec(bin2hex(fread($fr, 1))));
+			fseek ($fr,$tmpExtract2 + 2);
+ 			$Pentmp =  (hexdec(bin2hex(fread($fr, 1))));
+			$PenSec = $PenSec * 256 + $Pentmp - ($PenPer - 1) * 16384;
+			$PenMin = (int) ($PenSec / 60);
+			$PenSec = ($PenSec % 60);
+			if($PenSec < 10)
+				$Sec = '0'. $PenSec;
+			else
+				$Sec = $PenSec;
+				
+			$pentime = $PenMin. ":". $Sec;
+
+			// Team that got Penalized
+			fseek ($fr,$tmpExtract2 + 3);
+	 		$PenTeam = (hexdec(bin2hex(fread($fr, 1)))); 
+			
+			if($PenTeam == 18 || $PenTeam == 22 || $PenTeam ==  24 || $PenTeam ==  26 || $PenTeam == 28 || $PenTeam == 30 
+				|| $PenTeam == 32 || $PenTeam ==  34 || $PenTeam ==  36 || $PenTeam == 38) // Home
+				$team = $homeid;
+			else 
+				$team = $awayid;
 		
-		
+			if($PenTeam == '18'  || $PenTeam == '146')
+				$type = "Boarding";
+			else if($PenTeam == '22' || $PenTeam == '150')
+				$type = "Charging";
+			else if($PenTeam == '24' || $PenTeam == '152')
+				$type = "Slashing";
+			else if($PenTeam == '26' || $PenTeam == '154') 			
+				$type = "Roughing";
+			else if($PenTeam == '28' || $PenTeam == '156') 
+				$type = "Cross Check";
+			else if($PenTeam == '30' || $PenTeam == '158')
+				$type = "Hooking";
+			else if($PenTeam == '32' || $PenTeam == '160')
+				$type = "Tripping";
+			else if($PenTeam == '34' || $PenTeam == '162')
+				$type = "Interference";
+			else if($PenTeam == '36' || $PenTeam == '164')
+				$type = "Holding";
+			else if($PenTeam == '38' || $PenTeam == '166')
+				$type = "Holding";
+				
+			
+			// Player
+			
+			fseek ($fr,$tmpExtract2 + 4);
+	 		$PenPlayer = (hexdec(bin2hex(fread($fr, 1))));
+			$penid = getPlayerID($team, $PenPlayer);
+						
+			
+			// Add to database
+			
+			$psq = "INSERT INTO PenSum (Game_ID, Team_ID, Player_ID, Period, Time, Type)
+					VALUES ('$gameid', '$team', '$penid', '$PenPer', '$pentime', '$type')";
+			$psr = @mysqli_query($conn, $psq) or die("Error: PenaltySummary " . $psq . "<br>" . mysqli_error($conn));		
+			
+			$tmpExtract2 = ($tmpExtract2 + 4);
+		}
+	
+	/**********************************************************************************/
+
 	//mysqli_close($conn);	
 	}  // end of function
 	
