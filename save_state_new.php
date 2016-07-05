@@ -754,7 +754,7 @@ require_once("errorchk.php");
 	else 
 		$error = $chk;	
 
-	//$host = $_SERVER['HTTP_HOST'];
-	//header("Location: http://".$host."/html/log_a_state.php?lg=". $lg. "&gmid=". $gameid. "&tmid=". $teamid. 
-	//	"&gn=". $gn. "&err=". $error);	
+	$host = $_SERVER['HTTP_HOST'];
+	header("Location: http://".$host."/nhl94/log_a_state.php?lg=". $lg. "&gmid=". $gameid. "&tmid=". $teamid. 
+		"&gn=". $gn. "&err=". $error);	
 ?>

@@ -3,8 +3,7 @@
 
 /*********************************************************************/
 
-function Check(){
-	if(isset($_GET['gmid']) && isset($_GET['tmid']) && isset($_GET['gn']) && is_numeric($_GET['gmid']) && is_numeric($_GET['tmid'])
+/*	if(isset($_GET['gmid']) && isset($_GET['tmid']) && isset($_GET['gn']) && is_numeric($_GET['gmid']) && is_numeric($_GET['tmid'])
 	  && is_numeric($_GET['gn'])){	
 		$game_id = $_GET['gmid'];
 		$team_id = $_GET['tmid'];
@@ -12,6 +11,7 @@ function Check(){
 	}
 	else
 		die("ERROR 2001: Data not sent to page.");
+*/
 
 	if(isset($_GET['err'])){
 		switch ($_GET['err']){
@@ -45,7 +45,7 @@ function Check(){
 		$msg = "";
 	
 
-	$gameq = "SELECT UH.ForumName HCoach, UA.ForumName ACoach, H.City HCity, H.Nickname HN, A.City ACity, A.Nickname AN, 
+	/* $gameq = "SELECT UH.ForumName HCoach, UA.ForumName ACoach, H.City HCity, H.Nickname HN, A.City ACity, A.Nickname AN, 
 			S.Home, S.Away, S.H_Confirm HC, S.A_Confirm AC 
 			FROM Schedule S 
 			JOIN Teams H ON H.Team_ID = S.Home
@@ -105,8 +105,10 @@ function Check(){
 		
 	}
 	else
-		die("Error with data submitted to page.  Please contact the administrator.");				
-}
+		die("Error with data submitted to page.  Please contact the administrator.");
+
+		*/				
+
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -133,48 +135,41 @@ $upl = 'Choose file: <input type="file" name="uploadfile" />';
 <body>
 <?php //include($_SERVER['DOCUMENT_ROOT']. "/html/header.php"); ?>
 <table width="100%" border="0" cellpadding="5" cellspacing="0" bgcolor="#FFFFFF">
-  <tr>
-    <td width="250" valign="top"></td>
+  <tr>  
     <td valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="border_table1">
       <tr>
-        <td height="45" valign="middle"><div align="center"><img src="/images/2007/log-a-game.gif" alt="Log A Game" width="220" height="26" /></div></td>
+        <td height="45" valign="middle"><div align="center"><img src="http://www.nhl94.com/images/artwork/nhl94_cartridge.gif" alt="Log A Game" width="150" height="159" /></div></td>
       </tr>
       <tr>
         <td valign="top" background="/images/2007/ea-sports-bg.gif"><div align="left">
           <table width="100%" border="0" cellspacing="0" cellpadding="3">
             
             <tr>
-              <td height="50" valign="top"><div align="center">                
-                <p class="heading_white">Log A Save State -
-                  <?php //echo lgname($lg); ?>
-                  League</p>
-
+              <td height="50" valign="top"><div align="center">               
+                
 		  <?php //if(LgActive($lg)){ ?>
      
-	        <p class="small_bright_blue_bold">This is to be filled out after you have completed a league game.  Please choose a save state to upload.  Save states will have either end in a .gs  (Genesis), or a .zs  (SNES), followed by the save state number slot (NOTE: ZSNES save state slot 0 will end in .zst).  After choosing the save state, enter your password and hit the "Upload" button.  This will upload the file and extract the stats used for the league.</p>
-                <p class="small_white">&nbsp;</p>
+	        <p class="small_bright_blue_bold"></p>
               </div></td>
             </tr>
           </table>
-          <table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
+          <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
             <tr>
               <td valign="top"><div align="center">
-                  <p style="font-size:125%" class="bold_bright_orange">
-                    <?//= $sublg ?>
-                    Level</p>
+                  
               </div></td>
             </tr>
             <tr>
-              <td align="center"><p style="font-size:125%" class="bold_white"><?//= $msg ?></p>
+              <td align="center"><p style="font-size:125%" class="bold_white"><?= $msg ?></p>
                   <form method="post" action="save_state_new.php" enctype="multipart/form-data">
                     <?//= $hiddenfields ?>
                     <table width="300" border="0" align="center" cellpadding="3" cellspacing="0" class="border_table2">
                       <tr>
-                        <td align="center" colspan="3" class="small_black_bold" background="/images/2007/menu-bg-fade.gif" style="font-size:125%">Game #: <?//= $_GET['gn'] ?></td>
+                        <td align="center" colspan="3" class="small_black_bold" background="/images/2007/menu-bg-fade.gif" style="font-size:125%"></td>
                       </tr>
                       <tr>
                         <td align="center"><?//= $bigaway ?></td>
-                        <td align="center" width="20"><p style="font-size:125%" class="heading_black"> vs. </p></td>
+                        <td align="center" width="20"></td>
                         <td align="center"><?//= $bighome ?></td>
                       </tr>
                       <tr>
@@ -191,18 +186,13 @@ $upl = 'Choose file: <input type="file" name="uploadfile" />';
                       	<td colspan="4" align="center"><?= $upl ?></td>
                       </tr>  
                       <tr>
-												<input type="hidden" name="userid" value="2" />
-                      	<td align="center" bgcolor="#FFFFFF"><?//= $logo ?></td>
+												<input type="hidden" name="userid" value="2" />                      	
                         <td align="center" bgcolor="#FFFFFF"><input type="hidden" name="seriesid" value="7" /></td>
-                        <td align="center" bgcolor="#FFFFFF"><?= $pwd ?></td>
-                        <td align="center" bgcolor="#FFFFFF"><?= $loggame ?></td>
+                        <td align="center" bgcolor="#FFFFFF"><?= $pwd ?>&nbsp;&nbsp;<?= $loggame ?></td>                        
                       </tr>
                     </table>
                   </form>
-		<?php // } ?>
-                <p align="center" class="small_white"><a href="<?= $tmpglink ?>" class="link6">Back to Coach Page</a> 
-                <p align="center">&nbsp;</p>
-                <?//= $boxscore ?>
+		
               </td>
             </tr>
           </table>

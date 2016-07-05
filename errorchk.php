@@ -21,32 +21,36 @@ function chkpass($userid, $pwd){
 		if($pwd == $urow['Password'])
 			return TRUE;
 		else
-			return TRUE; //  CHANGE TO FALSE BEFORE UPLOADING TO SITE
+			return FALSE; //  CHANGE TO FALSE BEFORE UPLOADING TO SITE
 	}
 
-	return TRUE; //  CHANGE TO FALSE BEFORE UPLOADING TO SITE
+	return FALSE; //  CHANGE TO FALSE BEFORE UPLOADING TO SITE
 	
 }  // end of function
 
 function errorcheck($userid, $pwd, $seriesid){
 	
 	$chk = chkpass($userid, $pwd);
-    $nextGameId = GetNextGameId();
-    $filePath = $GLOBALS['$saveFilePath'] . "/" . $seriesid;
 
-    if (!file_exists($filePath)) {
-        mkdir($filePath, 0777, true);
+    if($chk){
+        $nextGameId = GetNextGameId();
+        $filePath = $GLOBALS['$saveFilePath'] . "/" . $seriesid;
+
+        if (!file_exists($filePath)) {
+            mkdir($filePath, 0777, true);
+        }
+
+        $filename = $_FILES['uploadfile']['name']; // Get the name of the file (including file extension).
+        $ext = substr($filename, strpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
+        $upload_path = $filePath . "/" . "Series-" . $seriesid. '-game-'. $nextGameId . '.sv';
+
+        if(move_uploaded_file($_FILES['uploadfile']['tmp_name'], $upload_path)){
+            echo "File Move ok";
+            echo "NextGameId:" . $nextGameId;
+        }
+    }else{
+        return 2;  // password not correct*/
     }
-
-    $filename = $_FILES['uploadfile']['name']; // Get the name of the file (including file extension).
-    $ext = substr($filename, strpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
-    $upload_path = $filePath . "/" . "Series-" . $seriesid. '-game-'. $nextGameId . '.sv';
-
-    if(move_uploaded_file($_FILES['uploadfile']['tmp_name'], $upload_path)){
-        echo "File Move ok";
-        echo "NextGameId:" . $nextGameId;
-    }
-    	
 	/*if($chk){	// Pass OK
 		$scoreq = "SELECT S.Home Hm, S.Away Aw, S.Sub_League Sublg, H.User_ID HUD, H.Abv HAbv, A.User_ID AUD, A.Abv AAbv
 			FROM Schedule S
