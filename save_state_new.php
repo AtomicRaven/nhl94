@@ -2,7 +2,7 @@
 
 require_once("config.php");
 require_once("dbconnect.php");
-require_once("utils.php");
+require_once("data.php");
 require_once("errorchk.php");
 
 	function addgame($seriesid){	// add game to database
