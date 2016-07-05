@@ -1,6 +1,6 @@
 <?php
 
-require_once("dbconnect2.php");
+require_once("dbconnect.php");
 require_once("utils.php");
 
 logMsg ("New Save State");
