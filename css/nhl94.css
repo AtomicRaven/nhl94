@@ -1,0 +1,47 @@
+    body{
+        background-color: red;
+        color:white;
+        font-size:28px;
+        font-family: Segoe UI Semibold;
+    }
+
+    div.main {
+        width: 700px;
+        height: 0px;
+        margin: auto;
+    }
+
+    input{
+
+        width: 150px;
+        height:40px;
+        color:black;
+        font-size:20px;
+        font-weight:bold;
+        cursor:pointer;
+    }   
+
+input[type=file] {
+-webkit-appearance: textfield;
+position: relative;
+
+}
+input[type=file]::-webkit-file-upload-button {
+width: 0;
+padding: 0;
+margin: 0;
+-webkit-appearance: none;
+border: none;
+}
+/* "x::-webkit-file-upload-button" forces the rules to only apply to browsers that support this pseudo-element */
+x::-webkit-file-upload-button, input[type=file]:after {
+content: 'Browse...';
+display: inline-block;
+left: 100%;
+margin-left:3px;
+position: relative;
+-webkit-appearance: button;
+padding: 3px 8px 2px;
+}
+
+    
