@@ -483,6 +483,9 @@ require_once("errorchk.php");
 			fseek ($fr,61381 + $i);
 			$Chksfor = hexdec(bin2hex(fread($fr, 1)));	
 
+			$ChksA = 0;
+			$PlusMinus = 0;
+
 		// Away TOI
 		fseek ($fr,(61406 + ($i * 2)));
 		$TOIMinutes = hexdec(bin2hex(fread($fr, 1))) * 256;
@@ -514,9 +517,9 @@ require_once("errorchk.php");
 		logMsg("Goals:" . $Goals . "<br/>");
 			}
 			
-			$psq = "INSERT INTO PlayerStats (Game_ID, Team_ID, Player_ID, Pos, G, A, SOG, PIM,Chks, TOI)
+			$psq = "INSERT INTO PlayerStats (Game_ID, Team_ID, Player_ID, Pos, G, A, SOG, PIM,Chks, TOI, ChksA, PlusMinus)
 						VALUES ('$gameid', '$awayid', '$pid', '$pos', '$Goals', '$Assists', '$SOG', '$PIM',
-						'$Chksfor', '$TOIString')";
+						'$Chksfor', '$TOIString', $ChksA, $PlusMinus)";
 			
 			$psr = mysqli_query($conn, $psq);			
 			
@@ -722,6 +725,122 @@ require_once("errorchk.php");
 			$tmpExtract2 = ($tmpExtract2 + 4);
 		}
 	
+
+		// Plus/Minus for Blitz
+	
+		$tmpExtract = 66413;	// Plus/Minus Info Length Offsets 66412, 66413
+		fseek ($fr,66412);
+  	 	$EndofPM = hexdec(bin2hex(fread($fr, 2)));
+		
+		for ($i=1;$i<(($EndofPM + 14) / 14);$i+=1){
+
+			// Type of Goal, Team that Scored
+			fseek ($fr,$tmpExtract + 1);		
+			$GoalTeam = hexdec(bin2hex(fread($fr, 1)));
+//			echo 'Goal Type: '. $GoalTeam. '<br />';
+			switch($GoalTeam){
+			
+				case(0):
+					$pm = 1;
+					$type = 'SH2';
+					$hplayers = 6;
+					$aplayers = 6;
+					$hpm = 1;
+					$apm = -1;
+				break;
+				case(1):
+					$pm = 1;
+					$type = 'SH';
+					$hplayers = 6;
+					$aplayers = 6;
+					$hpm = 1;
+					$apm = -1;
+				break;
+				case(2):
+					$pm = 1;
+					$type = 'EV';
+					$hplayers = 6;
+					$aplayers = 6;
+					$hpm = 1;
+					$apm = -1;
+				break;
+				
+				case(128):
+					$pm = 1;
+					$type = 'SH2';
+					$hplayers = 6;
+					$aplayers = 6;
+					$hpm = -1;
+					$apm = 1;
+				break;
+				case(129):
+					$pm = 1;
+					$type = 'SH';
+					$hplayers = 6;
+					$aplayers = 6;
+					$hpm = -1;
+					$apm = 1;
+				break;
+				case(130):
+					$pm = 1;
+					$type = 'EV';
+					$hplayers = 6;
+					$aplayers = 6;
+					$hpm = -1;
+					$apm = 1;
+				break;
+				
+				default:
+					$pm = 0;
+				break;
+			}
+			
+			if($pm == 1){  // Plus/Minus will be applied
+				
+				$hmonice = $tmpExtract + 3;
+				$awonice = $tmpExtract + 9;
+				
+				// Retrieve Home Players and Add Plus/Minus
+				
+				for($j = 0;$j < $hplayers;$j++){
+					
+					fseek ($fr,$hmonice + $j);
+ 					$Player = (hexdec(bin2hex(fread($fr, 1))));
+					
+					if($Player != '0' && $Player != '1' && $Player != '255'){	// FF is in place of a player missing (like on a SH goal) or Goalie ( 0 or 1)
+						$plid = getPlayerID($hmtm, $Player, $stattype, 0, 'G');
+					
+						$pmq = "UPDATE PlayerStats SET PlusMinus = PlusMinus + $hpm 
+								WHERE Player_ID='$plid' AND Game_ID='$gameid' AND Team_ID='$hmtm' LIMIT 1";
+						$pmr = @mysql_query($pmq) or die("Error:  Could not update Home Plus/Minus Stat.");
+					}
+				}
+				
+				// Away Players
+				
+				for($j = 0;$j < $aplayers;$j++){
+					
+					fseek ($fr,$awonice + $j);
+ 					$Player = (hexdec(bin2hex(fread($fr, 1))));
+					
+					if($Player != '0' && $Player != '1' && $Player != '255'){	// 255 is in place of a player missing (like on a SH goal) or Goalie ( 0 or 1)
+
+						$plid = getPlayerID($awtm, $Player, $stattype, 0, 'G');
+						$pmq = "UPDATE PlayerStats SET PlusMinus = PlusMinus + $apm
+							WHERE Player_ID='$plid' AND Game_ID='$gameid' AND Team_ID='$awtm' LIMIT 1";
+						$pmr = @mysql_query($pmq) or die("Error:  Could not update Away Plus/Minus Stat.");
+					}
+				}
+			
+		
+			}
+		
+			$tmpExtract = ($tmpExtract + 14);  // move to next summary
+
+		}
+//	die();
+		
+
 	/**********************************************************************************/
 
 	//mysqli_close($conn);	
@@ -754,7 +873,7 @@ require_once("errorchk.php");
 	else 
 		$error = $chk;	
 
-	$host = $_SERVER['HTTP_HOST'];
-	header("Location: http://".$host."/nhl94/log_a_state.php?lg=". $lg. "&gmid=". $gameid. "&tmid=". $teamid. 
-		"&gn=". $gn. "&err=". $error);	
+	//$host = $_SERVER['HTTP_HOST'];
+	//header("Location: http://".$host."/nhl94/log_a_state.php?lg=". $lg. "&gmid=". $gameid. "&tmid=". $teamid. 
+	//	"&gn=". $gn. "&err=". $error);	
 ?>
