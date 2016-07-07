@@ -127,7 +127,8 @@ p.message {
 }
 
 input[type="text"], 
-input[type="password"]
+input[type="password"],
+select
  {
 		font-size: 120%;
 		padding: 5px;

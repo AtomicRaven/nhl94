@@ -1,6 +1,6 @@
 <?php
 		session_start();
-		$ADMIN_PAGE = false;
+		$ADMIN_PAGE = true;
 		include_once './_INCLUDES/00_SETUP.php';
 		
 		// custom code

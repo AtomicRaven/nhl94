@@ -57,6 +57,11 @@
 							<td>Gm 5. BOS 0 / <b>MTL</b> 3 </td>
 							<td><button class="square" id="submit">Game Stats</button></td>
 						</tr>			
+						<tr class="normal">
+							<td>&nbsp;</td>
+							<td>MTL wins series</td>
+							<td><button class="square" id="submit">Series Stats</button></td>
+						</tr>								
 						<tr class="heading rowSpacer">
 							<td class="seriesNum mainTD">2.</td>
 							<td class="seriesName mainTD">Series Name Here</td>
@@ -83,15 +88,9 @@
 						</tr>			
 						<tr class="normal">
 							<td>&nbsp;</td>
-							<td>Gm 4. BOS 1 / <b>MTL 5</b> </td>
-							<td><button class="square" id="submit">Game Stats</button></td>
-						</tr>			
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>Gm 5. BOS 0 / <b>MTL</b> 3 </td>
-							<td><button class="square" id="submit">Game Stats</button></td>
-						</tr>			
-
+							<td>Series incomplete</td>
+							<td><button class="square" id="submit">Series Stats</button></td>
+						</tr>	
 					</table>	
 					
 				</div>	
