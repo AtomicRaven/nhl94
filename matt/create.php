@@ -3,8 +3,23 @@
 		session_start();
 		$ADMIN_PAGE = true;
 		include_once './_INCLUDES/00_SETUP.php';
+		include_once './_INCLUDES/dbconnect.php';
+		include_once './_INCLUDES/data.php';		
+
 
 		if ($ADMIN_LOGGED_IN == true) {
+
+			$result = GetTeams();
+
+			$selectBox = "<select id='HomeTeam'>";
+			$selectBox2 = "<select id='AwayTeam'>";
+									
+			while($row = mysqli_fetch_array($result)){
+				$selectBox2 = $selectBox .= "<option value='" . $row['Team_ID'] . "'>" . $row['Name'] . "</option>";
+			}	
+
+			$selectBox .= "</select>";
+			
 			
 ?><!DOCTYPE HTML>
 <html>
@@ -33,15 +48,11 @@
 								</tr>			
 								<tr class="normal">
 									<td>
-													<select>
-														<option>MTL</option>
-													</select>
+										<?= $selectBox ?>			
 									</td>
 									<td>&nbsp;vs&nbsp;</td>
 									<td>
-													<select>
-														<option>MTL</option>
-													</select>
+										<?= $selectBox2 ?>
 									</td>
 								</tr>	
 							</table>

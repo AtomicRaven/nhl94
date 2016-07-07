@@ -64,8 +64,7 @@ function getPlayerID($teamid, $offset){
 
 	$conn = $GLOBALS['$conn'];
 	// Retrieve Player_ID	
-	$sql = "SELECT Player_ID, Last FROM Roster WHERE Team_ID = '$teamid'";
-	
+	$sql = "SELECT Player_ID, Last FROM Roster WHERE Team_ID = '$teamid'";	
 	$tmr = mysqli_query($conn, $sql);
 	$index = 0;
 
@@ -82,6 +81,21 @@ function getPlayerID($teamid, $offset){
 	
 }  // end of function
 
+function GetTeams(){
+
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "SELECT * FROM NhlTeam ORDER BY Name ASC";
+	$result = mysqli_query($conn, $sql);
+
+	if($result === FALSE) { 
+		die(mysql_error()); // TODO: better error handling
+	}	
+
+	return $result;
+
+
+}
 function getTeamAbv($teamid){
 	
 	$conn = $GLOBALS['$conn'];
