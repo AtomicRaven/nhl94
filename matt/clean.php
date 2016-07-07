@@ -1,7 +1,6 @@
 <?php
 
-require_once("matt/_INCLUDES/dbconnect.php");
-require_once("data.php");
+require_once("./_INCLUDES/dbconnect.php");
 
     CleanTable("GameStats");
     CleanTable("PenSum");

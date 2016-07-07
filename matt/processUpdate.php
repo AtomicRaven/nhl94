@@ -1,9 +1,8 @@
 <?php
 
-require_once("config.php");
-require_once("matt/_INCLUDES/dbconnect.php");
-require_once("data.php");
-require_once("errorchk.php");
+
+require_once("./_INCLUDES/dbconnect.php");
+require_once("./_INCLUDES/errorchk.php");
 
 	function addgame($seriesid){	// add game to database
 	
@@ -853,15 +852,15 @@ require_once("errorchk.php");
 
 	//$teamid = $_POST['teamid'];
 	$seriesid = $_POST['seriesid'];
-	$pwd = $_POST['pwd'];
-	$userid = $_POST['userid'];
+	//$pwd = $_POST['pwd'];
+	//$userid = $_POST['userid'];
 
 	//echo "GameId: " . $gameid . "</br>";
-	echo "UserId: " . $userid . "</br>";
-	echo "Password: " . $pwd . "</br>";	
+	//echo "UserId: " . $userid . "</br>";
+	//echo "Password: " . $pwd . "</br>";	
 	echo "SeriesId: " . $seriesid . "</br>";	
 	
-	$chk = errorcheck($userid, $pwd, $seriesid);
+	$chk = errorcheck($seriesid);
 	
 	if(!$chk)
 		$chk = addgame($seriesid);
@@ -873,7 +872,8 @@ require_once("errorchk.php");
 	else 
 		$error = $chk;	
 
-	//$host = $_SERVER['HTTP_HOST'];
-	//header("Location: http://".$host."/nhl94/log_a_state.php?lg=". $lg. "&gmid=". $gameid. "&tmid=". $teamid. 
-	//	"&gn=". $gn. "&err=". $error);	
+	//header('Location: results.php?m=1');
+	
+	header("Location: results.php?lg=". $lg. "&gmid=". $gameid. "&tmid=". $teamid. 
+		"&gn=". $gn. "&err=". $error);	
 ?>

@@ -1,38 +1,13 @@
 <?php
 
-require_once("config.php");
-require_once("matt/_INCLUDES/dbconnect.php");
-require_once("data.php");
 
+require_once("dbconnect.php");
 
-/*********************************************************************/
-function chkpass($userid, $pwd){
-
-	// Retrieve password
-
-    $conn = $GLOBALS['$conn'];
-
-	$uq = "SELECT * FROM Users WHERE ID = '$userid' LIMIT 1";
-
-	$ur = mysqli_query($conn, $uq);
-
-	if(mysqli_num_rows($ur)){
-		$urow = mysqli_fetch_array($ur, MYSQL_ASSOC);
-		if($pwd == $urow['Password'])
-			return TRUE;
-		else
-			return FALSE; //  CHANGE TO FALSE BEFORE UPLOADING TO SITE
-	}
-
-	return FALSE; //  CHANGE TO FALSE BEFORE UPLOADING TO SITE
+function errorcheck($seriesid){
 	
-}  // end of function
+	//$chk = chkpass($userid, $pwd);
 
-function errorcheck($userid, $pwd, $seriesid){
-	
-	$chk = chkpass($userid, $pwd);
-
-    if($chk){
+    //if($chk){
         $nextGameId = GetNextGameId();
         $filePath = $GLOBALS['$saveFilePath'] . "/" . $seriesid;
 
@@ -48,9 +23,9 @@ function errorcheck($userid, $pwd, $seriesid){
             echo "File Move ok";
             echo "NextGameId:" . $nextGameId;
         }
-    }else{
-        return 2;  // password not correct*/
-    }
+    //}else{
+       // return 2;  // password not correct*/
+    //}
 	/*if($chk){	// Pass OK
 		$scoreq = "SELECT S.Home Hm, S.Away Aw, S.Sub_League Sublg, H.User_ID HUD, H.Abv HAbv, A.User_ID AUD, A.Abv AAbv
 			FROM Schedule S

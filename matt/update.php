@@ -4,7 +4,14 @@
 		$ADMIN_PAGE = true;
 		include_once './_INCLUDES/00_SETUP.php';
 
-		if ($ADMIN_LOGGED_IN == true) {
+		if ($ADMIN_LOGGED_IN == true) {		
+
+			$submitBtn ="<input type='hidden' name='MAX_FILE_SIZE' value='400000' />";
+			$submitBtn .="<input type='hidden' name='userid' value='2' />"; 
+			$submitBtn .="<input type='hidden' name='seriesid' value='7' />";
+			$submitBtn .= "Choose file: <input type='file' name='uploadfile' />";			
+			$submitBtn .= '<input type="submit" name="submit" value="Upload" />';
+            $submitBtn .="</form>";
 			
 ?><!DOCTYPE HTML>
 <html>
@@ -23,7 +30,7 @@
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
 				
 					<h2>Update Series</h2>
-					<form method="post" action="processUpdate.php">	
+					<form method="post" action="processUpdate.php" enctype="multipart/form-data">	
 					
 					<table class="standard">
 						<tr class="heading rowSpacer">
@@ -38,7 +45,7 @@
 						<tr class="normal">
 							<td>&nbsp;</td>
 							<td>Gm 1. <b>MTL 6</b> / BOS 3 </td>
-							<td><button class="square" id="submit">Game Stats</button></td>
+							<td><?= $submitBtn?></td>
 						</tr>			
 						<tr class="normal">
 							<td>&nbsp;</td>
