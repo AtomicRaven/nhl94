@@ -9,7 +9,7 @@ require_once("./_INCLUDES/errorchk.php");
 		$conn = $GLOBALS['$conn'];
 		$stattype = "GENS";
 		$nextGameId = GetNextGameId();
-		$filePath = $GLOBALS['$saveFilePath'] . "/" . $seriesid;
+		$filePath = $GLOBALS['$saveFilePath'] . $seriesid;
 
 		$file = $filePath . "/" . "Series-" . $seriesid. '-game-'. $nextGameId . '.sv';	
 		
@@ -293,10 +293,11 @@ require_once("./_INCLUDES/errorchk.php");
 		
 		// Add to GameStats
 		
-
+		$awayTeamAbv = GetTeamById($awayid);
+		$homeTeamAbv = GetTeamById($homeid);
 				
-		logMsg("Away Team: ID " . $awayid . " : " . getTeamAbv($awayid) . ": " . $AwayScore . " Goals. Player: " . getUserAlias($A_User_ID));
-		logMsg("Home Team: ID " . $homeid . " : " . getTeamAbv($homeid) . ": " . $HomeScore . " Goals. Player: " . getUserAlias($H_User_ID));
+		logMsg("Away Team: ID " . $awayid . " : " . $awayTeamAbv["ABV"] . ": " . $AwayScore . " Goals. Player: " . getUserAlias($A_User_ID));
+		logMsg("Home Team: ID " . $homeid . " : " . $homeTeamAbv["ABV"] . ": " . $HomeScore . " Goals. Player: " . getUserAlias($H_User_ID));
 		
 		$hazstring = '00:'. $HomeAZDisplayM. ':'. $HomeAZDisplayS;		// Attack Zone String
 		$aazstring = '00:'. $AwayAZDisplayM. ':'. $AwayAZDisplayS;
@@ -852,13 +853,16 @@ require_once("./_INCLUDES/errorchk.php");
 
 	//$teamid = $_POST['teamid'];
 	$seriesid = $_POST['seriesid'];
+	 $filename = $_FILES['uploadfile']['name'];
 	//$pwd = $_POST['pwd'];
 	//$userid = $_POST['userid'];
 
 	//echo "GameId: " . $gameid . "</br>";
 	//echo "UserId: " . $userid . "</br>";
 	//echo "Password: " . $pwd . "</br>";	
-	echo "SeriesId: " . $seriesid . "</br>";	
+	//echo "SeriesId: " . $seriesid . "</br>";	
+
+	echo "FileName: " . $filename . "</br>";
 	
 	$chk = errorcheck($seriesid);
 	

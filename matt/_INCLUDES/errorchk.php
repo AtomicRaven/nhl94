@@ -9,20 +9,24 @@ function errorcheck($seriesid){
 
     //if($chk){
         $nextGameId = GetNextGameId();
-        $filePath = $GLOBALS['$saveFilePath'] . "/" . $seriesid;
+        $filePath = $GLOBALS['$saveFilePath'] . $seriesid;
 
         if (!file_exists($filePath)) {
             mkdir($filePath, 0777, true);
         }
 
         $filename = $_FILES['uploadfile']['name']; // Get the name of the file (including file extension).
+		echo "fileName:" . $filename;
         $ext = substr($filename, strpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
         $upload_path = $filePath . "/" . "Series-" . $seriesid. '-game-'. $nextGameId . '.sv';
 
         if(move_uploaded_file($_FILES['uploadfile']['tmp_name'], $upload_path)){
             echo "File Move ok";
             echo "NextGameId:" . $nextGameId;
-        }
+        }else{
+			logMsg("Could not Upload File.");
+			return 5;
+		}
     //}else{
        // return 2;  // password not correct*/
     //}

@@ -18,12 +18,15 @@
 		}
 
 		$user = chkpass($username, $password); 
+
 		if ($user !== FALSE) {
 				
 				$currentUser = $user["Alias"];
+				$_SESSION['username'] = $currentUser;
+				$_SESSION['userId'] = $user["ID"];
 
 				if ( $currentUser == 'AquaLizard' || $currentUser == 'AtomicRaven' ) {
-					$_SESSION['username'] = $currentUser;
+					
 					header('Location: manage.php');
 				}
 				else {

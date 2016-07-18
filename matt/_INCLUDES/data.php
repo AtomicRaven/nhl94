@@ -12,6 +12,58 @@ function GetNextGameId(){
 
 }
 
+function GetGamesBySeriesId($seriesid){	
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT * FROM Schedule Where Series_ID='$seriesid' ORDER BY ID ASC";
+	
+	$result = mysqli_query($conn, $sql);
+
+	if ($result) {
+		logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
+	} else {
+		echo("Error: GetGamesBySeriesId: " . $sql . "<br>" . mysqli_error($conn));
+	}
+	
+	return $result;
+
+}
+
+
+//Series
+function AddNewSeries($seriesname, $hometeamid, $awayteamid, $homeuserid, $awayuserid){	
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "INSERT INTO Series (Name, HomeTeamId, AwayTeamId, H_User_ID, A_User_ID, DateCreated) 
+			VALUES ('$seriesname', '$hometeamid', '$awayteamid', '$homeuserid', '$awayuserid', NOW())";	
+		
+	$sqlr = mysqli_query($conn, $sql);
+	
+	if ($sqlr) {
+		$seriesid = $conn->insert_id;
+		logMsg("New Series record created successfully.  Game_ID: " . $seriesid);
+	} else {
+		echo("Error: AddNewSeries: " . $sql . "<br>" . mysqli_error($conn));
+	}
+	
+	return $seriesid;
+
+}
+
+function GetSeriesById($seriesid){	
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT * FROM Series Where ID='$seriesid'";
+	
+	$tmr = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);	
+	
+	return $row;
+
+}
+
+//End of Series functions
+
 function CleanTable($tableName){
 
 	$conn = $GLOBALS['$conn'];
@@ -22,7 +74,7 @@ function CleanTable($tableName){
 	if ($tmr) {
 		logMsg("Delete Data From Table: " .$tableName);
 	} else {
-		logMsg("Error: " . $sql . "<br>" . mysqli_error($conn));
+		echo("Error: CleanTable " . $sql . "<br>" . mysqli_error($conn));
 	}
 
 }
@@ -37,7 +89,7 @@ function UpdateRoster(){
 	if ($tmr) {
 		logMsg("Retrieved NHLTeam");
 	} else {
-		logMsg("Error: " . $sql . "<br>" . mysqli_error($conn));
+		echo("Error: UpdateRoster" . $sql . "<br>" . mysqli_error($conn));
 	}
 	
 	while($row = mysqli_fetch_array($tmr, MYSQL_ASSOC)){
@@ -52,7 +104,7 @@ function UpdateRoster(){
 		if ($sqlr) {
 			logMsg("Row " . $Abv . " updated with ID " . $teamId );
 		} else {
-			logMsg("Error: " . $sqlr . "<br>" . mysqli_error($conn));
+			echo("Error: UpdateRoster : While" . $sqlr . "<br>" . mysqli_error($conn));
 		}
 		
 		
@@ -96,7 +148,8 @@ function GetTeams(){
 
 
 }
-function getTeamAbv($teamid){
+
+function GetTeamById($teamid){
 	
 	$conn = $GLOBALS['$conn'];
 	//$teamid = $teamid + 1;	
@@ -106,12 +159,12 @@ function getTeamAbv($teamid){
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
 	
 	if ($row) {
-		echo "Retrieved ";
+		logMsg("Retrieved TeamById");
 	} else {
-		logMsg("Error: " . $sql . "<br>" . mysqli_error($conn));
+		echo("Error: GetTeamById: " . $sql . "<br>" . mysqli_error($conn));
 	}
 	
-	return $row['Name'];
+	return $row;
 
 }  // end of function
 
@@ -138,6 +191,22 @@ function getUserAlias($userid){
 	return $row['Alias'];
 	
 }  // end of function
+
+function GetUsers(){
+
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "SELECT * FROM Users ORDER BY Name ASC";
+	$result = mysqli_query($conn, $sql);
+
+	if($result === FALSE) { 
+		die(mysql_error()); // TODO: better error handling
+	}	
+
+	return $result;
+
+
+}
 
 function logMsg($msg){
 	

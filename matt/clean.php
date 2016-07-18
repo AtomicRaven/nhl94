@@ -8,5 +8,6 @@ require_once("./_INCLUDES/dbconnect.php");
 
     CleanTable("Schedule");
     CleanTable("PlayerStats");
+    CleanTable("Series");
     
 ?>

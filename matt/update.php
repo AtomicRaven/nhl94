@@ -3,15 +3,25 @@
 		session_start();
 		$ADMIN_PAGE = true;
 		include_once './_INCLUDES/00_SETUP.php';
+		include_once './_INCLUDES/dbconnect.php';
 
 		if ($ADMIN_LOGGED_IN == true) {		
 
+			$seriesid = $_GET['series_id'];
+			$series = GetSeriesById($seriesid);
+			$gamesplayed = GetGamesBySeriesId($seriesid);
+
+			$hometeam = GetTeamById($series["HomeTeamId"]);
+			$awayteam = GetTeamById($series["AwayTeamId"]);
+
+			$homeUserAlias = getUserAlias($series["H_User_ID"]);
+			$awayUserAlias = getUserAlias($series["A_User_ID"]);
+
 			$submitBtn ="<input type='hidden' name='MAX_FILE_SIZE' value='400000' />";
-			$submitBtn .="<input type='hidden' name='userid' value='2' />"; 
-			$submitBtn .="<input type='hidden' name='seriesid' value='7' />";
+			$submitBtn .="<input type='hidden' name='userid' value='" . $_SESSION['userId'] . "' />"; 
+			$submitBtn .="<input type='hidden' name='seriesid' value='" . $seriesid ."' />";
 			$submitBtn .= "Choose file: <input type='file' name='uploadfile' />";			
 			$submitBtn .= '<input type="submit" name="submit" value="Upload" />';
-            $submitBtn .="</form>";
 			
 ?><!DOCTYPE HTML>
 <html>
@@ -35,48 +45,57 @@
 					<table class="standard">
 						<tr class="heading rowSpacer">
 							<td class="seriesNum mainTD">1.</td>
-							<td class="seriesName mainTD">Series Name Here</td>
-							<td class="seriesDate mainTD">Created 05/22/16</td>
+							<td class="seriesName mainTD"><?=$series["Name"]?></td>
+							<td class="seriesDate mainTD">Created <?=$series["DateCreated"]?></td>
 						</tr>
 						<tr class="heading">
 							<td>&nbsp;</td>
-							<td class="seriesInfo mainTD" colspan="2"><b>MTL</b> vs BOS, starting in MTL (3-3-1)</td>
+							<td class="seriesInfo mainTD" colspan="2"><b><?=$hometeam["Name"]?> ( <?= $homeUserAlias ?> )</b> vs <?=$awayteam["Name"]?> ( <?= $awayUserAlias ?> ), starting in <?=$hometeam["ABV"]?> (3-3-1)</td>
 						</tr>						
-						<tr class="normal">
+
+						<?php 
+						$i=1;
+						while($row = mysqli_fetch_array($gamesplayed, MYSQL_ASSOC)){
+						?>
+						<tr>
 							<td>&nbsp;</td>
-							<td>Gm 1. <b>MTL 6</b> / BOS 3 </td>
-							<td><?= $submitBtn?></td>
-						</tr>			
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>Gm 2. MTL 3 / <b>BOS</b> 4 </td>
+							<td>Gm <?=$i?>. <b><?=$hometeam["ABV"]?> <?=$row["H_Score"]?></b> / <?=$awayteam["ABV"]?> <?=$row["A_Score"]?></td>
 							<td><button class="square" id="submit">Game Stats</button></td>
-						</tr>			
+						</tr>
+						<?php 
+							$i++;
+						 } 
+						 
+						for ($x=$i; $x <= 7; $x++) {
+							
+							$team1 =  $hometeam["ABV"];
+							$team2 = $awayteam["ABV"];
+							
+							switch ($x) {
+								case 1:
+								case 2:
+								case 3:
+								case 7:					
+									$team1 =  $hometeam["ABV"];
+									$team2 = $awayteam["ABV"];				
+									break;
+								case 4:
+								case 5:
+								case 6:
+									$team2 =  $hometeam["ABV"];
+									$team1 = $awayteam["ABV"];				
+									break;
+									
+							}
+						?>
 						<tr class="normal">
 							<td>&nbsp;</td>
-							<td>Gm 3. MTL at BOS</td>
-							<td><button class="square" id="submit">Upload File</button></td>
-						</tr>			
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>Gm 4. BOS at MTL</td>
-							<td><button class="square" id="submit">Upload File</button></td>
-						</tr>			
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>Gm 5. BOS at MTL </td>
-							<td><button class="square" id="submit">Upload File</button></td>
-						</tr>			
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>Gm 6. BOS at MTL </td>
-							<td><button class="square" id="submit">Upload File</button></td>
-						</tr>		
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>Gm 7. MTL at BOS</td>
-							<td><button class="square" id="submit">Upload File</button></td>
-						</tr>								
+							<td>Gm <?=$x?>. <?=$team1?> at <?=$team2?></td>
+							<td><?= $submitBtn?></td>
+						</tr>						
+						<?php							
+						 } 
+						 ?>								
 					</table>
 					</form>	
 				</div>	

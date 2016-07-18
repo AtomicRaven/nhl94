@@ -3,22 +3,34 @@
 		session_start();
 		$ADMIN_PAGE = true;
 		include_once './_INCLUDES/00_SETUP.php';
-		include_once './_INCLUDES/dbconnect.php';
-		include_once './_INCLUDES/data.php';		
+		include_once './_INCLUDES/dbconnect.php';	
 
 
 		if ($ADMIN_LOGGED_IN == true) {
 
-			$result = GetTeams();
+			$teams = GetTeams();
+			$users = GetUsers();
 
-			$selectBox = "<select id='HomeTeam'>";
-			$selectBox2 = "<select id='AwayTeam'>";
+			$homeTeamSelectBox = "<select id='HomeTeam' name='HomeTeam'>";
+			$awayTeamSelectBox = "<select id='AwayTeam' name='AwayTeam'>";
+
+			$homeUserSelectBox = "<select id='HomeUser' name='HomeUser'>";
+			$awayUserSelectBox = "<select id='AwayUser' name='AwayUser'>";
 									
-			while($row = mysqli_fetch_array($result)){
-				$selectBox2 = $selectBox .= "<option value='" . $row['Team_ID'] . "'>" . $row['Name'] . "</option>";
+			while($row = mysqli_fetch_array($teams)){
+				$homeTeamSelectBox .= "<option value='" . $row['Team_ID'] . "'>" . $row['Name'] . "</option>";
+				$awayTeamSelectBox .= "<option value='" . $row['Team_ID'] . "'>" . $row['Name'] . "</option>";
 			}	
 
-			$selectBox .= "</select>";
+			while($row = mysqli_fetch_array($users)){
+				$homeUserSelectBox .= "<option value='" . $row['ID'] . "'>" . $row['Name'] . "</option>";
+				$awayUserSelectBox .= "<option value='" . $row['ID'] . "'>" . $row['Name'] . "</option>";
+			}	
+
+			$homeTeamSelectBox .= "</select>";
+			$awayTeamSelectBox .= "</select>";
+			$homeUserSelectBox .= "</select>";
+			$awayUserSelectBox .= "</select>";
 			
 			
 ?><!DOCTYPE HTML>
@@ -43,18 +55,20 @@
 							<table class="tight">
 								<tr class="normal">
 									<td><label>home</label></td>
-									<td>&nbsp;</td>
-									<td><label>visitor</label></td>
 								</tr>			
 								<tr class="normal">
 									<td>
-										<?= $selectBox ?>			
+										<?= $homeUserSelectBox?> as <?= $homeTeamSelectBox ?>			
 									</td>
-									<td>&nbsp;vs&nbsp;</td>
-									<td>
-										<?= $selectBox2 ?>
-									</td>
+								</tr>
+								<tr>
+									<td><label>visitor</label></td>
 								</tr>	
+								<tr>
+									<td>
+										<?= $awayUserSelectBox?> as <?= $awayTeamSelectBox ?>
+									</td>
+								</tr>
 							</table>
 
 							<table class="tight">
@@ -63,9 +77,9 @@
 								</tr>
 								<tr class="normal">
 									<td>
-										<input type="text" name="series_name" style="min-width: 250px;" value=""><br>
+										<input type="text" name="series_name" style="min-width: 250px;" value="Test"><br>
 							
-										<button id="submit" style="margin-top: 10px;">SUBMIT</button>
+										<button id="submit" type="submit" style="margin-top: 10px;">SUBMIT</button>
 									</td>
 								</tr>						
 							</table>
