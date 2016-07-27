@@ -29,7 +29,10 @@
 
 				$submitBtn ="<input type='hidden' name='MAX_FILE_SIZE' value='400000' />";
 				$submitBtn .="<input type='hidden' name='userid' value='" . $_SESSION['userId'] . "' />"; 
-				$submitBtn .="<input type='hidden' name='seriesid' value='" . $seriesid ."' />";						
+				$submitBtn .="<input type='hidden' name='seriesid' value='" . $seriesid ."' />";	
+
+
+
 
 			}else{
 				
@@ -43,7 +46,7 @@
 
 				$seriesSelectBox .= "</select>";
 				
-				echo $seriesSelectBox;
+				//echo $seriesSelectBox;
 			}
 
 			$fileInput = "Choose file: <input type='file' name='uploadfile' />";			
@@ -70,7 +73,7 @@
 			function LoadSeries(seriesId){
 
 				document.location.href = "update.php?series_id=" + seriesId;
-				
+
 			}
 			</script>
 
@@ -103,8 +106,31 @@
 						</tr>						
 
 						<?php 
+
 						$i=1;
+						$homeTeamWins = 0;					
+						$awayTeamWins = 0;
+
 						while($row = mysqli_fetch_array($gamesplayed, MYSQL_ASSOC)){
+
+							$homeTeamScore = $row["H_Score"];					
+							$awayTeamScore = $row["A_Score"];
+
+							if($homeTeamScore > $awayTeamScore){
+								$homeTeamWins++;
+							}else{
+								$awayTeamWins++;
+							}
+
+							//logMsg("HWins" . $homeTeamWins);
+							//logMsg("AWins" . $awayTeamWins);
+
+							if($homeTeamWins <= 4 && $awayTeamWins <= 4){
+
+								
+
+								//Series is not complete
+								
 						?>
 						<tr>
 							<td>&nbsp;</td>
@@ -113,32 +139,62 @@
 						</tr>
 						<?php 
 							$i++;
-							
-						 } 
-						 
-						for ($x=$i; $x <= 7; $x++) {
-							
-							$team1 =  $hometeam["ABV"];
-							$team2 = $awayteam["ABV"];
-							
-							switch ($x) {
-								case 1:
-								case 2:
-								case 3:
-								case 7:					
-									$team1 =  $hometeam["ABV"];
-									$team2 = $awayteam["ABV"];				
-									break;
-								case 4:
-								case 5:
-								case 6:
-									$team2 =  $hometeam["ABV"];
-									$team1 = $awayteam["ABV"];				
-									break;
-									
+
+							// End Upload File IF
+							} else {
+								
+								$winnerText = "<h2>The ";
+								// There is a champ...who is it???
+								if($homeTeamWins >= 4){
+									$winnerText .= $hometeam["Name"] . " Win Series " . $homeTeamWins . " / " . $awayTeamWins;
+									$winnerText .= ".</br>" . $homeUserAlias;
+								}
+
+								if($awayTeamWins >= 4){
+									$winnerText .= $hometeam["Name"] . " Win Series " . $awayTeamWins . " / " . $homeTeamWins;
+									$winnerText .= ".</br>" . $awayUserAlias;									
+								}				
+
+								$winnerText .= " IS <u>THE</u> STANLEY CUP CHAMP!!</h2>"				
+
+								?>
+								<tr>
+									<td>&nbsp;</td>
+									<td><?= $winnerText ?></td>									
+								</tr>
+								<?php
+
+								break;
 							}
 
-							
+							// End While
+						 } 
+						 
+						//Check to see if series is over or do we need to show more games
+
+						if($homeTeamWins <= 4 && $awayTeamWins <= 4){
+
+							for ($x=$i; $x <= 7; $x++) {
+								
+								$team1 =  $hometeam["ABV"];
+								$team2 = $awayteam["ABV"];
+								
+								switch ($x) {
+									case 1:
+									case 2:
+									case 3:
+									case 7:					
+										$team1 =  $hometeam["ABV"];
+										$team2 = $awayteam["ABV"];				
+										break;
+									case 4:
+									case 5:
+									case 6:
+										$team2 =  $hometeam["ABV"];
+										$team1 = $awayteam["ABV"];				
+										break;
+										
+								}						
 							
 						?>
 						<tr class="normal">
@@ -151,7 +207,8 @@
 							
 						</td>						
 						</tr>				
-						<?php							
+						<?php								
+							} //End if 						
 						 } 
 						 ?>								
 					</table>
