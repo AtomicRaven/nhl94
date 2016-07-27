@@ -7,27 +7,73 @@
 
 		if ($ADMIN_LOGGED_IN == true) {		
 
-			$seriesid = $_GET['series_id'];
-			$series = GetSeriesById($seriesid);
-			$gamesplayed = GetGamesBySeriesId($seriesid);
+			$creatednew = true;
+			$seriesid = 0;
 
-			$hometeam = GetTeamById($series["HomeTeamId"]);
-			$awayteam = GetTeamById($series["AwayTeamId"]);
+			if(isset($_GET['series_id'])){
 
-			$homeUserAlias = getUserAlias($series["H_User_ID"]);
-			$awayUserAlias = getUserAlias($series["A_User_ID"]);
+				$seriesid = $_GET['series_id'];
+				$creatednew = false;
+			}
 
-			$submitBtn ="<input type='hidden' name='MAX_FILE_SIZE' value='400000' />";
-			$submitBtn .="<input type='hidden' name='userid' value='" . $_SESSION['userId'] . "' />"; 
-			$submitBtn .="<input type='hidden' name='seriesid' value='" . $seriesid ."' />";
-			$submitBtn .= "Choose file: <input type='file' name='uploadfile' />";			
-			$submitBtn .= '<input type="submit" name="submit" value="Upload" />';
+			if(!$creatednew){
+
+				$series = GetSeriesById($seriesid);
+				$gamesplayed = GetGamesBySeriesId($seriesid);
+
+				$hometeam = GetTeamById($series["HomeTeamId"]);
+				$awayteam = GetTeamById($series["AwayTeamId"]);
+
+				$homeUserAlias = getUserAlias($series["H_User_ID"]);
+				$awayUserAlias = getUserAlias($series["A_User_ID"]);
+
+				$submitBtn ="<input type='hidden' name='MAX_FILE_SIZE' value='400000' />";
+				$submitBtn .="<input type='hidden' name='userid' value='" . $_SESSION['userId'] . "' />"; 
+				$submitBtn .="<input type='hidden' name='seriesid' value='" . $seriesid ."' />";						
+
+			}else{
+				
+				// User wants to update an existing series so gab all the series games and show in drop down box
+				$allseries = GetSeries();
+				$seriesSelectBox = "<select id='Series' name='Series' onchange='LoadSeries(this.value)'>";
+									
+				while($row = mysqli_fetch_array($allseries)){
+					$seriesSelectBox .= "<option value='" . $row['ID'] . "'>" . $row['Name'] . "  |  " . $row['DateCreated']. "</option>";					
+				}	
+
+				$seriesSelectBox .= "</select>";
+				
+				echo $seriesSelectBox;
+			}
+
+			$fileInput = "Choose file: <input type='file' name='uploadfile' />";			
+			$fileInput .= "<input type='submit' name='submit' value='Upload' />";
 			
 ?><!DOCTYPE HTML>
 <html>
 <head>
 <title>Update Series</title>
 <?php include_once './_INCLUDES/01_HEAD.php'; ?>
+
+			<script>
+			var fileInputBox = "<?= $fileInput ?>"
+
+			function UploadFile(gameNum){
+
+				var fileInputDiv = $("#fileInput" + gameNum);
+
+				fileInputDiv.html(fileInputBox);
+				fileInputDiv.show();					
+
+			}
+
+			function LoadSeries(seriesId){
+
+				document.location.href = "update.php?series_id=" + seriesId;
+				
+			}
+			</script>
+
 </head>
 
 <body>
@@ -39,9 +85,12 @@
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
 				
-					<h2>Update Series</h2>
+					<h2>Update Series</h2> 
+					<?php
+					if(!$creatednew){
+					?>
 					<form method="post" action="processUpdate.php" enctype="multipart/form-data">	
-					
+					<?= $submitBtn?>
 					<table class="standard">
 						<tr class="heading rowSpacer">
 							<td class="seriesNum mainTD">1.</td>
@@ -60,10 +109,11 @@
 						<tr>
 							<td>&nbsp;</td>
 							<td>Gm <?=$i?>. <b><?=$hometeam["ABV"]?> <?=$row["H_Score"]?></b> / <?=$awayteam["ABV"]?> <?=$row["A_Score"]?></td>
-							<td><button class="square" id="submit">Game Stats</button></td>
+							<td><button class="square" id="submit<?=$i?>">Game Stats</button></td>
 						</tr>
 						<?php 
 							$i++;
+							
 						 } 
 						 
 						for ($x=$i; $x <= 7; $x++) {
@@ -87,17 +137,30 @@
 									break;
 									
 							}
+
+							
+							
 						?>
 						<tr class="normal">
 							<td>&nbsp;</td>
 							<td>Gm <?=$x?>. <?=$team1?> at <?=$team2?></td>
-							<td><?= $submitBtn?></td>
-						</tr>						
+							<td><button type="button" class='square' id='submit<?=$x?>' onclick="UploadFile('<?= $x?>')">Upload File</button></td>
+						</tr>		
+						<tr >
+						<td colspan="3" id="fileInput<?= $x?>" style="display:none;">
+							
+						</td>						
+						</tr>				
 						<?php							
 						 } 
 						 ?>								
 					</table>
 					</form>	
+					<?php						 
+					 }else{
+						 echo $seriesSelectBox;
+					 }
+					  ?>
 				</div>	
 		
 		</div><!-- end: #page -->	

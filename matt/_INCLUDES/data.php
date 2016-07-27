@@ -62,6 +62,19 @@ function GetSeriesById($seriesid){
 
 }
 
+function GetSeries(){	
+
+	$conn = $GLOBALS['$conn'];
+	$userid = $_SESSION['userId'];
+
+	$sql = "SELECT * FROM Series Where H_User_ID = $userid OR A_User_ID = $userid ORDER BY ID desc";
+	
+	$result = mysqli_query($conn, $sql);
+	
+	return $result;
+
+}
+
 //End of Series functions
 
 function CleanTable($tableName){

@@ -11,11 +11,11 @@
 			$teams = GetTeams();
 			$users = GetUsers();
 
-			$homeTeamSelectBox = "<select id='HomeTeam' name='HomeTeam'>";
-			$awayTeamSelectBox = "<select id='AwayTeam' name='AwayTeam'>";
+			$homeTeamSelectBox = "<select id='HomeTeam' name='HomeTeam' onchange='UpdateSeriesName()'>";
+			$awayTeamSelectBox = "<select id='AwayTeam' name='AwayTeam' onchange='UpdateSeriesName()'>";
 
-			$homeUserSelectBox = "<select id='HomeUser' name='HomeUser'>";
-			$awayUserSelectBox = "<select id='AwayUser' name='AwayUser'>";
+			$homeUserSelectBox = "<select id='HomeUser' name='HomeUser' >";
+			$awayUserSelectBox = "<select id='AwayUser' name='AwayUser' >";
 									
 			while($row = mysqli_fetch_array($teams)){
 				$homeTeamSelectBox .= "<option value='" . $row['Team_ID'] . "'>" . $row['Name'] . "</option>";
@@ -38,6 +38,22 @@
 <head>
 <title>Create Series</title>
 <?php include_once './_INCLUDES/01_HEAD.php'; ?>
+
+<script>	
+
+	function UpdateSeriesName(){
+
+		var homeSelect = document.getElementById("HomeTeam");
+		var awaySelect = document.getElementById("AwayTeam");
+
+		var homeTeam = homeSelect.options[homeSelect.selectedIndex].text;
+		var awayTeam = awaySelect.options[awaySelect.selectedIndex].text;
+
+		$("#series_name").val(homeTeam + " vs " + awayTeam);
+	}
+
+
+</script>
 </head>
 
 <body>
@@ -77,7 +93,7 @@
 								</tr>
 								<tr class="normal">
 									<td>
-										<input type="text" name="series_name" style="min-width: 250px;" value="Test"><br>
+										<input type="text" id="series_name" name="series_name" style="min-width: 450px;"><br>
 							
 										<button id="submit" type="submit" style="margin-top: 10px;">SUBMIT</button>
 									</td>
