@@ -40,7 +40,7 @@
 				$allseries = GetSeries();
 				$seriesSelectBox = "<select id='Series' name='Series' onchange='LoadSeries(this.value)'>";
 
-				$seriesSelectBox .= "<option value='0'>Select Series Bud</option>";
+				$seriesSelectBox .= "<option value='0'>Select Series</option>";
 
 				while($row = mysqli_fetch_array($allseries)){
 					$seriesSelectBox .= "<option value='" . $row['ID'] . "'>" . $row['Name'] . "  |  " . $row['DateCreated']. "</option>";					

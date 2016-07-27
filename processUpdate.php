@@ -878,6 +878,5 @@ require_once("./_INCLUDES/errorchk.php");
 
 	//header('Location: results.php?m=1');
 	
-	header("Location: results.php?lg=". $lg. "&gmid=". $gameid. "&tmid=". $teamid. 
-		"&gn=". $gn. "&err=". $error);	
+	header("Location: update.php?series_id=" . $seriesid . "&err=". $error);	
 ?>

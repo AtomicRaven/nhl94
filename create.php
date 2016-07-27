@@ -14,8 +14,14 @@
 			$homeTeamSelectBox = "<select id='HomeTeam' name='HomeTeam' onchange='UpdateSeriesName()'>";
 			$awayTeamSelectBox = "<select id='AwayTeam' name='AwayTeam' onchange='UpdateSeriesName()'>";
 
+			$homeTeamSelectBox .= "<option value='0'>Select Home Team</option>";
+			$awayTeamSelectBox .= "<option value='0'>Select Away Team</option>";
+
 			$homeUserSelectBox = "<select id='HomeUser' name='HomeUser' >";
 			$awayUserSelectBox = "<select id='AwayUser' name='AwayUser' >";
+
+			$homeUserSelectBox .= "<option value='0'>Select Home User</option>";
+			$awayUserSelectBox .= "<option value='0'>Select Away User</option>";
 									
 			while($row = mysqli_fetch_array($teams)){
 				$homeTeamSelectBox .= "<option value='" . $row['Team_ID'] . "'>" . $row['Name'] . "</option>";
@@ -46,10 +52,68 @@
 		var homeSelect = document.getElementById("HomeTeam");
 		var awaySelect = document.getElementById("AwayTeam");
 
-		var homeTeam = homeSelect.options[homeSelect.selectedIndex].text;
-		var awayTeam = awaySelect.options[awaySelect.selectedIndex].text;
+		var homeTeam = "";
+		var awayTeam = ""; 
+
+		if(homeSelect.options[homeSelect.selectedIndex].value != 0){
+
+			homeTeam = homeSelect.options[homeSelect.selectedIndex].text; 
+		}
+
+		if(awaySelect.options[awaySelect.selectedIndex].value != 0){
+
+			awayTeam = awaySelect.options[awaySelect.selectedIndex].text; 
+		}
 
 		$("#series_name").val(homeTeam + " vs " + awayTeam);
+	}
+
+	function SubmitForm(){
+
+		var homeSelect = document.getElementById("HomeTeam");
+		var awaySelect = document.getElementById("AwayTeam");
+
+		var homeUserSelect = document.getElementById("HomeUser");
+		var awayUserSelect = document.getElementById("AwayUser");
+
+		var submit = true;
+		var msgBox = $("#msg");
+		var msgHtml = "Please Select the following: ";
+
+		if(homeSelect.options[homeSelect.selectedIndex].value == 0){
+
+			msgHtml += "Home Team, ";
+			submit = false;
+		}
+
+		if(awaySelect.options[awaySelect.selectedIndex].value == 0){
+			
+			msgHtml += "Away Team, ";
+			submit = false;
+		}
+
+		if(homeUserSelect.options[homeUserSelect.selectedIndex].value == 0){
+			
+			msgHtml += "Home User, ";
+			submit = false;
+		}
+
+		if(awayUserSelect.options[awayUserSelect.selectedIndex].value == 0){
+			
+			msgHtml += "Away User, ";
+			submit = false;
+		}
+
+		if(submit){
+
+			document.seriesForm.submit();
+
+		} else{
+
+			msgBox.html(msgHtml.substring(0, msgHtml.length - 2) + "</br></br>");
+		}
+
+
 	}
 
 
@@ -66,7 +130,8 @@
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
 				
 					<h2>Create Series</h2>
-					<form method="post" action="processCreate.php">							
+					<div id="msg" style="color:red;"></div>
+					<form name="seriesForm" method="post" action="processCreate.php">							
 					
 							<table class="tight">
 								<tr class="normal">
@@ -95,7 +160,7 @@
 									<td>
 										<input type="text" id="series_name" name="series_name" style="min-width: 450px;"><br>
 							
-										<button id="submit" type="submit" style="margin-top: 10px;">SUBMIT</button>
+										<button id="submitBtn" type="button" onclick="SubmitForm()" style="margin-top: 10px;">SUBMIT</button>
 									</td>
 								</tr>						
 							</table>
