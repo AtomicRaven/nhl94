@@ -17,7 +17,7 @@
 ?><!DOCTYPE HTML>
 <html>
 <head>
-<title>No Title</title>
+<title>NHL 94 Game Saver</title>
 <?php include_once './_INCLUDES/01_HEAD.php'; ?>
 </head>
 
