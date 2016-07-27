@@ -39,7 +39,9 @@
 				// User wants to update an existing series so gab all the series games and show in drop down box
 				$allseries = GetSeries();
 				$seriesSelectBox = "<select id='Series' name='Series' onchange='LoadSeries(this.value)'>";
-									
+
+				$seriesSelectBox .= "<option value='0'>Select Series Bud</option>";
+
 				while($row = mysqli_fetch_array($allseries)){
 					$seriesSelectBox .= "<option value='" . $row['ID'] . "'>" . $row['Name'] . "  |  " . $row['DateCreated']. "</option>";					
 				}	
@@ -72,7 +74,8 @@
 
 			function LoadSeries(seriesId){
 
-				document.location.href = "update.php?series_id=" + seriesId;
+				if(seriesId != 0)
+					document.location.href = "update.php?series_id=" + seriesId;
 
 			}
 			</script>
