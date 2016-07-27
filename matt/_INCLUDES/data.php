@@ -12,6 +12,24 @@ function GetNextGameId(){
 
 }
 
+function GetGameById($gameid){	
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT * FROM GameStats Where Game_ID='$gameid' LIMIT 1";
+	
+	$tmr = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	
+	if ($row) {
+		logMsg("Retrieved GameById");		
+	} else {
+		echo("Error: GetGameById: " . $sql . "<br>" . mysqli_error($conn));
+	}
+	
+	return $row;
+
+}
+
 function GetGamesBySeriesId($seriesid){	
 
 	$conn = $GLOBALS['$conn'];

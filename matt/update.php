@@ -135,7 +135,7 @@
 						<tr>
 							<td>&nbsp;</td>
 							<td>Gm <?=$i?>. <b><?=$hometeam["ABV"]?> <?=$row["H_Score"]?></b> / <?=$awayteam["ABV"]?> <?=$row["A_Score"]?></td>
-							<td><button class="square" id="submit<?=$i?>">Game Stats</button></td>
+							<td><button type="button" class="square" onclick="location.href='gamestats.php?game_id=<?= $row['Game_ID']?>'">Game Stats</button></td>
 						</tr>
 						<?php 
 							$i++;
