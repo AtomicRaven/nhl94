@@ -1,28 +1,57 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<?php
+		session_start();
+		$ADMIN_PAGE = false;
+		include_once './_INCLUDES/00_SETUP.php';
+		
+		// custom code
+		
+		if (isset($_GET["m"])) {
+				$message = '<p class="message">Wrong username/password combo, son:</p>';
+		}
+		else {
+				$message = '<p class="message">You need to login to see this page:</p>';
+		}
+		
+		if ($ADMIN_LOGGED_IN == false) {
+	
+?><!DOCTYPE HTML>
+<html>
 <head>
-    <title>NHL94 Uploader</title>
-
-    <link href="css/nhl94.css" rel="stylesheet" type="text/css" />
-
+<title>NHL 94 Game Saver</title>
+<?php include_once './_INCLUDES/01_HEAD.php'; ?>
 </head>
+
 <body>
-<br/>
 
- <div class="main">       
-        
-        <a href="index.php"><img src="http://www.nhl94.com/images/artwork/nhl94_cartridge.gif" alt="Log A Game" width="150" height="159" /></a>
-        
-        <p>
-            Welcome to NHL94 Matt/Rob Universal Game Series Recorder Device Mech!
-        </p>
+		<div id="page">
+		
+				<?php include_once './_INCLUDES/02_NAV.php'; ?>
+				
+				<div id="main">
+				
+					<h2>Login</h2>
+					<?php print $message; ?>
+					<form id="loginForm" name="loginForm" method="post" action="processLogin.php">
+							<label>username</label><br>
+							<input type="text" name="username" value=""><br>
+							<label>password</label><br>
+							<input type="password" name="password" value=""><br>
+					
+							<button id="submit">SUBMIT</button>
+					</form>
+					
+				</div>	
+		
+		</div><!-- end: #page -->	
+		
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+<script src="./js/default.js"></script>
 
-        <p><u>What you want?!</u><br/><br/>
-
-            <input type="button" value="Log Game" onclick="location.href='log_a_state.php'"/>
-            <input type="button" value="Wipe Tables" onclick="location.href='clean.php'"/>
-            
-        </p>
-</div> 
 </body>
 </html>
+<?php
+		}
+		else {
+				header('Location: manage.php');
+		}	
+?>	

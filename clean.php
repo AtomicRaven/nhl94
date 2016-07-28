@@ -1,7 +1,6 @@
 <?php
 
-require_once("dbconnect.php");
-require_once("data.php");
+require_once("./_INCLUDES/dbconnect.php");
 
     CleanTable("GameStats");
     CleanTable("PenSum");
@@ -9,5 +8,6 @@ require_once("data.php");
 
     CleanTable("Schedule");
     CleanTable("PlayerStats");
+    CleanTable("Series");
     
 ?>
