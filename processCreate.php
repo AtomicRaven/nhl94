@@ -7,27 +7,29 @@
 		// custom code
 		// add new series to db
 
-		$seriesname = $_POST['series_name'];
-		$hometeam = $_POST['HomeTeam'];
-		$awayteam = $_POST['AwayTeam'];
+		$seriesname = $_POST['seriesName'];
+		$hometeam = $_POST['homeTeam'];
+		$awayteam = $_POST['awayTeam'];
 
-		$homeuserid = $_POST['HomeUser'];
-		$awayuserid = $_POST['AwayUser'];
-
-		logMsg("name:" . $seriesname);
-		logMsg("home:" . $hometeam);
-		logMsg("away:" . $awayteam);
-		logMsg("awayUser:" . $homeuserid);
-		logMsg("homeUser:" . $awayuserid);
+		$homeuserid = $_POST['homeUser'];
+		$awayuserid = $_POST['awayUser'];
 
 		//Add a new series
 
 		$seriesid = AddNewSeries($seriesname, $hometeam, $awayteam, $homeuserid, $awayuserid);
-		logMsg("SeriesId:" . $seriesid);	
+
+
+		//Logs for debugging
+		logMsg("SeriesId:" . $seriesid);
+		logMsg("name:" . $seriesname);
+		logMsg("home:" . $hometeam);
+		logMsg("away:" . $awayteam);
+		logMsg("awayUser:" . $homeuserid);
+		logMsg("homeUser:" . $awayuserid);	
 		
 	
 		// redirect to Update Existing series
-		header('Location: update.php?series_id=' . $seriesid);
+		header('Location: update.php?seriesId=' . $seriesid);
 
 						
 		

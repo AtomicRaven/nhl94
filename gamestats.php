@@ -7,7 +7,7 @@
 
 		if ($ADMIN_LOGGED_IN == true) {		
 
-            $gameid = $_GET["game_id"];
+            $gameid = $_GET["gameId"];
 
             $gameStats = GetGameById($gameid);
 

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 27, 2016 at 08:53 PM
+-- Generation Time: Jul 28, 2016 at 03:29 AM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.23
 
@@ -27,9 +27,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `gamestats` (
-  `Game_ID` int(11) NOT NULL,
-  `League_ID` int(11) NOT NULL,
-  `Series_ID` int(11) NOT NULL,
+  `GameID` int(11) NOT NULL,
+  `LeagueID` int(11) NOT NULL,
+  `SeriesID` int(11) NOT NULL,
   `Crowd` int(11) NOT NULL,
   `GHP1` int(11) NOT NULL,
   `GHP2` int(11) NOT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE `gamestats` (
 CREATE TABLE `nhlteam` (
   `ID` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
-  `Team_ID` int(11) NOT NULL,
+  `TeamID` int(11) NOT NULL,
   `ABV` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -96,7 +96,7 @@ CREATE TABLE `nhlteam` (
 -- Dumping data for table `nhlteam`
 --
 
-INSERT INTO `nhlteam` (`ID`, `Name`, `Team_ID`, `ABV`) VALUES
+INSERT INTO `nhlteam` (`ID`, `Name`, `TeamID`, `ABV`) VALUES
 (1, 'Boston Bruins', 2, 'BOS'),
 (2, 'Quebec Nordiques', 19, 'QUE'),
 (3, 'Montreal Canadiens', 12, 'MTL'),
@@ -134,9 +134,9 @@ INSERT INTO `nhlteam` (`ID`, `Name`, `Team_ID`, `ABV`) VALUES
 
 CREATE TABLE `pensum` (
   `ID` int(11) NOT NULL,
-  `Game_ID` int(11) NOT NULL,
-  `Team_ID` int(11) NOT NULL,
-  `Player_ID` int(11) NOT NULL,
+  `GameID` int(11) NOT NULL,
+  `TeamID` int(11) NOT NULL,
+  `PlayerID` int(11) NOT NULL,
   `Period` int(11) NOT NULL,
   `Time` varchar(255) NOT NULL,
   `Type` varchar(255) NOT NULL
@@ -150,9 +150,9 @@ CREATE TABLE `pensum` (
 
 CREATE TABLE `playerstats` (
   `ID` int(11) NOT NULL,
-  `Game_ID` int(11) NOT NULL,
-  `Team_ID` int(11) NOT NULL,
-  `Player_ID` int(11) NOT NULL,
+  `GameID` int(11) NOT NULL,
+  `TeamID` int(11) NOT NULL,
+  `PlayerID` int(11) NOT NULL,
   `Pos` varchar(255) NOT NULL,
   `G` int(11) NOT NULL,
   `A` int(11) NOT NULL,
@@ -172,7 +172,7 @@ CREATE TABLE `playerstats` (
 
 CREATE TABLE `roster` (
   `ID` int(11) NOT NULL,
-  `Player_ID` int(3) DEFAULT NULL,
+  `PlayerID` int(3) DEFAULT NULL,
   `First` varchar(8) DEFAULT NULL,
   `Last` varchar(10) DEFAULT NULL,
   `Team` varchar(3) DEFAULT NULL,
@@ -192,14 +192,14 @@ CREATE TABLE `roster` (
   `Rgh` int(1) DEFAULT NULL,
   `Pas` int(1) DEFAULT NULL,
   `Agr` int(1) DEFAULT NULL,
-  `Team_ID` int(11) NOT NULL
+  `TeamID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `roster`
 --
 
-INSERT INTO `roster` (`ID`, `Player_ID`, `First`, `Last`, `Team`, `Pos`, `JNo`, `Wgt`, `Agl`, `Spd`, `OfA`, `DfA`, `ShP`, `ChK`, `H/F`, `StH`, `ShA`, `End`, `Rgh`, `Pas`, `Agr`, `Team_ID`) VALUES
+INSERT INTO `roster` (`ID`, `PlayerID`, `First`, `Last`, `Team`, `Pos`, `JNo`, `Wgt`, `Agl`, `Spd`, `OfA`, `DfA`, `ShP`, `ChK`, `H/F`, `StH`, `ShA`, `End`, `Rgh`, `Pas`, `Agr`, `TeamID`) VALUES
 (1, 0, 'Guy', 'Hebert', 'ANH', 'G', 29, 6, 2, 3, 3, 3, 2, 0, 0, 0, 0, 2, 2, 2, 2, 1),
 (2, 1, 'Ron', 'Tugnutt', 'ANH', 'G', 1, 2, 2, 3, 3, 3, 1, 0, 0, 0, 0, 1, 1, 1, 2, 1),
 (3, 2, 'Steven', 'King', 'ANH', 'F', 27, 7, 2, 2, 3, 2, 2, 1, 3, 2, 3, 3, 4, 2, 2, 1),
@@ -751,7 +751,7 @@ INSERT INTO `roster` (`ID`, `Player_ID`, `First`, `Last`, `Team`, `Pos`, `JNo`, 
 (549, 548, 'Glenn', 'Anderson', 'TOR', 'F', 9, 7, 4, 4, 4, 3, 3, 2, 6, 4, 3, 4, 1, 4, 3, 23),
 (550, 549, 'Rob', 'Pearson', 'TOR', 'F', 12, 6, 2, 2, 3, 3, 1, 1, 1, 2, 3, 4, 5, 2, 4, 23),
 (551, 550, 'Mike', 'Foligno', 'TOR', 'F', 71, 8, 2, 2, 2, 3, 2, 5, 5, 3, 3, 3, 5, 2, 3, 23);
-INSERT INTO `roster` (`ID`, `Player_ID`, `First`, `Last`, `Team`, `Pos`, `JNo`, `Wgt`, `Agl`, `Spd`, `OfA`, `DfA`, `ShP`, `ChK`, `H/F`, `StH`, `ShA`, `End`, `Rgh`, `Pas`, `Agr`, `Team_ID`) VALUES
+INSERT INTO `roster` (`ID`, `PlayerID`, `First`, `Last`, `Team`, `Pos`, `JNo`, `Wgt`, `Agl`, `Spd`, `OfA`, `DfA`, `ShP`, `ChK`, `H/F`, `StH`, `ShA`, `End`, `Rgh`, `Pas`, `Agr`, `TeamID`) VALUES
 (552, 551, 'Ken', 'Baumgartnr', 'TOR', 'F', 22, 9, 2, 2, 0, 2, 1, 2, 10, 1, 0, 2, 3, 2, 4, 23),
 (553, 552, 'Todd', 'Gill', 'TOR', 'D', 23, 6, 3, 3, 3, 3, 2, 4, 4, 2, 2, 4, 1, 2, 3, 23),
 (554, 553, 'Dave', 'Ellett', 'TOR', 'D', 4, 9, 4, 4, 3, 4, 5, 4, 4, 4, 1, 4, 2, 4, 2, 23),
@@ -894,16 +894,17 @@ INSERT INTO `roster` (`ID`, `Player_ID`, `First`, `Last`, `Team`, `Pos`, `JNo`, 
 
 CREATE TABLE `schedule` (
   `ID` int(11) NOT NULL,
-  `H_Team_ID` int(11) NOT NULL,
-  `A_Team_ID` int(11) NOT NULL,
-  `H_Score` int(11) NOT NULL,
-  `A_Score` int(11) NOT NULL,
+  `HomeTeamID` int(11) NOT NULL,
+  `AwayTeamID` int(11) NOT NULL,
+  `HomeScore` int(11) NOT NULL,
+  `AwayScore` int(11) NOT NULL,
   `OT` int(11) NOT NULL,
-  `Confirm_Time` date NOT NULL,
-  `Game_ID` int(11) NOT NULL,
-  `Series_ID` int(11) NOT NULL,
-  `H_User_ID` int(11) NOT NULL,
-  `A_User_ID` int(11) NOT NULL
+  `ConfirmTime` date NOT NULL,
+  `GameID` int(11) NOT NULL,
+  `SeriesID` int(11) NOT NULL,
+  `HomeUserID` int(11) NOT NULL,
+  `AwayUserID` int(11) NOT NULL,
+  `WinnerTeamID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -914,8 +915,8 @@ CREATE TABLE `schedule` (
 
 CREATE TABLE `scoresum` (
   `ID` int(11) NOT NULL,
-  `Game_ID` int(11) NOT NULL,
-  `Team_ID` int(11) NOT NULL,
+  `GameID` int(11) NOT NULL,
+  `TeamID` int(11) NOT NULL,
   `Period` int(11) NOT NULL,
   `Time` int(11) NOT NULL,
   `G` int(11) NOT NULL,
@@ -932,8 +933,8 @@ CREATE TABLE `scoresum` (
 
 CREATE TABLE `series` (
   `ID` int(11) NOT NULL,
-  `H_User_ID` int(11) NOT NULL,
-  `A_User_ID` int(11) NOT NULL,
+  `HomeUserID` int(11) NOT NULL,
+  `AwayUserID` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `TeamChange` tinyint(1) NOT NULL,
   `ManualUpload` tinyint(1) NOT NULL,
@@ -971,7 +972,7 @@ INSERT INTO `users` (`ID`, `Name`, `Alias`, `Password`) VALUES
 -- Indexes for table `gamestats`
 --
 ALTER TABLE `gamestats`
-  ADD PRIMARY KEY (`Game_ID`);
+  ADD PRIMARY KEY (`GameID`);
 
 --
 -- Indexes for table `nhlteam`
@@ -1029,7 +1030,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `gamestats`
 --
 ALTER TABLE `gamestats`
-  MODIFY `Game_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=200;
+  MODIFY `GameID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=281;
 --
 -- AUTO_INCREMENT for table `nhlteam`
 --
@@ -1039,12 +1040,12 @@ ALTER TABLE `nhlteam`
 -- AUTO_INCREMENT for table `pensum`
 --
 ALTER TABLE `pensum`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
 --
 -- AUTO_INCREMENT for table `playerstats`
 --
 ALTER TABLE `playerstats`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1501;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2443;
 --
 -- AUTO_INCREMENT for table `roster`
 --
@@ -1054,17 +1055,17 @@ ALTER TABLE `roster`
 -- AUTO_INCREMENT for table `schedule`
 --
 ALTER TABLE `schedule`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=344;
 --
 -- AUTO_INCREMENT for table `scoresum`
 --
 ALTER TABLE `scoresum`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=363;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=832;
 --
 -- AUTO_INCREMENT for table `series`
 --
 ALTER TABLE `series`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 --
 -- AUTO_INCREMENT for table `users`
 --
