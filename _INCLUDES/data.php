@@ -67,9 +67,24 @@ function GetScheduleByID($scheduleid){
 
 }
 
+function GetSeriesTypes(){
+
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "SELECT * FROM SeriesType ORDER BY SeriesID ASC";
+	$result = mysqli_query($conn, $sql);
+
+	if($result === FALSE) { 
+		die(mysql_error()); // TODO: better error handling
+	}	
+
+	return $result;
+
+
+}
 
 //Series Functions
-function AddNewSeries($seriesname, $hometeamid, $awayteamid, $homeuserid, $awayuserid){	
+function AddNewSeries($seriesname, $hometeamid, $awayteamid, $homeuserid, $awayuserid, $seriestype){
 
 	$conn = $GLOBALS['$conn'];
 	$sql = "INSERT INTO Series (Name, HomeTeamId, AwayTeamId, HomeUserId, AwayUserId, DateCreated) 
@@ -86,25 +101,63 @@ function AddNewSeries($seriesname, $hometeamid, $awayteamid, $homeuserid, $awayu
 	
 	for ($x = 1; $x <= 7; $x++) {
 
-		switch ($x) {
-			case 1:
-			case 2:
-			case 3:
-			case 7:					
-				$team1 =  $hometeamid;
-				$team2 = $awayteamid;				
-				$user1 = $homeuserid;
-				$user2 = $awayuserid;
-				break;
-			case 4:
-			case 5:
-			case 6:
-				$team2 =  $hometeamid;
-				$team1 = $awayteamid;
-				$user2 = $homeuserid;
-				$user1 = $awayuserid;				
-				break;
-				
+		// $seriestype
+		// Type 1: 3-3-1
+		// Type 2: 2-2-1-1-1
+		// Type 1: 7
+
+		if($seriestype == 1){
+
+			switch ($x) {
+				case 1:
+				case 2:
+				case 3:
+				case 7:					
+					$team1 =  $hometeamid;
+					$team2 = $awayteamid;				
+					$user1 = $homeuserid;
+					$user2 = $awayuserid;
+					break;
+				case 4:
+				case 5:
+				case 6:
+					$team2 =  $hometeamid;
+					$team1 = $awayteamid;
+					$user2 = $homeuserid;
+					$user1 = $awayuserid;				
+					break;
+					
+			}
+		}elseif ($seriestype == 2) {
+		
+			switch ($x) {
+				case 1:
+				case 2:
+				case 5:
+				case 7:					
+					$team1 =  $hometeamid;
+					$team2 = $awayteamid;				
+					$user1 = $homeuserid;
+					$user2 = $awayuserid;
+					break;
+				case 3:
+				case 4:
+				case 6:
+					$team2 =  $hometeamid;
+					$team1 = $awayteamid;
+					$user2 = $homeuserid;
+					$user1 = $awayuserid;				
+					break;
+					
+			}
+
+		}elseif ($seriestype == 3) {
+
+			$team1 =  $hometeamid;
+			$team2 = $awayteamid;				
+			$user1 = $homeuserid;
+			$user2 = $awayuserid;
+
 		}
 
 			//Add Games to Schedule Table - Create 7

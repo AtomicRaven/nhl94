@@ -1,8 +1,9 @@
 <?php
 
 		session_start();
-		$ADMIN_PAGE = false;
-		$_SESSION['username'] = '';
+		//$LOGGED_IN = false;
+		session_destroy();
+
 		include_once './_INCLUDES/00_SETUP.php';
 		
 ?><!DOCTYPE HTML>

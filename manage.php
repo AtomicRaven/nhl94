@@ -4,7 +4,7 @@
 		$ADMIN_PAGE = true;
 		include_once './_INCLUDES/00_SETUP.php';
 
-		if ($ADMIN_LOGGED_IN == true) {
+		if ($LOGGED_IN == true) {
 			
 ?><!DOCTYPE HTML>
 <html>

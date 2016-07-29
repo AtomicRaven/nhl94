@@ -2,7 +2,7 @@
 
 function logMsg($msg){
 
-	//echo $msg . "</br>";
+	echo $msg . "</br>";
 
 }
 

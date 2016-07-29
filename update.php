@@ -216,7 +216,7 @@
 								$seriesText .= $awayteam["Name"] . " leads series " . $awayWinnerCount . " to " . $homeWinnerCount;
 							}
 
-							if($awayWinnerCount == $homeWinnerCount ){
+							if($awayWinnerCount == $homeWinnerCount && (!$awayWinnerCount == 0 && !$homeWinnerCount == 0)  ){
 								$seriesText .= "Series tied " .  $awayWinnerCount . " to " . $homeWinnerCount;
 							}
 

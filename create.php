@@ -11,6 +11,7 @@
 			// Get Data to populate select boxes from DB			
 			$teams = GetTeams();
 			$users = GetUsers();
+			$seriesType = GetSeriesTypes();
 
 			///////////////////////////////////////////////////////////////////////////
 			//Team Select Boxes
@@ -43,6 +44,19 @@
 			
 			$homeUserSelectBox .= "</select>";
 			$awayUserSelectBox .= "</select>";
+
+			///////////////////////////////////////////////////////////////////////////
+			//Series Type Select Box
+			$seriesTypeSelectBox = "<select id='seriesType' name='seriesType'>";
+
+			//$seriesTypeSelectBox .= "<option value='0'>Select Home Team</option>";
+
+			while($row = mysqli_fetch_array($seriesType)){
+				$seriesTypeSelectBox .= "<option value='" . $row['SeriesID'] . "'>" . $row['Name'] . " | " . $row["Description"] . "</option>";
+			}	
+
+			$seriesTypeSelectBox .= "</select>";
+
 			
 			
 ?><!DOCTYPE HTML>
@@ -84,7 +98,16 @@
 									</td>
 								</tr>
 							</table>
-
+							<table class="tight">
+								<tr class="normal">
+									<td><label>series type</label></td>
+								</tr>
+								<tr class="normal">
+									<td>
+										<?= $seriesTypeSelectBox?>
+									</td>
+								</tr>						
+							</table>
 							<table class="tight">
 								<tr class="normal">
 									<td><label>series name</label></td>
