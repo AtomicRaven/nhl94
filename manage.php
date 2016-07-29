@@ -1,7 +1,6 @@
 <?php
 
 		session_start();
-		$ADMIN_PAGE = true;
 		include_once './_INCLUDES/00_SETUP.php';
 
 		if ($LOGGED_IN == true) {
