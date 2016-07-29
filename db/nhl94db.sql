@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 28, 2016 at 03:29 AM
+-- Generation Time: Jul 29, 2016 at 08:17 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.23
 
@@ -904,7 +904,7 @@ CREATE TABLE `schedule` (
   `SeriesID` int(11) NOT NULL,
   `HomeUserID` int(11) NOT NULL,
   `AwayUserID` int(11) NOT NULL,
-  `WinnerTeamID` int(11) NOT NULL
+  `WinnerUserID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -946,6 +946,29 @@ CREATE TABLE `series` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `seriestype`
+--
+
+CREATE TABLE `seriestype` (
+  `ID` int(11) NOT NULL,
+  `SeriesID` int(11) NOT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Description` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `seriestype`
+--
+
+INSERT INTO `seriestype` (`ID`, `SeriesID`, `Name`, `Description`) VALUES
+(1, 1, 'Bud Style', '2-3-2'),
+(3, 2, 'NHL Style', '2-2-1-1-1'),
+(5, 3, 'All Home', '7 at Home'),
+(6, 4, 'Open', 'No Structure');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -953,16 +976,19 @@ CREATE TABLE `users` (
   `ID` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Alias` varchar(255) NOT NULL,
-  `Password` varchar(255) NOT NULL
+  `Password` varchar(255) NOT NULL,
+  `Admin` int(11) NOT NULL,
+  `Email` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`ID`, `Name`, `Alias`, `Password`) VALUES
-(1, 'Matt Garvin', 'AquaLizard', 'Elvis!'),
-(2, 'Rob Clarkson', 'AtomicRaven', 'Saturn!');
+INSERT INTO `users` (`ID`, `Name`, `Alias`, `Password`, `Admin`, `Email`) VALUES
+(1, 'Matt Garvin', 'matt', '1111', 1, 'matt@mattgarvin.com'),
+(2, 'Rob Clarkson', 'AtomicRaven', '1234', 1, 'rob.clarkson@gmail.com'),
+(3, 'Jim', 'Jimbo', '1234', 0, 'rclarkson@postmedia.com');
 
 --
 -- Indexes for dumped tables
@@ -1017,6 +1043,12 @@ ALTER TABLE `series`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Indexes for table `seriestype`
+--
+ALTER TABLE `seriestype`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -1030,7 +1062,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `gamestats`
 --
 ALTER TABLE `gamestats`
-  MODIFY `GameID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=281;
+  MODIFY `GameID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `nhlteam`
 --
@@ -1040,12 +1072,12 @@ ALTER TABLE `nhlteam`
 -- AUTO_INCREMENT for table `pensum`
 --
 ALTER TABLE `pensum`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `playerstats`
 --
 ALTER TABLE `playerstats`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2443;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=163;
 --
 -- AUTO_INCREMENT for table `roster`
 --
@@ -1055,22 +1087,27 @@ ALTER TABLE `roster`
 -- AUTO_INCREMENT for table `schedule`
 --
 ALTER TABLE `schedule`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=344;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 --
 -- AUTO_INCREMENT for table `scoresum`
 --
 ALTER TABLE `scoresum`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=832;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 --
 -- AUTO_INCREMENT for table `series`
 --
 ALTER TABLE `series`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+--
+-- AUTO_INCREMENT for table `seriestype`
+--
+ALTER TABLE `seriestype`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
