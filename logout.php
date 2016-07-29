@@ -1,7 +1,8 @@
 <?php
 
 		session_start();
-		$LOGGED_IN = false;
+		//$LOGGED_IN = false;
+		session_destroy();
 
 		include_once './_INCLUDES/00_SETUP.php';
 		

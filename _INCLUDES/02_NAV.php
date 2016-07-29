@@ -1,8 +1,9 @@
 <ul id="nav">
 <?php
 
+echo "IsLoggedIn:" . $LOGGED_IN;
 
-			if ($LOGGED_IN == false) {
+			if ($LOGGED_IN != 1) {
 ?>				
 	<li>
 		<a href="./index.php">LOGIN</a>
