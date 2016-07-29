@@ -9,7 +9,7 @@
 
 			if ($LOGGED_IN == true) {
 ?>	
-<div class="loginInfo"><?= $text?> Logged in as: <?php print $_SESSION['username']; ?></div>
+<div class="loginInfo"><?= $text?> Llllooogged in as: <?php print $_SESSION['username']; ?></div>
 <?php
 			}
 ?>	
