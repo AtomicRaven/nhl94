@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 29, 2016 at 08:17 PM
+-- Generation Time: Jul 29, 2016 at 11:13 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.23
 
@@ -936,10 +936,6 @@ CREATE TABLE `series` (
   `HomeUserID` int(11) NOT NULL,
   `AwayUserID` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
-  `TeamChange` tinyint(1) NOT NULL,
-  `ManualUpload` tinyint(1) NOT NULL,
-  `HomeTeamId` int(11) NOT NULL,
-  `AwayTeamId` int(11) NOT NULL,
   `DateCreated` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -963,8 +959,7 @@ CREATE TABLE `seriestype` (
 INSERT INTO `seriestype` (`ID`, `SeriesID`, `Name`, `Description`) VALUES
 (1, 1, 'Bud Style', '2-3-2'),
 (3, 2, 'NHL Style', '2-2-1-1-1'),
-(5, 3, 'All Home', '7 at Home'),
-(6, 4, 'Open', 'No Structure');
+(5, 3, 'Open', '7 Games No Order');
 
 -- --------------------------------------------------------
 
@@ -1062,7 +1057,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `gamestats`
 --
 ALTER TABLE `gamestats`
-  MODIFY `GameID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `GameID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 --
 -- AUTO_INCREMENT for table `nhlteam`
 --
@@ -1072,12 +1067,12 @@ ALTER TABLE `nhlteam`
 -- AUTO_INCREMENT for table `pensum`
 --
 ALTER TABLE `pensum`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 --
 -- AUTO_INCREMENT for table `playerstats`
 --
 ALTER TABLE `playerstats`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=163;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=744;
 --
 -- AUTO_INCREMENT for table `roster`
 --
@@ -1087,17 +1082,17 @@ ALTER TABLE `roster`
 -- AUTO_INCREMENT for table `schedule`
 --
 ALTER TABLE `schedule`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
 --
 -- AUTO_INCREMENT for table `scoresum`
 --
 ALTER TABLE `scoresum`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=439;
 --
 -- AUTO_INCREMENT for table `series`
 --
 ALTER TABLE `series`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT for table `seriestype`
 --
