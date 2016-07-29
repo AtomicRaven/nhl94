@@ -3,7 +3,7 @@
 
 require_once("dbconnect.php");
 
-function errorcheck($seriesid, $scheduleid){	
+function ErrorCheck($seriesid, $scheduleid){	
 	
 	$filePath = $GLOBALS['$saveFilePath'] . $seriesid;
 
@@ -48,9 +48,14 @@ function errorcheck($seriesid, $scheduleid){
 				
 				if($StateHomeID == $row['HomeTeamID'] && $StateAwayID == $row['AwayTeamID'])  // Teams in state match schedule
 					return 0;
-				else
-					return 1;  // teams do not match
-						
+				else{
+
+					$errObject = (object) [
+						'error' => 1,
+						'HomeId' => $StateHomeID,
+						'AwayId' => $StateAwayID
+					];
+				}						
 			}
 				
 			else

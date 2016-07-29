@@ -12,7 +12,7 @@
 				$message = '<p class="message">You need to login to see this page:</p>';
 		}
 		
-		if ($ADMIN_LOGGED_IN == false) {
+		if ($LOGGED_IN == false) {
 	
 ?><!DOCTYPE HTML>
 <html>

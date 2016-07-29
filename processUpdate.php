@@ -833,19 +833,15 @@ require_once("./_INCLUDES/errorchk.php");
 
 	logMsg("ScheduleID:" . $scheduleid);
 	
-	$chk = errorcheck($seriesid, $scheduleid);
+	$chk = ErrorCheck($seriesid, $scheduleid);
 	
 	if(!$chk)
 		$chk = AddGame($seriesid, $scheduleid);
 	else
-		$error = $chk;
-	
-	if(!$chk)  // pass OK
-		$error = 0;
-	else 
 		$error = $chk;	
 
-	//header('Location: results.php?m=1');
+	logMsg("Error:" . $error);
 	
-	header("Location: update.php?seriesId=" . $seriesid . "&err=". $error);	
+	
+	//header("Location: update.php?seriesId=" . $seriesid . "&err=". $error);	
 ?>
