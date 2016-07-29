@@ -27,17 +27,9 @@
 
 				$_SESSION['username'] = $currentUser;
 				$_SESSION['loggedin'] = true;					
-
-				if ( $user["Admin"] == 1 ) {
-
-					$_SESSION['Admin'] = true;
+				$_SESSION['Admin'] = true;
+				$_SESSION['userId'] = $user['ID'];
 					header('Location: manage.php');
-
-				}
-				else {
-
-					header('Location: manage.php');
-				}
 		}
 		else {
 			header('Location: index.php?m=1');
