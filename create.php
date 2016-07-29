@@ -6,7 +6,7 @@
 		include_once './_INCLUDES/dbconnect.php';	
 
 
-		if ($ADMIN_LOGGED_IN == true) {
+		if ($LOGGED_IN == true) {
 
 			// Get Data to populate select boxes from DB			
 
