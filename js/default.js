@@ -5,8 +5,8 @@
 		var homeTeam = "";
 		var awayTeam = ""; 
 
-		var homeSelect = document.getElementById("homeTeam");
-		var awaySelect = document.getElementById("awayTeam");
+		var homeSelect = document.getElementById("homeUser");
+		var awaySelect = document.getElementById("awayUser");
 
 		if(homeSelect.options[homeSelect.selectedIndex].value != 0){
 
@@ -33,17 +33,17 @@
 		var msgBox = $("#msg");
 		var msgHtml = "Please Select the following: ";
 
-		if(homeSelect.options[homeSelect.selectedIndex].value == 0){
+		/* if(homeSelect.options[homeSelect.selectedIndex].value == 0){
 
 			msgHtml += "Home Team, ";
 			submit = false;
-		}
+		} */
 
-		if(awaySelect.options[awaySelect.selectedIndex].value == 0){
+		/* if(awaySelect.options[awaySelect.selectedIndex].value == 0){
 			
 			msgHtml += "Away Team, ";
 			submit = false;
-		}
+		} */
 
 		if(homeUserSelect.options[homeUserSelect.selectedIndex].value == 0){
 			

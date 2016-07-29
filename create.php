@@ -9,55 +9,14 @@
 		if ($ADMIN_LOGGED_IN == true) {
 
 			// Get Data to populate select boxes from DB			
-			$teams = GetTeams();
-			$users = GetUsers();
-			$seriesType = GetSeriesTypes();
 
-			///////////////////////////////////////////////////////////////////////////
-			//Team Select Boxes
-			$homeTeamSelectBox = "<select id='homeTeam' name='homeTeam' onchange='UpdateSeriesName()'>";
-			$awayTeamSelectBox = "<select id='awayTeam' name='awayTeam' onchange='UpdateSeriesName()'>";
-
-			$homeTeamSelectBox .= "<option value='0'>Select Home Team</option>";
-			$awayTeamSelectBox .= "<option value='0'>Select Away Team</option>";
-
-			while($row = mysqli_fetch_array($teams)){
-				$homeTeamSelectBox .= "<option value='" . $row['TeamID'] . "'>" . $row['Name'] . "</option>";
-				$awayTeamSelectBox .= "<option value='" . $row['TeamID'] . "'>" . $row['Name'] . "</option>";
-			}	
-
-			$homeTeamSelectBox .= "</select>";
-			$awayTeamSelectBox .= "</select>";
-
-			///////////////////////////////////////////////////////////////////////////
-			//User Select Boxes
-			$homeUserSelectBox = "<select id='homeUser' name='homeUser' >";
-			$awayUserSelectBox = "<select id='awayUser' name='awayUser' >";
-
-			$homeUserSelectBox .= "<option value='0'>Select Home User</option>";
-			$awayUserSelectBox .= "<option value='0'>Select Away User</option>";								
+			$homeTeamSelectBox = CreateSelectBox("homeTeam", "Select Home Team", GetTeams(), "TeamID", "Name", "UpdateSeriesName()", null);	
+			$awayTeamSelectBox = CreateSelectBox("awayTeam", "Select Away Team", GetTeams(), "TeamID", "Name", "UpdateSeriesName()", null);
 			
-			while($row = mysqli_fetch_array($users)){
-				$homeUserSelectBox .= "<option value='" . $row['ID'] . "'>" . $row['Name'] . "</option>";
-				$awayUserSelectBox .= "<option value='" . $row['ID'] . "'>" . $row['Name'] . "</option>";
-			}	
-			
-			$homeUserSelectBox .= "</select>";
-			$awayUserSelectBox .= "</select>";
+			$homeUserSelectBox = CreateSelectBox("homeUser", "Select Home User", GetUsers(), "ID", "Alias", "UpdateSeriesName()", null);
+			$awayUserSelectBox = CreateSelectBox("awayUser", "Select Away User", GetUsers(), "ID", "Alias", "UpdateSeriesName()", null);
 
-			///////////////////////////////////////////////////////////////////////////
-			//Series Type Select Box
-			$seriesTypeSelectBox = "<select id='seriesType' name='seriesType'>";
-
-			//$seriesTypeSelectBox .= "<option value='0'>Select Home Team</option>";
-
-			while($row = mysqli_fetch_array($seriesType)){
-				$seriesTypeSelectBox .= "<option value='" . $row['SeriesID'] . "'>" . $row['Name'] . " | " . $row["Description"] . "</option>";
-			}	
-
-			$seriesTypeSelectBox .= "</select>";
-
-			
+			$seriesTypeSelectBox = CreateSelectBox("seriesType", null, GetSeriesTypes(), "SeriesID", "Description", null, null);			
 			
 ?><!DOCTYPE HTML>
 <html>
@@ -86,7 +45,7 @@
 								</tr>			
 								<tr class="normal">
 									<td>
-										<?= $homeUserSelectBox?> as <?= $homeTeamSelectBox ?>			
+										<?= $homeUserSelectBox?> <!--as <?= $homeTeamSelectBox ?>-->			
 									</td>
 								</tr>
 								<tr>
@@ -94,7 +53,7 @@
 								</tr>	
 								<tr>
 									<td>
-										<?= $awayUserSelectBox?> as <?= $awayTeamSelectBox ?>
+										<?= $awayUserSelectBox?> <!--as <?= $awayTeamSelectBox ?>-->
 									</td>
 								</tr>
 							</table>

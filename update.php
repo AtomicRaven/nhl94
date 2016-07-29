@@ -50,8 +50,8 @@
 				$series = GetSeriesById($seriesid);
 				$gamesplayed = GetGamesBySeriesId($seriesid);
 
-				$hometeam = GetTeamById($series["HomeTeamId"]);
-				$awayteam = GetTeamById($series["AwayTeamId"]);
+				//$hometeam = GetTeamById($series["HomeTeamId"]);
+				//$awayteam = GetTeamById($series["AwayTeamId"]);
 
 				$homeUserAlias = GetUserAlias($series["HomeUserID"]);
 				$awayUserAlias = GetUserAlias($series["AwayUserID"]);
@@ -126,12 +126,12 @@
 					<table class="standard">
 						<tr class="heading rowSpacer">
 							<td class="seriesNum mainTD"></td>
-							<td class="seriesName mainTD"><?=$series["Name"]?></td>
+							<td class="seriesName mainTD"><?=$series["Name"]?>, starting at <?= $homeUserAlias ?>'s Home Arena</td>
 							<td class="seriesDate mainTD">Created <?=$series["DateCreated"]?></td>
 						</tr>
 						<tr class="heading">
 							<td>&nbsp;</td>
-							<td class="seriesInfo mainTD" colspan="2"><b><?=$hometeam["Name"]?> ( <?= $homeUserAlias ?> )</b> vs <?=$awayteam["Name"]?> ( <?= $awayUserAlias ?> ), starting in <?=$hometeam["ABV"]?> (3-3-1)</td>
+							<td class="seriesInfo mainTD" colspan="2"></td>
 						</tr>						
 
 						<?php 
@@ -139,33 +139,39 @@
 						$i=1;
 						$homeWinnerCount = 0;
 						$awayWinnerCount = 0;
+						$uploadCount = 0;
 
-						while($row = mysqli_fetch_array($gamesplayed, MYSQL_ASSOC)){							
+						while($row = mysqli_fetch_array($gamesplayed, MYSQL_ASSOC)){
+
+							$homeUserSelectBox = CreateSelectBox("homeUser", null, GetUsersFromSeries($seriesid), "ID", "Alias", null, $row["HomeUserID"]);
+							$awayUserSelectBox = CreateSelectBox("awayUser", null, GetUsersFromSeries($seriesid), "ID", "Alias", null, $row["AwayUserID"]);							
 								
-							if($row["GameID"] != 0){								
+							if($row["WinnerUserID"] != 0){								
 							
-								if($row["WinnerTeamID"] == $series["HomeTeamId"]){
+								if($row["WinnerUserID"] == $series["HomeUserID"]){
 									$homeWinnerCount++;
 								}
 
-								if($row["WinnerTeamID"] == $series["AwayTeamId"]){
+								if($row["WinnerUserID"] == $series["AwayUserID"]){
 									$awayWinnerCount++;
-								}							
-						
+								}				
+
+							
 						?>
 						<tr>
 							<td>&nbsp;</td>
-							<td>Gm <?=$i?>. <b><?= GetTeamNameById($row["HomeTeamID"]) ?> <?=$row["HomeScore"]?></b> / <?= GetTeamNameById($row["AwayTeamID"]) ?> <?=$row["AwayScore"]?></td>
+							<td>Gm <?=$i?>. <b><?= GetTeamNameById($row["HomeTeamID"])?>(<?= GetUserAlias($row["HomeUserID"]) ?>) <?=$row["HomeScore"]?></b> / <?= GetTeamNameById($row["AwayTeamID"]) ?> (<?= GetUserAlias($row["AwayUserID"])?>) <?=$row["AwayScore"]?></td>
 							<td><button type="button" class="square" onclick="location.href='gamestats.php?gameId=<?= $row['GameID']?>'">Game Stats</button></td>
 						</tr>
 						<?php
 							}else{
-
-								if($homeWinnerCount < 4 && $awayWinnerCount < 4){
+								
+								$uploadCount++;
+								if($homeWinnerCount < 4 && $awayWinnerCount < 4 && $uploadCount <=1){
 						?>
 						<tr class="normal">
 							<td>&nbsp;</td>
-							<td>Gm <?=$i?>. <?= GetTeamNameById($row["HomeTeamID"]) ?> at <?= GetTeamNameById($row["AwayTeamID"]) ?></td>
+							<td>Gm <?=$i?>. <?= $homeUserSelectBox ?> at <?= $awayUserSelectBox ?></td>
 							<td><button type="button" class='square' id='submit<?= $row["ID"]?>' onclick="UploadFile('<?= $row["ID"]?>')">Upload File</button></td>
 						</tr>		
 						<tr>
@@ -187,12 +193,12 @@
 
 							if($homeWinnerCount >= 4){
 
-								$winnerText .= $hometeam["Name"] ."<br/>" . $homeUserAlias; 
+								$winnerText .= $homeUserAlias ."<br/>" . $homeUserAlias; 
 							}
 
 							if($awayWinnerCount >= 4){
 
-								$winnerText .= $awayteam["Name"] ."<br/>" . $awayUserAlias;
+								$winnerText .= $awayUserAlias ."<br/>" . $awayUserAlias;
 
 							}
 
@@ -209,11 +215,11 @@
 							$seriesText = "<h2>";
 
 							if($homeWinnerCount > $awayWinnerCount && $homeWinnerCount < 4){
-								$seriesText .= $hometeam["Name"] . " leads series " . $homeWinnerCount . " to " . $awayWinnerCount;
+								$seriesText .= $homeUserAlias . " leads series " . $homeWinnerCount . " to " . $awayWinnerCount;
 							}
 
 							if($awayWinnerCount > $homeWinnerCount && $awayWinnerCount < 4) {
-								$seriesText .= $awayteam["Name"] . " leads series " . $awayWinnerCount . " to " . $homeWinnerCount;
+								$seriesText .= $awayUserAlias . " leads series " . $awayWinnerCount . " to " . $homeWinnerCount;
 							}
 
 							if($awayWinnerCount == $homeWinnerCount && (!$awayWinnerCount == 0 && !$homeWinnerCount == 0)  ){
@@ -227,12 +233,12 @@
 
 							if($homeWinnerCount >= 4){
 
-								$seriesText .= $hometeam["Name"] . " Win The Stanley!"; 
+								$seriesText .= $homeUserAlias . " Wins The Stanley " .  $homeWinnerCount . " to " . $awayWinnerCount . "!!"; 
 							}
 
 							if($awayWinnerCount >= 4){
 
-								$seriesText .= $awayteam["Name"] . " Win The Stanley!";
+								$seriesText .= $awayUserAlias . " Wins The Stanley " . $awayWinnerCount . " games to " . $homeWinnerCount . "!!";
 
 							}
 							

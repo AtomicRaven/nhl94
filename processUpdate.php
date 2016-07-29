@@ -4,7 +4,7 @@
 require_once("./_INCLUDES/dbconnect.php");
 require_once("./_INCLUDES/errorchk.php");
 
-	function AddGame($seriesid, $scheduleid){	// add game to database
+	function AddGame($seriesid, $scheduleid, $homeuserid, $awayuserid){	// add game to database
 	
 		$conn = $GLOBALS['$conn'];
 		$nextGameId = GetNextGameId();
@@ -256,11 +256,12 @@ require_once("./_INCLUDES/errorchk.php");
 		$awayTeamAbv = GetTeamById($awayid);
 		$homeTeamAbv = GetTeamById($homeid);
 		$schedule = GetScheduleByID($scheduleid);
-		$HomeUserID = $schedule["HomeUserID"];
-		$AwayUserID = $schedule["AwayUserID"];
+
+		//$HomeUserID = $schedule["HomeUserID"];
+		//$AwayUserID = $schedule["AwayUserID"];			
 				
-		logMsg("Away Team: ID " . $awayid . " : " . $awayTeamAbv["ABV"] . ": " . $AwayScore . " Goals. Player: " . GetUserAlias($AwayUserID));
-		logMsg("Home Team: ID " . $homeid . " : " . $homeTeamAbv["ABV"] . ": " . $HomeScore . " Goals. Player: " . GetUserAlias($HomeUserID));
+		logMsg("Away Team: ID " . $awayid . " : " . $awayTeamAbv["ABV"] . ": " . $AwayScore . " Goals. Player: " . GetUserAlias($awayuserid));
+		logMsg("Home Team: ID " . $homeid . " : " . $homeTeamAbv["ABV"] . ": " . $HomeScore . " Goals. Player: " . GetUserAlias($homeuserid));
 		
 		$hazstring = '00:'. $HomeAZDisplayM. ':'. $HomeAZDisplayS;		// Attack Zone String
 		$aazstring = '00:'. $AwayAZDisplayM. ':'. $AwayAZDisplayS;
@@ -306,16 +307,16 @@ require_once("./_INCLUDES/errorchk.php");
 
 		if($HomeScore > $AwayScore){
 
-			$WinnerTeamID = $homeid;
+			$WinnerUserID = $homeuserid;
 
 		}else{
 
-			$WinnerTeamID = $awayid;
+			$WinnerUserID = $awayuserid;
 
 		}
 	
 
-		$schupq = "UPDATE Schedule SET HomeScore= '$HomeScore', AwayScore= '$AwayScore', OT= '$OT', ConfirmTime= NOW(), GameID='$gameid', WinnerTeamID='$WinnerTeamID'
+		$schupq = "UPDATE Schedule SET HomeScore= '$HomeScore', AwayScore= '$AwayScore', HomeUserID='$homeuserid', AwayUserID='$awayuserid', HomeTeamID='$homeid', AwayTeamID='$awayid', OT= '$OT', ConfirmTime= NOW(), GameID='$gameid', WinnerUserID='$WinnerUserID'
 			WHERE ID= '$scheduleid' LIMIT 1";
 
 		//$schupq = "INSERT INTO Schedule (HomeScore, AwayScore, OT, ConfirmTime, GameID, WinnerTeamID)
@@ -829,19 +830,23 @@ require_once("./_INCLUDES/errorchk.php");
 	$filename = $_FILES['uploadfile']['name'];
 	$scheduleid = $_POST['scheduleid'];
 
+	$homeuserid = $_POST['homeUser'];
+	$awayuserid = $_POST['awayUser'];
+
 	echo "FileName: " . $filename . "</br>";
 
 	logMsg("ScheduleID:" . $scheduleid);
+	logMsg("HomeUser:" . $homeuserid);
 	
 	$chk = ErrorCheck($seriesid, $scheduleid);
 	
 	if(!$chk)
-		$chk = AddGame($seriesid, $scheduleid);
+		$chk = AddGame($seriesid, $scheduleid, $homeuserid, $awayuserid);
 	else
 		$error = $chk;	
 
 	logMsg("Error:" . $error);
 	
 	
-	//header("Location: update.php?seriesId=" . $seriesid . "&err=". $error);	
+	header("Location: update.php?seriesId=" . $seriesid . "&err=". $error);	
 ?>

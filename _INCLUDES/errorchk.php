@@ -46,16 +46,12 @@ function ErrorCheck($seriesid, $scheduleid){
 				logMsg("StateHomeID: " . $StateHomeID . "| ScheduleHomeID: " . $row['HomeTeamID']);	
 				logMsg("StateAwayID: " . $StateAwayID . "| ScheduleAwayID: " . $row['AwayTeamID']);
 				
-				if($StateHomeID == $row['HomeTeamID'] && $StateAwayID == $row['AwayTeamID'])  // Teams in state match schedule
+				//If we want to check games against scedule uncomment this if line
+				//if($StateHomeID == $row['HomeTeamID'] && $StateAwayID == $row['AwayTeamID'])  // Teams in state match schedule
 					return 0;
-				else{
-
-					$errObject = (object) [
-						'error' => 1,
-						'HomeId' => $StateHomeID,
-						'AwayId' => $StateAwayID
-					];
-				}						
+				//else{
+					return 1;
+				//}						
 			}
 				
 			else

@@ -2,7 +2,7 @@
 
 function logMsg($msg){
 
-	echo $msg . "</br>";
+	//echo $msg . "</br>";
 
 }
 
@@ -43,6 +43,40 @@ function ChkPass($userid, $pwd){
     return FALSE; //  CHANGE TO FALSE BEFORE UPLOADING TO SITE
     
 }  // end of function
-		
+
+    function CreateSelectBox($selectName, $selectTitle, $data, $id, $value, $onChange, $indexSelected){
+
+        $selectBox = "<select id='" . $selectName . "' name='" . $selectName . "'";
+
+        if($onChange != null){
+            $selectBox .= "onchange='" . $onChange;
+        }        
+
+        $selectBox .= "'>";
+
+        if($selectTitle != null){
+            $selectBox .= "<option value='0'>" . $selectTitle . "</option>";
+        }		
+        
+        while($row = mysqli_fetch_array($data)){
+
+            $selectBox .= "<option value='" . $row[$id] . "'"; 
+            
+            if($indexSelected != null){
+
+                if($row[$id] == $indexSelected){
+
+                    $selectBox .= " selected";
+                }
+            }
+
+            $selectBox .= ">" . $row[$value] . "</option>";
+        }	
+        
+        $selectBox .= "</select>";
+
+        return $selectBox;
+
+    }	
 
 ?>

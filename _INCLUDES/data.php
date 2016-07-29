@@ -84,11 +84,15 @@ function GetSeriesTypes(){
 }
 
 //Series Functions
-function AddNewSeries($seriesname, $hometeamid, $awayteamid, $homeuserid, $awayuserid, $seriestype){
+//function AddNewSeries($seriesname, $hometeamid, $awayteamid, $homeuserid, $awayuserid, $seriestype){
 
+function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype){
 	$conn = $GLOBALS['$conn'];
-	$sql = "INSERT INTO Series (Name, HomeTeamId, AwayTeamId, HomeUserId, AwayUserId, DateCreated) 
-			VALUES ('$seriesname', '$hometeamid', '$awayteamid', '$homeuserid', '$awayuserid', NOW())";	
+	//$sql = "INSERT INTO Series (Name, HomeTeamId, AwayTeamId, HomeUserId, AwayUserId, DateCreated) 
+	//		VALUES ('$seriesname', '$hometeamid', '$awayteamid', '$homeuserid', '$awayuserid', NOW())";	
+
+	$sql = "INSERT INTO Series (Name, HomeUserId, AwayUserId, DateCreated) 
+			VALUES ('$seriesname', '$homeuserid', '$awayuserid', NOW())";
 		
 	$sqlr = mysqli_query($conn, $sql);
 	
@@ -160,17 +164,22 @@ function AddNewSeries($seriesname, $hometeamid, $awayteamid, $homeuserid, $awayu
 
 		}
 
+		//if seriesType = 4 we are uploading games 1 at a time
+		if($seriestype != 4){
+
 			//Add Games to Schedule Table - Create 7
-		$sql = "INSERT INTO Schedule (HomeTeamId, AwayTeamId, HomeUserId, AwayUserID, SeriesID) 
-				VALUES ('$team1', '$team2', '$user1', '$user2', '$seriesid')";				
+			$sql = "INSERT INTO Schedule (HomeTeamId, AwayTeamId, HomeUserId, AwayUserID, SeriesID) 
+					VALUES ('$team1', '$team2', '$user1', '$user2', '$seriesid')";				
 
-    	$sqlr = mysqli_query($conn, $sql);
+			$sqlr = mysqli_query($conn, $sql);
 
-		if ($sqlr) {
-			$scheduleid = $conn->insert_id;
-			logMsg("New Schedule record created successfully.  ScheduleID: " . $scheduleid);
-			} else {
-				echo("Error: AddNewSeries: " . $sql . "<br>" . mysqli_error($conn));
+			if ($sqlr) {
+				$scheduleid = $conn->insert_id;
+				logMsg("New Schedule record created successfully.  ScheduleID: " . $scheduleid);
+				} else {
+					echo("Error: AddNewSeries: " . $sql . "<br>" . mysqli_error($conn));
+			}
+
 		}
 	} 
 	
@@ -298,6 +307,9 @@ function GetTeamById($teamid){
 
 function GetTeamNameById($teamid){
 	
+	if($teamid == 0){
+		return false;
+	}
 	$conn = $GLOBALS['$conn'];
 	//$teamid = $teamid + 1;	
 	
@@ -362,7 +374,7 @@ function GetUsers(){
 
 	$conn = $GLOBALS['$conn'];
 
-	$sql = "SELECT * FROM Users ORDER BY Name ASC";
+	$sql = "SELECT * FROM Users ORDER BY Name DESC";
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) { 
@@ -370,7 +382,24 @@ function GetUsers(){
 	}	
 
 	return $result;
+}
 
+function GetUsersFromSeries($seriesid){
+
+	$conn = $GLOBALS['$conn'];
+
+	$series = GetSeriesById($seriesid);
+	$homeuserid = $series['HomeUserID'];
+	$awayuserid = $series['AwayUserID'];
+
+	$sql = "SELECT * FROM Users WHERE ID = '$homeuserid' OR ID = '$awayuserid'   ORDER BY Name DESC";
+	$result = mysqli_query($conn, $sql);
+
+	if($result === FALSE) { 
+		die(mysql_error()); // TODO: better error handling
+	}	
+
+	return $result;
 }
 
 ?>

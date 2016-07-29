@@ -8,8 +8,8 @@
 		// add new series to db
 print_r($_POST);
 		$seriesname = $_POST['seriesName'];
-		$hometeam = $_POST['homeTeam'];
-		$awayteam = $_POST['awayTeam'];
+		//$hometeam = $_POST['homeTeam'];
+		//$awayteam = $_POST['awayTeam'];
 		$seriestype = $_POST['seriesType'];
 
 		$homeuserid = $_POST['homeUser'];
@@ -17,7 +17,10 @@ print_r($_POST);
 
 		//Add a new series
 
-		$seriesid = AddNewSeries($seriesname, $hometeam, $awayteam, $homeuserid, $awayuserid, $seriestype);
+		//$seriesid = AddNewSeries($seriesname, $hometeam, $awayteam, $homeuserid, $awayuserid, $seriestype);
+
+		//No more teams all open ended
+		$seriesid = AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype);
 
 
 		//Logs for debugging

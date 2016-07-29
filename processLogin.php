@@ -20,13 +20,14 @@
 		$user = ChkPass($username, $password); 
 
 		$_SESSION['Admin'] = false;
-		
+
 		if ($user !== FALSE) {
 				
 				$currentUser = $user["Alias"];
 
 				$_SESSION['username'] = $currentUser;
-				$_SESSION['loggedin'] = true;					
+				$_SESSION['loggedin'] = true;			
+				$_SESSION['userId'] = $user["ID"];		
 
 				if ( $user["Admin"] == 1 ) {
 
