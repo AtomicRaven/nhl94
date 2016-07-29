@@ -1,7 +1,7 @@
 <ul id="nav">
 <?php
 
-echo "IsLoggedIn:" . $LOGGED_IN;
+			print "IsLoggedIn:" . $LOGGED_IN;
 
 			if ($LOGGED_IN != 1) {
 ?>				

@@ -5,7 +5,7 @@
 		include_once './_INCLUDES/00_SETUP.php';
 		include_once './_INCLUDES/dbconnect.php';
 
-		if ($ADMIN_LOGGED_IN == true) {		
+		if ($LOGGED_IN == true) {		
 
             $gameid = $_GET["gameId"];
 
