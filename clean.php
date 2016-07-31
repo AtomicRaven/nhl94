@@ -2,12 +2,12 @@
 
 require_once("./_INCLUDES/dbconnect.php");
 
-    CleanTable("GameStats");
-    CleanTable("PenSum");
-    CleanTable("ScoreSum");
+    CleanTable("gamestats");
+    CleanTable("pensum");
+    CleanTable("scoresum");
 
-    CleanTable("Schedule");
-    CleanTable("PlayerStats");
-    CleanTable("Series");
+    CleanTable("schedule");
+    CleanTable("playerstats");
+    CleanTable("series");
     
 ?>

@@ -288,7 +288,7 @@ require_once("./_INCLUDES/errorchk.php");
 		$pasv = ", '$HomePsC', '$HomePsA', '$AwayPsC', '$AwayPsA'";
 	
 
-		 $sql = "INSERT INTO GameStats (LeagueID, SeriesID, Crowd
+		 $sql = "INSERT INTO gamestats (LeagueID, SeriesID, Crowd
 				$goalf $shotf $pmf $bcf $ppshf $baf $otf $psf $foakf $pasf)
 				VALUES (1, '$seriesid', '$PeakMeter' $goalv $shotv $pmv $bcv $ppshv $bav $otv $psv $foakv $pasv)";
 		
@@ -316,7 +316,7 @@ require_once("./_INCLUDES/errorchk.php");
 		}
 	
 
-		$schupq = "UPDATE Schedule SET HomeScore= '$HomeScore', AwayScore= '$AwayScore', HomeUserID='$homeuserid', AwayUserID='$awayuserid', HomeTeamID='$homeid', AwayTeamID='$awayid', OT= '$OT', ConfirmTime= NOW(), GameID='$gameid', WinnerUserID='$WinnerUserID'
+		$schupq = "UPDATE schedule SET HomeScore= '$HomeScore', AwayScore= '$AwayScore', HomeUserID='$homeuserid', AwayUserID='$awayuserid', HomeTeamID='$homeid', AwayTeamID='$awayid', OT= '$OT', ConfirmTime= NOW(), GameID='$gameid', WinnerUserID='$WinnerUserID'
 			WHERE ID= '$scheduleid' LIMIT 1";
 
 		//$schupq = "INSERT INTO Schedule (HomeScore, AwayScore, OT, ConfirmTime, GameID, WinnerTeamID)
@@ -342,7 +342,7 @@ require_once("./_INCLUDES/errorchk.php");
 	
 	// Get Home Team 
 
-	$plq = "SELECT PlayerID, TeamID, Last, Pos FROM Roster WHERE TeamID='$homeid' ORDER BY PlayerID ASC";
+	$plq = "SELECT PlayerID, TeamID, Last, Pos FROM roster WHERE TeamID='$homeid' ORDER BY PlayerID ASC";
 	
 	$plr = @mysqli_query($conn, $plq) or die("Could not retrieve Home Player List.  Please contact administrator.");
 	//echo $plq;
@@ -373,6 +373,9 @@ require_once("./_INCLUDES/errorchk.php");
 
 		fseek ($fr,60513 + $i);		
 		$Chksfor = hexdec(bin2hex(fread($fr, 1)));
+
+			$ChksA = 0;
+			$PlusMinus = 0;
 	
 		// Home TOI
 		fseek ($fr,(60538 + ($i * 2)));
@@ -405,9 +408,9 @@ require_once("./_INCLUDES/errorchk.php");
 		logMsg("Goals:" . $Goals . "<br/>");
 			}
 			
-			$psq = "INSERT INTO PlayerStats (GameID, TeamID, PlayerID, Pos, G, A, SOG, PIM, Chks, TOI)
+			$psq = "INSERT INTO playerstats (GameID, TeamID, PlayerID, Pos, G, A, SOG, PIM, Chks, TOI, ChksA, PlusMinus)
 						VALUES ('$gameid', '$homeid', '$pid', '$pos', '$Goals', '$Assists', '$SOG', '$PIM',
-						'$Chksfor', '$TOIString')";
+						'$Chksfor', '$TOIString', '$ChksA', '$PlusMinus')";
 						
 
 			$psr = mysqli_query($conn, $psq);			
@@ -428,7 +431,7 @@ require_once("./_INCLUDES/errorchk.php");
 	
 	$i = 1;
 	
-	$plq = "SELECT PlayerID, TeamID,Last, Pos FROM Roster WHERE TeamID='$awayid' ORDER BY PlayerID ASC";
+	$plq = "SELECT PlayerID, TeamID,Last, Pos FROM roster WHERE TeamID='$awayid' ORDER BY PlayerID ASC";
 	$plr = @mysqli_query($conn, $plq) or die("Could not retrieve Away Player List.  Please contact administrator.");
 	
 	logMsg("Away Player Stats<br/>");
@@ -486,15 +489,16 @@ require_once("./_INCLUDES/errorchk.php");
 					logMsg("Index:" . $i);
 					logMsg("PlayerId:" . $pid);
 					logMsg("PlayerName:" . $name);
-		logMsg("Pos:" . $pos);
+					logMsg("Pos:" . $pos);
 
 		
-		logMsg("Goals:" . $Goals . "<br/>");
+					logMsg("Goals:" . $Goals . "<br/>");
 			}
+
+			logMsg("ChksA:" . $ChksA . "<br/>");
 			
-			$psq = "INSERT INTO PlayerStats (GameID, TeamID, PlayerID, Pos, G, A, SOG, PIM,Chks, TOI, ChksA, PlusMinus)
-						VALUES ('$gameid', '$awayid', '$pid', '$pos', '$Goals', '$Assists', '$SOG', '$PIM',
-						'$Chksfor', '$TOIString', $ChksA, $PlusMinus)";
+			$psq = "INSERT INTO playerstats (GameID, TeamID, PlayerID, Pos, G, A, SOG, PIM, Chks, TOI, ChksA, PlusMinus)
+						VALUES ('$gameid', '$awayid', '$pid', '$pos', '$Goals', '$Assists', '$SOG', '$PIM', '$Chksfor', '$TOIString', '$ChksA', '$PlusMinus')";
 			
 			$psr = mysqli_query($conn, $psq);			
 			
@@ -615,9 +619,9 @@ require_once("./_INCLUDES/errorchk.php");
 
 			// Enter Scoring Summary into database
 		
-		$ssq = "INSERT INTO ScoreSum (GameID, TeamID, Period, Time, G, A1, A2, Type)
-				VALUES ('$gameid', '$team', '$Period', '$time', '$goalid', '$a1id', '$a2id', '$type')";
-		$ssr = @mysqli_query($conn, $ssq) or die("Could not enter Score Summary.");
+		$ssq = "INSERT INTO scoresum (GameID, TeamID, Period, Time, G, A1, A2, Type)
+				VALUES ($gameid, '$team', '$Period', '$time', '$goalid', '$a1id', '$a2id', '$type')";
+		$ssr = @mysqli_query($conn, $ssq) or die($ssq. " Could not enter Score Summary." .  mysqli_error($conn));
 		
 		$tmpExtract = ($tmpExtract + 6);  // move to next goal summary 
 	
@@ -693,7 +697,7 @@ require_once("./_INCLUDES/errorchk.php");
 			
 			// Add to database
 			
-			$psq = "INSERT INTO PenSum (GameID, TeamID, PlayerID, Period, Time, Type)
+			$psq = "INSERT INTO pensum (GameID, TeamID, PlayerID, Period, Time, Type)
 					VALUES ('$gameid', '$team', '$penid', '$PenPer', '$pentime', '$type')";
 			$psr = @mysqli_query($conn, $psq) or die("Error: PenaltySummary " . $psq . "<br>" . mysqli_error($conn));		
 			
@@ -785,7 +789,7 @@ require_once("./_INCLUDES/errorchk.php");
 					if($Player != '0' && $Player != '1' && $Player != '255'){	// FF is in place of a player missing (like on a SH goal) or Goalie ( 0 or 1)
 						$plid = getPlayerID($hmtm, $Player, $stattype, 0, 'G');
 					
-						$pmq = "UPDATE PlayerStats SET PlusMinus = PlusMinus + $hpm 
+						$pmq = "UPDATE playerstats SET PlusMinus = PlusMinus + $hpm 
 								WHERE PlayerID='$plid' AND GameID='$gameid' AND TeamID='$hmtm' LIMIT 1";
 						$pmr = @mysql_query($pmq) or die("Error:  Could not update Home Plus/Minus Stat.");
 					}
@@ -801,7 +805,7 @@ require_once("./_INCLUDES/errorchk.php");
 					if($Player != '0' && $Player != '1' && $Player != '255'){	// 255 is in place of a player missing (like on a SH goal) or Goalie ( 0 or 1)
 
 						$plid = getPlayerID($awtm, $Player, $stattype, 0, 'G');
-						$pmq = "UPDATE PlayerStats SET PlusMinus = PlusMinus + $apm
+						$pmq = "UPDATE playerstats SET PlusMinus = PlusMinus + $apm
 							WHERE PlayerID='$plid' AND GameID='$gameid' AND TeamID='$awtm' LIMIT 1";
 						$pmr = @mysql_query($pmq) or die("Error:  Could not update Away Plus/Minus Stat.");
 					}
@@ -833,7 +837,7 @@ require_once("./_INCLUDES/errorchk.php");
 	$homeuserid = $_POST['homeUser'];
 	$awayuserid = $_POST['awayUser'];
 
-	echo "FileName: " . $filename . "</br>";
+	//echo "FileName: " . $filename . "</br>";
 
 	logMsg("ScheduleID:" . $scheduleid);
 	logMsg("HomeUser:" . $homeuserid);

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version 4.0.10.14
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Jul 29, 2016 at 11:13 PM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 5.6.23
+-- Host: localhost:3306
+-- Generation Time: Jul 30, 2016 at 08:33 PM
+-- Server version: 5.6.26-cll-lve
+-- PHP Version: 5.4.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `nhl94db`
@@ -26,8 +26,8 @@ SET time_zone = "+00:00";
 -- Table structure for table `gamestats`
 --
 
-CREATE TABLE `gamestats` (
-  `GameID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gamestats` (
+  `GameID` int(11) NOT NULL AUTO_INCREMENT,
   `LeagueID` int(11) NOT NULL,
   `SeriesID` int(11) NOT NULL,
   `Crowd` int(11) NOT NULL,
@@ -71,13 +71,14 @@ CREATE TABLE `gamestats` (
   `PSA` int(11) NOT NULL,
   `FOH` int(11) NOT NULL,
   `FOA` int(11) NOT NULL,
-  `AZH` int(11) NOT NULL,
-  `AZA` int(11) NOT NULL,
+  `AZH` time NOT NULL,
+  `AZA` time NOT NULL,
   `PCH` int(11) NOT NULL,
   `PH` int(11) NOT NULL,
   `PCA` int(11) NOT NULL,
-  `PA` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `PA` int(11) NOT NULL,
+  PRIMARY KEY (`GameID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=72 ;
 
 -- --------------------------------------------------------
 
@@ -85,12 +86,13 @@ CREATE TABLE `gamestats` (
 -- Table structure for table `nhlteam`
 --
 
-CREATE TABLE `nhlteam` (
-  `ID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `nhlteam` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) NOT NULL,
   `TeamID` int(11) NOT NULL,
-  `ABV` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `ABV` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
 
 --
 -- Dumping data for table `nhlteam`
@@ -132,15 +134,16 @@ INSERT INTO `nhlteam` (`ID`, `Name`, `TeamID`, `ABV`) VALUES
 -- Table structure for table `pensum`
 --
 
-CREATE TABLE `pensum` (
-  `ID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `pensum` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `GameID` int(11) NOT NULL,
   `TeamID` int(11) NOT NULL,
   `PlayerID` int(11) NOT NULL,
   `Period` int(11) NOT NULL,
   `Time` varchar(255) NOT NULL,
-  `Type` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `Type` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=98 ;
 
 -- --------------------------------------------------------
 
@@ -148,8 +151,8 @@ CREATE TABLE `pensum` (
 -- Table structure for table `playerstats`
 --
 
-CREATE TABLE `playerstats` (
-  `ID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `playerstats` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `GameID` int(11) NOT NULL,
   `TeamID` int(11) NOT NULL,
   `PlayerID` int(11) NOT NULL,
@@ -161,8 +164,9 @@ CREATE TABLE `playerstats` (
   `Chks` int(11) NOT NULL,
   `TOI` varchar(255) NOT NULL,
   `ChksA` int(11) NOT NULL,
-  `PlusMinus` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `PlusMinus` int(11) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=939 ;
 
 -- --------------------------------------------------------
 
@@ -170,8 +174,8 @@ CREATE TABLE `playerstats` (
 -- Table structure for table `roster`
 --
 
-CREATE TABLE `roster` (
-  `ID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `roster` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `PlayerID` int(3) DEFAULT NULL,
   `First` varchar(8) DEFAULT NULL,
   `Last` varchar(10) DEFAULT NULL,
@@ -192,8 +196,9 @@ CREATE TABLE `roster` (
   `Rgh` int(1) DEFAULT NULL,
   `Pas` int(1) DEFAULT NULL,
   `Agr` int(1) DEFAULT NULL,
-  `TeamID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `TeamID` int(11) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=685 ;
 
 --
 -- Dumping data for table `roster`
@@ -892,20 +897,21 @@ INSERT INTO `roster` (`ID`, `PlayerID`, `First`, `Last`, `Team`, `Pos`, `JNo`, `
 -- Table structure for table `schedule`
 --
 
-CREATE TABLE `schedule` (
-  `ID` int(11) NOT NULL,
-  `HomeTeamID` int(11) NOT NULL,
-  `AwayTeamID` int(11) NOT NULL,
-  `HomeScore` int(11) NOT NULL,
-  `AwayScore` int(11) NOT NULL,
-  `OT` int(11) NOT NULL,
-  `ConfirmTime` date NOT NULL,
-  `GameID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `schedule` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `HomeTeamID` int(11) DEFAULT NULL,
+  `AwayTeamID` int(11) DEFAULT NULL,
+  `HomeScore` int(11) DEFAULT NULL,
+  `AwayScore` int(11) DEFAULT NULL,
+  `OT` int(11) DEFAULT NULL,
+  `ConfirmTime` date DEFAULT NULL,
+  `GameID` int(11) DEFAULT NULL,
   `SeriesID` int(11) NOT NULL,
   `HomeUserID` int(11) NOT NULL,
   `AwayUserID` int(11) NOT NULL,
-  `WinnerUserID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `WinnerUserID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=260 ;
 
 -- --------------------------------------------------------
 
@@ -913,17 +919,18 @@ CREATE TABLE `schedule` (
 -- Table structure for table `scoresum`
 --
 
-CREATE TABLE `scoresum` (
-  `ID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `scoresum` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `GameID` int(11) NOT NULL,
   `TeamID` int(11) NOT NULL,
   `Period` int(11) NOT NULL,
-  `Time` int(11) NOT NULL,
+  `Time` time NOT NULL,
   `G` int(11) NOT NULL,
   `A1` int(11) NOT NULL,
   `A2` int(11) NOT NULL,
-  `Type` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `Type` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=503 ;
 
 -- --------------------------------------------------------
 
@@ -931,13 +938,14 @@ CREATE TABLE `scoresum` (
 -- Table structure for table `series`
 --
 
-CREATE TABLE `series` (
-  `ID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `series` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `HomeUserID` int(11) NOT NULL,
   `AwayUserID` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
-  `DateCreated` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `DateCreated` date NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=76 ;
 
 -- --------------------------------------------------------
 
@@ -945,12 +953,13 @@ CREATE TABLE `series` (
 -- Table structure for table `seriestype`
 --
 
-CREATE TABLE `seriestype` (
-  `ID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `seriestype` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `SeriesID` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
-  `Description` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `Description` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `seriestype`
@@ -967,14 +976,15 @@ INSERT INTO `seriestype` (`ID`, `SeriesID`, `Name`, `Description`) VALUES
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
-  `ID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `users` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) NOT NULL,
   `Alias` varchar(255) NOT NULL,
   `Password` varchar(255) NOT NULL,
   `Admin` int(11) NOT NULL,
-  `Email` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `Email` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `users`
@@ -985,124 +995,6 @@ INSERT INTO `users` (`ID`, `Name`, `Alias`, `Password`, `Admin`, `Email`) VALUES
 (2, 'Rob Clarkson', 'AtomicRaven', '1234', 1, 'rob.clarkson@gmail.com'),
 (3, 'Jim', 'Jimbo', '1234', 0, 'rclarkson@postmedia.com');
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `gamestats`
---
-ALTER TABLE `gamestats`
-  ADD PRIMARY KEY (`GameID`);
-
---
--- Indexes for table `nhlteam`
---
-ALTER TABLE `nhlteam`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `pensum`
---
-ALTER TABLE `pensum`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `playerstats`
---
-ALTER TABLE `playerstats`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `roster`
---
-ALTER TABLE `roster`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `schedule`
---
-ALTER TABLE `schedule`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `scoresum`
---
-ALTER TABLE `scoresum`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `series`
---
-ALTER TABLE `series`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `seriestype`
---
-ALTER TABLE `seriestype`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`ID`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `gamestats`
---
-ALTER TABLE `gamestats`
-  MODIFY `GameID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
---
--- AUTO_INCREMENT for table `nhlteam`
---
-ALTER TABLE `nhlteam`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
---
--- AUTO_INCREMENT for table `pensum`
---
-ALTER TABLE `pensum`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
---
--- AUTO_INCREMENT for table `playerstats`
---
-ALTER TABLE `playerstats`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=744;
---
--- AUTO_INCREMENT for table `roster`
---
-ALTER TABLE `roster`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=685;
---
--- AUTO_INCREMENT for table `schedule`
---
-ALTER TABLE `schedule`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
---
--- AUTO_INCREMENT for table `scoresum`
---
-ALTER TABLE `scoresum`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=439;
---
--- AUTO_INCREMENT for table `series`
---
-ALTER TABLE `series`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
---
--- AUTO_INCREMENT for table `seriestype`
---
-ALTER TABLE `seriestype`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

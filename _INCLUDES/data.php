@@ -5,7 +5,7 @@
 function GetNextGameId(){	
 
 	$conn = $GLOBALS['$conn'];
-	$sql = "SELECT GameID FROM GameStats ORDER BY GameID DESC";
+	$sql = "SELECT GameID FROM gamestats ORDER BY GameID DESC";
 	
 	$tmr = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);	
@@ -17,7 +17,7 @@ function GetNextGameId(){
 function GetGameById($gameid){	
 
 	$conn = $GLOBALS['$conn'];
-	$sql = "SELECT * FROM GameStats Where GameID='$gameid' LIMIT 1";
+	$sql = "SELECT * FROM gamestats Where GameID='$gameid' LIMIT 1";
 	
 	$tmr = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
@@ -35,7 +35,7 @@ function GetGameById($gameid){
 function GetGamesBySeriesId($seriesid){	
 
 	$conn = $GLOBALS['$conn'];
-	$sql = "SELECT * FROM Schedule Where SeriesID='$seriesid' ORDER BY ID ASC";
+	$sql = "SELECT * FROM schedule Where SeriesID='$seriesid' ORDER BY ID ASC";
 	
 	$result = mysqli_query($conn, $sql);
 
@@ -52,7 +52,7 @@ function GetGamesBySeriesId($seriesid){
 function GetScheduleByID($scheduleid){
 
 	$conn = $GLOBALS['$conn'];
-	$sql = "SELECT * FROM Schedule WHERE ID = '$scheduleid' LIMIT 1";
+	$sql = "SELECT * FROM schedule WHERE ID = '$scheduleid' LIMIT 1";
 	
 	$tmr = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
@@ -71,7 +71,7 @@ function GetSeriesTypes(){
 
 	$conn = $GLOBALS['$conn'];
 
-	$sql = "SELECT * FROM SeriesType ORDER BY SeriesID ASC";
+	$sql = "SELECT * FROM seriestype ORDER BY SeriesID ASC";
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) { 
@@ -87,11 +87,12 @@ function GetSeriesTypes(){
 //function AddNewSeries($seriesname, $hometeamid, $awayteamid, $homeuserid, $awayuserid, $seriestype){
 
 function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype){
+	
 	$conn = $GLOBALS['$conn'];
-	//$sql = "INSERT INTO Series (Name, HomeTeamId, AwayTeamId, HomeUserId, AwayUserId, DateCreated) 
+	//$sql = "INSERT INTO series (Name, HomeTeamId, AwayTeamId, HomeUserId, AwayUserId, DateCreated) 
 	//		VALUES ('$seriesname', '$hometeamid', '$awayteamid', '$homeuserid', '$awayuserid', NOW())";	
 
-	$sql = "INSERT INTO Series (Name, HomeUserId, AwayUserId, DateCreated) 
+	$sql = "INSERT INTO series (Name, HomeUserId, AwayUserId, DateCreated) 
 			VALUES ('$seriesname', '$homeuserid', '$awayuserid', NOW())";
 		
 	$sqlr = mysqli_query($conn, $sql);
@@ -168,8 +169,11 @@ function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype){
 		if($seriestype != 4){
 
 			//Add Games to Schedule Table - Create 7
-			$sql = "INSERT INTO Schedule (HomeTeamId, AwayTeamId, HomeUserId, AwayUserID, SeriesID) 
-					VALUES ('$team1', '$team2', '$user1', '$user2', '$seriesid')";				
+			//$sql = "INSERT INTO schedule (HomeTeamId, AwayTeamId, HomeUserId, AwayUserID, SeriesID) 
+			//		VALUES ('$team1', '$team2', '$user1', '$user2', '$seriesid')";
+			
+			$sql = "INSERT INTO schedule (HomeUserId, AwayUserID, SeriesID) 
+					VALUES ('$user1', '$user2', '$seriesid')";
 
 			$sqlr = mysqli_query($conn, $sql);
 
@@ -177,7 +181,7 @@ function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype){
 				$scheduleid = $conn->insert_id;
 				logMsg("New Schedule record created successfully.  ScheduleID: " . $scheduleid);
 				} else {
-					echo("Error: AddNewSeries: " . $sql . "<br>" . mysqli_error($conn));
+					echo("Error: AddNewSeries2: " . $sql . "<br>" . mysqli_error($conn));
 			}
 
 		}
@@ -190,7 +194,7 @@ function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype){
 function GetSeriesById($seriesid){	
 
 	$conn = $GLOBALS['$conn'];
-	$sql = "SELECT * FROM Series Where ID='$seriesid'";
+	$sql = "SELECT * FROM series Where ID='$seriesid'";
 	
 	$tmr = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);	
@@ -204,7 +208,7 @@ function GetSeries(){
 	$conn = $GLOBALS['$conn'];
 	$userid = $_SESSION['userId'];
 
-	$sql = "SELECT * FROM Series Where HomeUserID = $userid OR AwayUserID = $userid ORDER BY ID desc";
+	$sql = "SELECT * FROM series Where HomeUserID = $userid OR AwayUserID = $userid ORDER BY ID desc";
 	
 	$result = mysqli_query($conn, $sql);
 	
@@ -219,7 +223,7 @@ function GetSeries(){
 function UpdateRoster(){
 	
 	$conn = $GLOBALS['$conn'];
-	$sql = "SELECT * FROM NHLTeam";
+	$sql = "SELECT * FROM nhlteam";
 	
 	$tmr = mysqli_query($conn, $sql);
 		
@@ -234,7 +238,7 @@ function UpdateRoster(){
 		$Abv = $row['ABV'];
 		$teamId = $row['TeamID'];
 		
-		$update = "UPDATE Roster SET TeamID = '$teamId' WHERE Team='$Abv'";
+		$update = "UPDATE roster SET TeamID = '$teamId' WHERE Team='$Abv'";
 		
 		$sqlr = mysqli_query($conn, $update);
 		
@@ -253,7 +257,7 @@ function GetPlayerID($teamid, $offset){
 
 	$conn = $GLOBALS['$conn'];
 	// Retrieve PlayerID	
-	$sql = "SELECT PlayerID, Last FROM Roster WHERE TeamID = '$teamid'";	
+	$sql = "SELECT PlayerID, Last FROM roster WHERE TeamID = '$teamid'";	
 	$tmr = mysqli_query($conn, $sql);
 	$index = 0;
 
@@ -274,7 +278,7 @@ function GetTeams(){
 
 	$conn = $GLOBALS['$conn'];
 
-	$sql = "SELECT * FROM NhlTeam ORDER BY Name ASC";
+	$sql = "SELECT * FROM nhlteam ORDER BY Name ASC";
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) { 
@@ -291,7 +295,7 @@ function GetTeamById($teamid){
 	$conn = $GLOBALS['$conn'];
 	//$teamid = $teamid + 1;	
 	
-	$sql = "SELECT * FROM NHLTeam WHERE TeamID='$teamid' LIMIT 1";	
+	$sql = "SELECT * FROM nhlteam WHERE TeamID='$teamid' LIMIT 1";	
 	$tmr = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
 	
@@ -313,7 +317,7 @@ function GetTeamNameById($teamid){
 	$conn = $GLOBALS['$conn'];
 	//$teamid = $teamid + 1;	
 	
-	$sql = "SELECT * FROM NHLTeam WHERE TeamID='$teamid' LIMIT 1";	
+	$sql = "SELECT * FROM nhlteam WHERE TeamID='$teamid' LIMIT 1";	
 	$tmr = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
 	
@@ -332,7 +336,7 @@ function GetTeamABVById($teamid){
 	$conn = $GLOBALS['$conn'];
 	//$teamid = $teamid + 1;	
 	
-	$sql = "SELECT * FROM NHLTeam WHERE TeamID='$teamid' LIMIT 1";	
+	$sql = "SELECT * FROM nhlteam WHERE TeamID='$teamid' LIMIT 1";	
 	$tmr = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
 	
@@ -350,7 +354,7 @@ function GetUserName($userid){
 	
 	$conn = $GLOBALS['$conn'];
 	
-	$sql = "SELECT Name FROM Users WHERE ID='$userid'";
+	$sql = "SELECT Name FROM users WHERE ID='$userid'";
 	$tmr = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
 	
@@ -362,7 +366,7 @@ function GetUserAlias($userid){
 	
 	$conn = $GLOBALS['$conn'];
 	
-	$sql = "SELECT Alias FROM Users WHERE ID='$userid'";
+	$sql = "SELECT Alias FROM users WHERE ID='$userid'";
 	$tmr = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
 	
@@ -374,7 +378,7 @@ function GetUsers(){
 
 	$conn = $GLOBALS['$conn'];
 
-	$sql = "SELECT * FROM Users ORDER BY Name DESC";
+	$sql = "SELECT * FROM users ORDER BY Name DESC";
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) { 
@@ -392,7 +396,7 @@ function GetUsersFromSeries($seriesid){
 	$homeuserid = $series['HomeUserID'];
 	$awayuserid = $series['AwayUserID'];
 
-	$sql = "SELECT * FROM Users WHERE ID = '$homeuserid' OR ID = '$awayuserid'   ORDER BY Name DESC";
+	$sql = "SELECT * FROM users WHERE ID = '$homeuserid' OR ID = '$awayuserid'   ORDER BY Name DESC";
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) { 
@@ -401,5 +405,31 @@ function GetUsersFromSeries($seriesid){
 
 	return $result;
 }
+
+
+function ChkPass($userid, $pwd){
+
+    // Retrieve password
+
+    $conn = $GLOBALS['$conn'];
+
+    $sql = "SELECT * FROM users WHERE Alias = '$userid' LIMIT 1";
+    $tmr = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+
+	if ($row) {
+
+		logMsg("Retrieved User");
+		if($pwd == $row['Password'])
+            return $row;
+        else
+            return FALSE; //  CHANGE TO FALSE BEFORE UPLOADING TO SITE
+
+	} else {
+		//echo("Error: ChkPass: " . $sql . "<br>" . mysqli_error($conn));
+		return FALSE; //  CHANGE TO FALSE BEFORE UPLOADING TO SITE
+	}
+ 
+}  // end of function
 
 ?>

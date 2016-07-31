@@ -12,7 +12,7 @@ function ErrorCheck($seriesid, $scheduleid){
 	}
 
 	$filename = $_FILES['uploadfile']['name']; // Get the name of the file (including file extension).
-	echo "fileName:" . $filename;
+	//echo "fileName:" . $filename;
 	$ext = substr($filename, strpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
 	$upload_path = $filePath . "/" . "Series-" . $seriesid. '-game-'. $scheduleid . '.sv';
   

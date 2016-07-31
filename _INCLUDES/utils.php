@@ -21,62 +21,40 @@ function CleanTable($tableName){
 
 }
 
-/*********************************************************************/
-function ChkPass($userid, $pwd){
 
-    // Retrieve password
+function CreateSelectBox($selectName, $selectTitle, $data, $id, $value, $onChange, $indexSelected){
 
-    $conn = $GLOBALS['$conn'];
+    $selectBox = "<select id='" . $selectName . "' name='" . $selectName . "'";
 
-    $uq = "SELECT * FROM Users WHERE Alias = '$userid' LIMIT 1";
+    if($onChange != null){
+        $selectBox .= "onchange='" . $onChange;
+    }        
 
-    $ur = mysqli_query($conn, $uq);
+    $selectBox .= "'>";
 
-    if(mysqli_num_rows($ur)){
-        $urow = mysqli_fetch_array($ur, MYSQL_ASSOC);
-        if($pwd == $urow['Password'])
-            return $urow;
-        else
-            return FALSE; //  CHANGE TO FALSE BEFORE UPLOADING TO SITE
-    }
-
-    return FALSE; //  CHANGE TO FALSE BEFORE UPLOADING TO SITE
+    if($selectTitle != null){
+        $selectBox .= "<option value='0'>" . $selectTitle . "</option>";
+    }		
     
-}  // end of function
+    while($row = mysqli_fetch_array($data)){
 
-    function CreateSelectBox($selectName, $selectTitle, $data, $id, $value, $onChange, $indexSelected){
-
-        $selectBox = "<select id='" . $selectName . "' name='" . $selectName . "'";
-
-        if($onChange != null){
-            $selectBox .= "onchange='" . $onChange;
-        }        
-
-        $selectBox .= "'>";
-
-        if($selectTitle != null){
-            $selectBox .= "<option value='0'>" . $selectTitle . "</option>";
-        }		
+        $selectBox .= "<option value='" . $row[$id] . "'"; 
         
-        while($row = mysqli_fetch_array($data)){
+        if($indexSelected != null){
 
-            $selectBox .= "<option value='" . $row[$id] . "'"; 
-            
-            if($indexSelected != null){
+            if($row[$id] == $indexSelected){
 
-                if($row[$id] == $indexSelected){
-
-                    $selectBox .= " selected";
-                }
+                $selectBox .= " selected";
             }
+        }
 
-            $selectBox .= ">" . $row[$value] . "</option>";
-        }	
-        
-        $selectBox .= "</select>";
-
-        return $selectBox;
-
+        $selectBox .= ">" . $row[$value] . "</option>";
     }	
+    
+    $selectBox .= "</select>";
+
+    return $selectBox;
+
+}	
 
 ?>

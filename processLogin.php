@@ -9,6 +9,7 @@
 		$username='';
 		$password = '';
 		
+		
 		if (isset($_POST["username"]) && !empty($_POST["username"])) {
 				$username =  $_POST["username"];
 		}
@@ -24,7 +25,7 @@
 		if ($user !== FALSE) {
 				
 				$currentUser = $user["Alias"];
-
+				
 				$_SESSION['username'] = $currentUser;
 				$_SESSION['loggedin'] = true;					
 				$_SESSION['Admin'] = true;
@@ -32,6 +33,7 @@
 					header('Location: manage.php');
 		}
 		else {
+			//logMsg("Uknown User");
 			header('Location: index.php?m=1');
 		}
 		

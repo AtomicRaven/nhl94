@@ -6,7 +6,7 @@
 		
 		// custom code
 		// add new series to db
-print_r($_POST);
+//print_r($_POST);
 		$seriesname = $_POST['seriesName'];
 		//$hometeam = $_POST['homeTeam'];
 		//$awayteam = $_POST['awayTeam'];
