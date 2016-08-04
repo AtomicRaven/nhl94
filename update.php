@@ -163,7 +163,7 @@
 						?>
 						<tr>
 							<td>&nbsp;</td>
-							<td>Gm <?=$i?>. <b><?= GetTeamNameById($row["HomeTeamID"])?>(<?= GetUserAlias($row["HomeUserID"]) ?>) <?=$row["HomeScore"]?></b> / <?= GetTeamNameById($row["AwayTeamID"]) ?> (<?= GetUserAlias($row["AwayUserID"])?>) <?=$row["AwayScore"]?></td>
+							<td>Gm <?=$i?>. <?= GetTeamNameById($row["AwayTeamID"]) ?> (<?= GetUserAlias($row["AwayUserID"])?>) <?=$row["AwayScore"]?> | <?= GetTeamNameById($row["HomeTeamID"])?>(<?= GetUserAlias($row["HomeUserID"]) ?>) <?=$row["HomeScore"]?></td>
 							<td><button type="button" class="square" onclick="location.href='gamestats.php?gameId=<?= $row['GameID']?>'">Game Stats</button></td>
 							<td><button type="button" class="square" onclick="location.href='processGameDelete.php?gameId=<?= $row['GameID']?>&seriesId=<?=$seriesid?>'">Delete</button></td>
 						</tr>
@@ -175,7 +175,7 @@
 						?>
 						<tr class="normal">
 							<td>&nbsp;</td>
-							<td>Gm <?=$i?>. <?= $awayUserSelectBox ?> at <?= $homeUserSelectBox ?></td>
+							<td>Gm <?=$i?>. <?= $awayUserSelectBox ?>  @  <?= $homeUserSelectBox ?></td>
 							<td><button type="button" class='square' id='submit<?= $row["ID"]?>' onclick="UploadFile('<?= $row["ID"]?>')">Upload File</button></td>
 						</tr>		
 						<tr>
