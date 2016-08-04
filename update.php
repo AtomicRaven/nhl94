@@ -175,7 +175,7 @@
 						?>
 						<tr class="normal">
 							<td>&nbsp;</td>
-							<td>Gm <?=$i?>. <?= $homeUserSelectBox ?> at <?= $awayUserSelectBox ?></td>
+							<td>Gm <?=$i?>. <?= $awayUserSelectBox ?> at <?= $homeUserSelectBox ?></td>
 							<td><button type="button" class='square' id='submit<?= $row["ID"]?>' onclick="UploadFile('<?= $row["ID"]?>')">Upload File</button></td>
 						</tr>		
 						<tr>
