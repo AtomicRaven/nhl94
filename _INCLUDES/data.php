@@ -21,7 +21,7 @@ function DeleteGameDataById($gameid){
 	DeleteGameFromTable('pensum', $gameid);
 	DeleteGameFromTable('playerstats', $gameid);
 	DeleteGameFromTable('scoresum', $gameid);
-	DeleteGameFromTable('schedule', $gameid);		
+	ResetScheduleByGameID($gameid);		
 	
 }
 
@@ -35,7 +35,7 @@ function DeleteGameFromTable($tableName, $gameid){
 	if ($tmr) {
 		logMsg("Delete Data From Table: " .$tableName);
 	} else {
-		echo("Error: CleanTable " . $sql . "<br>" . mysqli_error($conn));
+		echo("Error: DeleteGameFromTable " . $sql . "<br>" . mysqli_error($conn));
 	}
 
 }
@@ -107,6 +107,23 @@ function GetSeriesTypes(){
 	return $result;
 
 
+}
+
+function ResetScheduleByGameID($gameid){	
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "UPDATE schedule SET HomeScore= NULL, AwayScore= NULL, 
+	HomeTeamID=NULL, AwayTeamID=NULL, OT= NULL, ConfirmTime= NULL, GameID=NULL, WinnerUserID=NULL
+	WHERE GameID= '$gameid' LIMIT 1";
+	
+	$tmr = mysqli_query($conn, $sql);
+	//$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	
+	//if ($row) {
+	//	logMsg("Updated Schedule");		
+	//} else {
+		//echo("Error: ResetScheduleByGameID: " . $sql . "<br>" . mysqli_error($conn));
+	//}
 }
 
 //Series Functions
