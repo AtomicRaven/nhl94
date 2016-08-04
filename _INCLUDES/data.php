@@ -14,6 +14,32 @@ function GetNextGameId(){
 
 }
 
+function DeleteGameDataById($gameid){
+
+	//Tables gamestats, pensum, playerstats, scoresum, schedule
+	DeleteGameFromTable('gamestats', $gameid);
+	DeleteGameFromTable('pensum', $gameid);
+	DeleteGameFromTable('playerstats', $gameid);
+	DeleteGameFromTable('scoresum', $gameid);
+	DeleteGameFromTable('schedule', $gameid);		
+	
+}
+
+function DeleteGameFromTable($tableName, $gameid){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "DELETE FROM " . $tableName . " WHERE GameID='$gameid'";
+
+	$tmr = mysqli_query($conn, $sql);
+		
+	if ($tmr) {
+		logMsg("Delete Data From Table: " .$tableName);
+	} else {
+		echo("Error: CleanTable " . $sql . "<br>" . mysqli_error($conn));
+	}
+
+}
+
 function GetGameById($gameid){	
 
 	$conn = $GLOBALS['$conn'];

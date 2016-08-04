@@ -29,6 +29,9 @@
 					case 5:
 						$msg = "Game could not be uploaded.  Please contact the administrator.";
 					break;
+					case 6:
+						$msg = "Game has been Deleted.";
+					break;
 					default:
 						$msg = "";
 					break;
@@ -162,6 +165,7 @@
 							<td>&nbsp;</td>
 							<td>Gm <?=$i?>. <b><?= GetTeamNameById($row["HomeTeamID"])?>(<?= GetUserAlias($row["HomeUserID"]) ?>) <?=$row["HomeScore"]?></b> / <?= GetTeamNameById($row["AwayTeamID"]) ?> (<?= GetUserAlias($row["AwayUserID"])?>) <?=$row["AwayScore"]?></td>
 							<td><button type="button" class="square" onclick="location.href='gamestats.php?gameId=<?= $row['GameID']?>'">Game Stats</button></td>
+							<td><button type="button" class="square" onclick="location.href='processGameDelete.php?gameId=<?= $row['GameID']?>&seriesId=<?=$seriesid?>'">Delete</button></td>
 						</tr>
 						<?php
 							}else{

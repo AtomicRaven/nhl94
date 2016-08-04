@@ -851,6 +851,11 @@ require_once("./_INCLUDES/errorchk.php");
 
 	logMsg("Error:" . $error);
 	
+	$qString = "seriesId=" . $seriesid;
+
+	if($error != ""){
+		$qString .= "&err=". $error;
+	}
 	
-	header("Location: update.php?seriesId=" . $seriesid . "&err=". $error);	
+	header("Location: update.php?" . $qString );	
 ?>
