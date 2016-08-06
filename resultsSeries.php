@@ -13,23 +13,40 @@
 
 	function showGameDetails(obj, x) {
 		if ( obj.innerHTML === '+ Details' ) {
-			// dipslay table row beneath button	
-			//$('#' + x).css('display','table-row');
 			// fetch game stats
 			$('#fetch_' + x).load('fragment_game_stats_template.php');
+			// dipslay table row beneath button	
 			$('#' + x).fadeIn();
 			// toggle button	
 			obj.innerHTML = '- Details'
 		}
 		else {
 			// hide table row beneath button	
-			//$('#' + x).css('display','none');		
 			$('#' + x).fadeOut();	
 			// toggle button	
 			obj.innerHTML = '+ Details'
 		}	
 
 		return;
+	}
+
+	function showAllGames(obj) {
+		if (obj.innerHTML === '+ All') {
+			obj.innerHTML = '- All'	
+			$('button.details').html('- Details')
+			// show all $('.detail_row').css('- Details')
+			$( ".detail_row" ).each(function( index ) {
+					//
+					console.log('#fetch_detail_' + parseInt(index+1));
+					$('#fetch_detail_' + parseInt(index+1)).load('fragment_game_stats_template.php');
+					$('#detail_' + parseInt(index+1)).fadeIn();
+			});			
+		}
+		else {
+			obj.innerHTML = '+ All'	
+			$('button.details').html('+ Details')
+			$('.detail_row').css('display','none')
+		}
 	}
 
 </script>	
@@ -62,7 +79,7 @@
 							<td class="">&nbsp;</td>
 							<td class="">AWAY</td>
 							<td class="">&nbsp;</td>
-							<td class="">&nbsp;</td>
+							<td class="c"><div id="allGames" onclick="showAllGames(this)">+ All</div></td>
 						</tr>	
 						<!-- loop starts here -->
 <?php 
@@ -75,9 +92,9 @@
 							<td class="c winner">5</td>
 							<td class="c">BOS</td>
 							<td class="c">3</td>
-							<td class="c"><button type="button" class="square" onclick="showGameDetails(this, 'detail_<?php print $i; ?>')">+ Details</button></td>
+							<td class="c"><button type="button" class="square details" onclick="showGameDetails(this, 'detail_<?php print $i; ?>')">+ Details</button></td>
 						</tr>	
-						<tr class="tight" id="detail_<?php print $i; ?>" style="display: none">
+						<tr class="tight detail_row" id="detail_<?php print $i; ?>" style="display: none">
 							<td colspan="6" id="fetch_detail_<?php print $i; ?>">
 
 							</td>
