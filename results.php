@@ -26,7 +26,7 @@
 						<tr class="heading">
 							<td class="c"><span class="note">series</span><br />#</td>
 							<td class="c" colspan="3">Teams</td>
-							<td class="c">Status & Last Update</td>
+							<td class="c">Status / Update</td>
 							<td class="">&nbsp;</td>
 						</tr>						
 						<tr class="stripe">

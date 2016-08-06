@@ -218,7 +218,7 @@ td.winner {
 }
 
 tr.tight td  {
-	padding: 2px 5px;
+	padding: 3px 5px;
 }
 
 tr.stripe {
@@ -253,12 +253,6 @@ tr.heading td {
 	vertical-align: middle;
 }	
 
-@media only screen and (max-width: 600px) {
-	table.standard {
-		min-width: 100%;
-	}
-}
-
 div.gamestats {
 	background-color: #fff;
 	padding: 5px 10px 5px 10px;
@@ -279,4 +273,30 @@ div#allGames {
 	padding: 2px 6px;
 	cursor: pointer;
 	width: 40px;
+}
+
+div.half-left {
+	float: left;
+}
+
+div.half-right {
+	float: left;
+	margin-left: 20px;
+	margin-top: 0;
+}
+
+@media only screen and (max-width: 900px) {
+	div.half-left {
+		float: none;
+	}
+
+	div.half-right {
+		float: none;
+		margin-left: 0;
+		margin-top: 20px;
+	}
+
+	table.standard {
+		min-width: 100%;
+	}
 }

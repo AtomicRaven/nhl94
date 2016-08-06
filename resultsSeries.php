@@ -61,6 +61,8 @@
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
 					
+				<div class="half-left">
+
 					<h2>Results - Specific Series</h2>
 					
 					<table class="standard">
@@ -106,9 +108,10 @@
 						<!-- loop ends -->	
 					</table>
 
-
+			</div>
+			<div class="half-right">			
 					<!-- rob: start of series stats table -->	
-					<h3>Series Stats</h3>
+					<h2>Series Stats</h2>
 					<table class="standard">
 						<tr class="heading">
 							<td class="">&nbsp;</td>
@@ -225,6 +228,7 @@
 
 					</table>					
 
+				</div>			
 
 				</div>	
 		
