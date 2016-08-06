@@ -300,3 +300,11 @@ div.half-right {
 		min-width: 100%;
 	}
 }
+
+tr.heading td {
+	border: 1px solid #999;
+}
+
+tr.heading td.btt { border-top-color: transparent; }
+tr.heading td.brt { border-right-color: transparent; }
+tr.heading td.blt { border-left-color: transparent; }

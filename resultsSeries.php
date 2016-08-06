@@ -67,19 +67,19 @@
 					
 					<table class="standard">
 						<tr class="heading">
-							<td class="c"><span class="note">series</span><br /><!-- Rob: series_id -->99</td>
+							<td class="c brt"><span class="note">series</span><br /><!-- Rob: series_id -->99</td>
 							<td class="" colspan="5">MTL (rob) vs BOS (matt)</td>
 						</tr>			
 						<tr class="heading">
-							<td class="c">&nbsp;<!-- checkmark icon will go here for completed series --></td>
+							<td class="c brt">&nbsp;<!-- checkmark icon will go here for completed series --></td>
 							<td class="" colspan="5">MTL wins in 7<br /> 
 								<span class="note">series updated Aug 01, 2016 @ 6:30pm</span></td>
 						</tr>							
 						<tr class="heading">
 							<td class="c"><span class="note">game</span><br />#</td>
-							<td class="">HOME</td>
+							<td class="c">HOME</td>
 							<td class="">&nbsp;</td>
-							<td class="">AWAY</td>
+							<td class="c">AWAY</td>
 							<td class="">&nbsp;</td>
 							<td class="c"><div id="allGames" onclick="showAllGames(this)">+ All</div></td>
 						</tr>	
