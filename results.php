@@ -23,74 +23,33 @@
 					<h2>Results</h2>
 					
 					<table class="standard">
-						<tr class="heading rowSpacer">
+						<tr class="heading stripe">
 							<td class="seriesNum mainTD">1.</td>
-							<td class="seriesName mainTD">Series Name Here</td>
-							<td class="seriesDate mainTD">Created 05/22/16</td>
+							<td class="seriesName mainTD">MTL</td>
+							<td class="seriesName mainTD">vs</td>
+							<td class="seriesName mainTD">BOS</td>
+							<td class="seriesName mainTD"><!-- checkmark for completed! -->&#x2713;</td>
+							<td class="seriesName mainTD">MTL wins in 7</td>
+							<td class="seriesName mainTD"><button type="button" class="square" onclick="location.href='resultsSeries.php'">Details</button></td>
 						</tr>
 						<tr class="heading">
-							<td>&nbsp;</td>
-							<td class="seriesInfo mainTD" colspan="2"><b>MTL</b> vs BOS, starting in MTL (3-3-1)</td>
-						</tr>						
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>Gm 1. <b>MTL 6</b> / BOS 3 </td>
-							<td><button class="square" id="submit">Game Stats</button></td>
-						</tr>			
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>Gm 2. MTL 3 / <b>BOS</b> 4 </td>
-							<td><button class="square" id="submit">Game Stats</button></td>
-						</tr>			
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>Gm 3. <b>MTL</b> 2 / BOS 1 </td>
-							<td><button class="square" id="submit">Game Stats</button></td>
-						</tr>			
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>Gm 4. BOS 1 / <b>MTL 5</b> </td>
-							<td><button class="square" id="submit">Game Stats</button></td>
-						</tr>			
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>Gm 5. BOS 0 / <b>MTL</b> 3 </td>
-							<td><button class="square" id="submit">Game Stats</button></td>
-						</tr>			
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>MTL wins series</td>
-							<td><button class="square" id="submit">Series Stats</button></td>
-						</tr>								
-						<tr class="heading rowSpacer">
 							<td class="seriesNum mainTD">2.</td>
-							<td class="seriesName mainTD">Series Name Here</td>
-							<td class="seriesDate mainTD">Created 06/01/16</td>
+							<td class="seriesName mainTD">TOR</td>
+							<td class="seriesName mainTD">vs</td>
+							<td class="seriesName mainTD">WPG</td>
+							<td class="seriesName mainTD"><!-- incomplete -->&nbsp;</td>
+							<td class="seriesName mainTD">Incomplete (4 gms)</td>
+							<td class="seriesName mainTD"><button type="button" class="square" onclick="location.href='resultsSeries.php'">Details</button></td>
 						</tr>
-						<tr class="heading">
-							<td>&nbsp;</td>
-							<td class="seriesInfo mainTD" colspan="2"><b>MTL</b> vs BOS, starting in MTL (3-3-1)</td>
-						</tr>						
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>Gm 1. <b>MTL 6</b> / BOS 3 </td>
-							<td><button class="square" id="submit">Game Stats</button></td>
-						</tr>			
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>Gm 2. MTL 3 / <b>BOS</b> 4 </td>
-							<td><button class="square" id="submit">Game Stats</button></td>
-						</tr>			
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>Gm 3. <b>MTL</b> 2 / BOS 1 </td>
-							<td><button class="square" id="submit">Game Stats</button></td>
-						</tr>			
-						<tr class="normal">
-							<td>&nbsp;</td>
-							<td>Series incomplete</td>
-							<td><button class="square" id="submit">Series Stats</button></td>
-						</tr>	
+						<tr class="heading stripe">
+							<td class="seriesNum mainTD">3.</td>
+							<td class="seriesName mainTD">BOS</td>
+							<td class="seriesName mainTD">vs</td>
+							<td class="seriesName mainTD">MTL</td>
+							<td class="seriesName mainTD"><!-- checkmark for completed! -->&#x2713;</td>
+							<td class="seriesName mainTD">BOS wins in 6</td>
+							<td class="seriesName mainTD"><button type="button" class="square" onclick="location.href='resultsSeries.php'">Details</button></td>
+						</tr>												
 					</table>	
 					
 				</div>	

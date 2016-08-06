@@ -85,7 +85,7 @@
 ?><!DOCTYPE HTML>
 <html>
 <head>
-<title>Update Series</title>
+<title>Update Series 1a</title>
 <?php include_once './_INCLUDES/01_HEAD.php'; ?>
 
 			<script>			
@@ -132,10 +132,6 @@
 							<td class="seriesName mainTD"><?=$series["Name"]?>, starting at <?= $homeUserAlias ?>'s Home Arena</td>
 							<td class="seriesDate mainTD">Created <?=$series["DateCreated"]?></td>
 						</tr>
-						<tr class="heading">
-							<td>&nbsp;</td>
-							<td class="seriesInfo mainTD" colspan="2"></td>
-						</tr>						
 
 						<?php 
 
@@ -162,10 +158,9 @@
 							
 						?>
 						<tr>
-							<td>&nbsp;</td>
-							<td>Gm <?=$i?>. <?= GetTeamNameById($row["AwayTeamID"]) ?> (<?= GetUserAlias($row["AwayUserID"])?>) <?=$row["AwayScore"]?> | <?= GetTeamNameById($row["HomeTeamID"])?>(<?= GetUserAlias($row["HomeUserID"]) ?>) <?=$row["HomeScore"]?></td>
+							<td><button type="button" class="square" onclick="location.href='processGameDelete.php?gameId=<?= $row['GameID']?>&seriesId=<?=$seriesid?>'">X</button></td>
+							<td>Gm <?=$i?>. <?= GetTeamABVById($row["AwayTeamID"]) ?> (<?= GetUserAlias($row["AwayUserID"])?>) <?=$row["AwayScore"]?> | <?= GetTeamABVById($row["HomeTeamID"])?> (<?= GetUserAlias($row["HomeUserID"]) ?>) <?=$row["HomeScore"]?></td>
 							<td><button type="button" class="square" onclick="location.href='gamestats.php?gameId=<?= $row['GameID']?>'">Game Stats</button></td>
-							<td><button type="button" class="square" onclick="location.href='processGameDelete.php?gameId=<?= $row['GameID']?>&seriesId=<?=$seriesid?>'">Delete</button></td>
 						</tr>
 						<?php
 							}else{
@@ -179,7 +174,7 @@
 							<td><button type="button" class='square' id='submit<?= $row["ID"]?>' onclick="UploadFile('<?= $row["ID"]?>')">Upload File</button></td>
 						</tr>		
 						<tr>
-							<td colspan="3" id="fileInput<?= $row["ID"]?>" style="display:none;"></td>						
+							<td colspan="3" id="fileInput<?= $row["ID"]?>" style="display:none; padding-left: 41px;"></td>						
 						</tr>				
 						<?php
 								//End Winner Count If
