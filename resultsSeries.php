@@ -130,25 +130,25 @@
 							<td class="heading">Assists</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight"><!-- POINTS -->
-							<td class="heading">Pts</td><td class="c">xxx</td><td class="c">xxx</td>
+							<td class="heading">Points</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight stripe"><!-- Points Per Game -->
 							<td class="heading">PPG</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight"><!-- Shooting % -->
-							<td class="heading">Sh %</td><td class="c">xxx</td><td class="c">xxx</td>
+							<td class="heading">Shooting %</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight stripe"><!-- Faceoffs -->
 							<td class="heading">Faceoffs</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight"><!-- Att Zone -->
-							<td class="heading">Att Zone</td><td class="c">xxx</td><td class="c">xxx</td>
+							<td class="heading">Attack Zone</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight stripe"><!-- Passing -->
-							<td class="heading">Psssing</td><td class="c">xxx</td><td class="c">xxx</td>
+							<td class="heading">Passing</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight"><!-- Penalty Shots -->
-							<td class="heading">Pen Shots</td><td class="c">xxx</td><td class="c">xxx</td>
+							<td class="heading">Pen. Shots</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight stripe"><!-- PIM 
 																	 This should be number of penalties a team takes.  
