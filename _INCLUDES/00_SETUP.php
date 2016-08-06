@@ -1,5 +1,11 @@
 <?php
 		
+		// common code
+		$stripe[0] = '';
+		$stripe[1] = ' stripe'; // odd
+
+
+		// logged in stuff
 		$LOGGED_IN = false;
 		
 		if (isset($_SESSION['username'])) {		
