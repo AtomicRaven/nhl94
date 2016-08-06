@@ -92,51 +92,51 @@
 					<table class="standard">
 						<tr class="heading">
 							<td class="">&nbsp;</td>
-							<td class="">TEAM 1</td>
-							<td class="">TEAM 2</td>
+							<td class="c">TEAM 1</td>
+							<td class="c">TEAM 2</td>
 						</tr>	
 						<tr class="tight stripe"><!-- RECORD -->
-							<td class="heading">Record</td><td class="">3 wins</td><td class="">4 wins</td>
+							<td class="heading">Record</td><td class="c">3 wins</td><td class="c">4 wins</td>
 						</tr>							
 						<tr class="tight"><!-- GOALS -->
-							<td class="heading">G</td><td class="">xxx</td><td class="">xxx</td>
+							<td class="heading">Goals</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight stripe"><!-- ASSISTS -->
-							<td class="heading">A</td><td class="">xxx</td><td class="">xxx</td>
+							<td class="heading">Assists</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight"><!-- POINTS -->
-							<td class="heading">Pts</td><td class="">xxx</td><td class="">xxx</td>
+							<td class="heading">Pts</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight stripe"><!-- Points Per Game -->
-							<td class="heading">PPG</td><td class="">xxx</td><td class="">xxx</td>
+							<td class="heading">PPG</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight"><!-- Shooting % -->
-							<td class="heading">Sh %</td><td class="">xxx</td><td class="">xxx</td>
+							<td class="heading">Sh %</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight stripe"><!-- Faceoffs -->
-							<td class="heading">Faceoffs</td><td class="">xxx</td><td class="">xxx</td>
+							<td class="heading">Faceoffs</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight"><!-- Att Zone -->
-							<td class="heading">Att Zone</td><td class="">xxx</td><td class="">xxx</td>
+							<td class="heading">Att Zone</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight stripe"><!-- Passing -->
-							<td class="heading">Psssing</td><td class="">xxx</td><td class="">xxx</td>
+							<td class="heading">Psssing</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight"><!-- Penalty Shots -->
-							<td class="heading">Pen Shots</td><td class="">xxx</td><td class="">xxx</td>
+							<td class="heading">Pen Shots</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight stripe"><!-- PIM 
 																	 This should be number of penalties a team takes.  
 																	 Note: Each Penalty shot (for opposition) should be added here, which
 																	 will give total penatlies	
 																									-->
-							<td class="heading"># Penalties</td><td class="">xxx</td><td class="">xxx</td>
+							<td class="heading"># Penalties</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight"><!-- Breakways -->
-							<td class="heading">Breakways</td><td class="">xxx</td><td class="">xxx</td>
+							<td class="heading">Breakways</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 						<tr class="tight stripe"><!-- One Timers -->
-							<td class="heading">One Timers</td><td class="">xxx</td><td class="">xxx</td>
+							<td class="heading">One Timers</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
 
 					</table>		

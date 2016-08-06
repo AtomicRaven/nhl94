@@ -247,3 +247,16 @@ table.standard td {
 tr.heading.stripe td {
 	background-color: #ddd;
 }
+
+@media only screen and (max-width: 600px) {
+	table.standard {
+		min-width: 100%;
+	}
+}
+
+div.gamestats {
+	background-color: #fff;
+	padding: 5px 10px 5px 10px;
+	border-bottom: 5px solid #999;
+	border-top: 5px solid #999;
+}
