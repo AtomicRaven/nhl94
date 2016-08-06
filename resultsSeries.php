@@ -71,7 +71,9 @@
 							<td class="" colspan="5">MTL (rob) vs BOS (matt)</td>
 						</tr>			
 						<tr class="heading">
-							<td class="c brt">&nbsp;<!-- checkmark icon will go here for completed series --></td>
+							<td class="c brt" style="padding: 2px 0 0 0;">
+								<a class="stanley"><br/></a><!-- put here only for complete series -->								
+							</td>
 							<td class="" colspan="5">MTL wins in 7<br /> 
 								<span class="note">series updated Aug 01, 2016 @ 6:30pm</span></td>
 						</tr>							
