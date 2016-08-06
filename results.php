@@ -28,7 +28,8 @@
 							<td class="seriesName mainTD">MTL</td>
 							<td class="seriesName mainTD">vs</td>
 							<td class="seriesName mainTD">BOS</td>
-							<td class="seriesName mainTD">MTL wins in 7</td>
+							<td class="seriesName mainTD">MTL wins <nobr>in 7</nobr><br /> 
+								<span class="note">Updated Aug 01, 2016 @ 6:30pm</span></td>
 							<td class="seriesName mainTD"><button type="button" class="square" onclick="location.href='resultsSeries.php'">Details</button></td>
 						</tr>
 						<tr class="heading">
@@ -36,7 +37,8 @@
 							<td class="seriesName mainTD">TOR</td>
 							<td class="seriesName mainTD">vs</td>
 							<td class="seriesName mainTD">WPG</td>
-							<td class="seriesName mainTD">In progress (4 gms)</td>
+							<td class="seriesName mainTD">In progress <nobr>(4 gms)</nobr><br /> 
+								<span class="note">Updated Aug 01, 2016 @ 6:30pm</span></td>
 							<td class="seriesName mainTD"><button type="button" class="square" onclick="location.href='resultsSeries.php'">Details</button></td>
 						</tr>
 						<tr class="heading stripe">
@@ -44,7 +46,8 @@
 							<td class="seriesName mainTD">BOS</td>
 							<td class="seriesName mainTD">vs</td>
 							<td class="seriesName mainTD">MTL</td>
-							<td class="seriesName mainTD">BOS wins in 6</td>
+							<td class="seriesName mainTD">BOS wins <nobr>in 6</nobr><br /> 
+								<span class="note">Updated Aug 01, 2016 @ 6:30pm</span></td>
 							<td class="seriesName mainTD"><button type="button" class="square" onclick="location.href='resultsSeries.php'">Details</button></td>
 						</tr>												
 					</table>	

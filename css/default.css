@@ -260,3 +260,10 @@ div.gamestats {
 	border-bottom: 5px solid #999;
 	border-top: 5px solid #999;
 }
+
+h4 {
+	margin: -15px 0 10px 0;
+	font-size: 80%;
+}
+
+span.note { font-size: 80%; }

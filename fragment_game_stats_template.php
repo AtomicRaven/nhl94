@@ -7,6 +7,8 @@
 					<div class="gamestats">
 
 							<h3>Game 3 Stats</h3>
+							<h4>submitted Aug 01, 2016 @ 6:30pm</h4>
+
 							<table class="standard">
 								<tr class="heading">
 									<td class="">&nbsp;</td>

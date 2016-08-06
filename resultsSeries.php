@@ -14,15 +14,17 @@
 	function showGameDetails(obj, x) {
 		if ( obj.innerHTML === '+ Details' ) {
 			// dipslay table row beneath button	
-			$('#' + x).css('display','table-row');
+			//$('#' + x).css('display','table-row');
 			// fetch game stats
 			$('#fetch_' + x).load('fragment_game_stats_template.php');
+			$('#' + x).fadeIn();
 			// toggle button	
 			obj.innerHTML = '- Details'
 		}
 		else {
 			// hide table row beneath button	
-			$('#' + x).css('display','none');			
+			//$('#' + x).css('display','none');		
+			$('#' + x).fadeOut();	
 			// toggle button	
 			obj.innerHTML = '+ Details'
 		}	
@@ -51,7 +53,8 @@
 						</tr>			
 						<tr class="tight">
 							<td class="">&nbsp;</td>
-							<td class="" colspan="5">&#x2713; MTL wins in 7</td>
+							<td class="" colspan="5">&#x2713; MTL wins in 7<br /> 
+								<span class="note">series updated Aug 01, 2016 @ 6:30pm</span></td>
 						</tr>							
 						<tr class="heading">
 							<td class="">#</td>
