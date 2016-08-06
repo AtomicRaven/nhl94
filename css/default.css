@@ -2,7 +2,7 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-
+ 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -71,14 +71,13 @@ html, body {
 
 body {
 		font-family: arial;
-		background-color: #ccc;
 		color: #333;
 		font-size: 16px;
+		background-color: #3dbeef;
 }	
 
 div#page {
 		padding: 1em; 
-		background-color: #ccc;
 }
 
 ul#nav {
@@ -97,15 +96,18 @@ ul#nav li a {
 	overflow: hidden;
 	border-radius: 8px;
 	text-decoration: none;
+	font-weight: bold;
 }
 
 div#main {
 		clear: both;
 		overflow: hidden;
 		margin-top: 60px;
-		padding: 20px 10px 50px 10px;
-		border: 1px solid #999;
+		padding: 30px 20px 50px 20px;
+		border: 2px solid #24a3d3;
 		position: relative;
+		background-color: #d3f1fc;
+		color: #0c6f95;
 }
 
 div.spinner {
@@ -140,7 +142,7 @@ input[type="password"] {
 }
 
 button {
-	background-color: #000;
+	background-color: #0ba9e6;
 	color: #fff;
 	padding: 10px 13px;
 	overflow: hidden;
@@ -152,7 +154,7 @@ button {
 }
 
 button.square, a.square-button {
-	background-color: #000;
+	background-color: #019cd7;
 	color: #fff;
 	padding: 3px 4px;
 	overflow: hidden;
@@ -168,8 +170,8 @@ a.square-button {
 }
 
 button.small, a.small-button {
-	border: 1px solid #999;
-	background-color: #ddd;
+	border: 1px solid #24a3d3;
+	background-color: #eee;
 	display: inline-block;
 	padding: 2px 6px;
 	cursor: pointer;
@@ -177,7 +179,7 @@ button.small, a.small-button {
 }
 
 button.small:hover, a.small-button:hover {
-	background-color: #eee;
+	background-color: #fff;
 }
 
 a.small-button {
@@ -220,7 +222,7 @@ div.loginInfo {
 
 h1 {
 	font-weight: bold;
-	margin: 0 0 2em 0;
+	margin: 0 0 .5em 0;
 	font-size: 120%;
  }
 
@@ -251,11 +253,11 @@ tr.tight td  {
 }
 
 tr.stripe {
-	background-color: #ddd;
+	background-color: #b4e5f7;
 }
 
 table.standard tr.heading {
-	background-color: #bbb;
+	background-color: #77cdee;
 	font-weight: bold;
 }
 
@@ -278,11 +280,11 @@ table.standard, table.hidden  {
 }
 
 table.standard {
-	border: 1px solid #bbb; 
+	border: 1px solid #24a3d3; 
 }
 
 table.standard td {
-	border: 1px solid #bbb;
+	border: 1px solid #24a3d3;
 }
 
 tr.heading.stripe td {
@@ -305,8 +307,8 @@ table.hidden tr.heading td {
 div.gamestats {
 	background-color: #fff;
 	padding: 5px 10px 5px 10px;
-	border-bottom: 5px solid #999;
-	border-top: 5px solid #999;
+	border-bottom: 5px solid #24a3d3;
+	border-top: 5px solid #24a3d3;
 }
 
 h4 {
@@ -328,22 +330,22 @@ div.half-right {
 }
 
 div#allGames {
-	border: 1px solid #999;
-	background-color: #ccc;
+	border: 1px solid #24a3d3;
+	background-color: #eee;
 	display: inline-block;
-	padding: 2px 6px;
+	padding: 3px 6px 2px;
 	cursor: pointer;
 	width: 40px;
 }
 
 div#allGames:hover {
-	background-color: #ddd;
+	background-color: #fff;
 }
 
 
 
 table.standard tr.heading td {
-	border: 1px solid #999;
+	border: 1px solid #24a3d3;
 }
 
 tr.heading td.btt { border-top-color: transparent; }
@@ -371,17 +373,32 @@ table.standard td.stanley {
 
 
 table.lined tr:first-child td {
-	border-top: 1px solid #bbb;
+	border-top: 1px solid #24a3d3;
 }
 
 table.lined td {
-	border-bottom: 1px solid #bbb;
+	border-bottom: 1px solid #24a3d3;
 } 
 
 
 
 
 @media only screen and (max-width: 900px) {
+
+	body {
+		background-color: #d3f1fc;
+	}
+
+	div#page {
+		padding: 10px;
+		background-color: #d3f1fc;
+	}
+
+	div#main {
+		padding: 20px 0 50px 0;		
+		border: none;
+	}
+
 	div.half-left {
 		float: none;
 	}

@@ -51,7 +51,7 @@
 								<span class="note">Last Updated 3 minutes ago</span><br />
 								<!-- Series creator: matt -->
 								</td>
-							<td class="r"><button type="button" class="square" onclick="location.href='update.php?seriesId=94'">Select</button></td>
+							<td class="r"><button type="button" class="square" onclick="location.href='update.php?seriesId=95'">Select</button></td>
 						</tr>
 						<tr class="">
 							<td><button type="button" class="square">X</button></td>
@@ -60,7 +60,7 @@
 								<span class="note">Last Updated 1 week ago</span><br />
 								<!-- Series creator: matt -->
 								</td>
-							<td class="r"><button type="button" class="square" onclick="location.href='update.php?seriesId=94'">Select</button></td>
+							<td class="r"><button type="button" class="square" onclick="location.href='update.php?seriesId=95'">Select</button></td>
 						</tr>
 						<tr class="">
 							<td><button type="button" class="square">X</button></td>
@@ -69,7 +69,7 @@
 								<span class="note">Last Updated 2 weeks ago</span><br />
 								<!-- Series creator: matt -->
 								</td>
-							<td class="r"><button type="button" class="square" onclick="location.href='update.php?seriesId=94'">Select</button></td>
+							<td class="r"><button type="button" class="square" onclick="location.href='update.php?seriesId=95'">Select</button></td>
 						</tr>
 						<tr class="">
 							<td><button type="button" class="square">X</button></td>
