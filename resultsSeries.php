@@ -60,10 +60,11 @@
 				
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
-					
+					<h1>Results</h1>	
+					<h2>Results for a Specific Series</h2>
 				<div class="half-left">
 
-					<h2>Results - Specific Series</h2>
+					
 					
 					<table class="standard">
 						<tr class="heading">

@@ -9,7 +9,7 @@
 				$message = '<p class="message">Wrong username/password combo, son:</p>';
 		}
 		else {
-				$message = '<p class="message">You need to login to see this page:</p>';
+				$message = '<p class="message">Enter credentials below:</p>';
 		}
 		
 		if ($LOGGED_IN == false) {
@@ -29,8 +29,9 @@
 				
 				<div id="main">
 				
-					<h2>Login</h2>
-					<?php print $message; ?>
+
+					<h1>Login</h1>
+					<h2><?php print $message; ?></h2>
 					<form id="loginForm" name="loginForm" method="post" action="processLogin.php">
 							<label>username</label><br>
 							<input type="text" name="username" value=""><br>

@@ -22,9 +22,11 @@
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
 				
+					<h1>Manage</h1>
+
 					<h2>1. Create New Series</h2>
 					
-					<table class="hidden">
+					<table class="two-column">
 						<tr class="">
 							<td class=""><a href="./create.php" class="square-button">Create</a></td>
 							<td class="">Create a new series</td>
@@ -49,7 +51,7 @@
 								<span class="note">Last Updated 3 minutes ago</span><br />
 								<!-- Series creator: matt -->
 								</td>
-							<td class=""><button type="button" class="square" onclick="location.href='update.php?seriesId=94'">Select</button></td>
+							<td class="r"><button type="button" class="square" onclick="location.href='update.php?seriesId=94'">Select</button></td>
 						</tr>
 						<tr class="">
 							<td><button type="button" class="square">X</button></td>
@@ -58,7 +60,7 @@
 								<span class="note">Last Updated 1 week ago</span><br />
 								<!-- Series creator: matt -->
 								</td>
-							<td class=""><button type="button" class="square" onclick="location.href='update.php?seriesId=94'">Select</button></td>
+							<td class="r"><button type="button" class="square" onclick="location.href='update.php?seriesId=94'">Select</button></td>
 						</tr>
 						<tr class="">
 							<td><button type="button" class="square">X</button></td>
@@ -67,7 +69,7 @@
 								<span class="note">Last Updated 2 weeks ago</span><br />
 								<!-- Series creator: matt -->
 								</td>
-							<td class=""><button type="button" class="square" onclick="location.href='update.php?seriesId=94'">Select</button></td>
+							<td class="r"><button type="button" class="square" onclick="location.href='update.php?seriesId=94'">Select</button></td>
 						</tr>
 						<tr class="">
 							<td><button type="button" class="square">X</button></td>
@@ -76,7 +78,7 @@
 								<span class="note">Last Updated over 2 weeks ago</span><br />
 								<!-- Series creator: matt -->
 								</td>
-							<td class=""><button type="button" class="square" onclick="location.href='update.php?seriesId=94'">Select</button></td>
+							<td class="r"><button type="button" class="square" onclick="location.href='update.php?seriesId=94'">Select</button></td>
 						</tr>
 
 

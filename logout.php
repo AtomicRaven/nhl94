@@ -22,7 +22,7 @@
 				
 				<div id="main">
 				
-					<h2>Logged Out</h2>
+					<h1>Session Ended</h1>
 					<p class="message">You have successfully logged out.</p>
 					
 				</div>	
