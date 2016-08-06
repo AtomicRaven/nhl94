@@ -85,7 +85,7 @@
 ?><!DOCTYPE HTML>
 <html>
 <head>
-<title>Update Series 1a</title>
+<title>Update Series</title>
 <?php include_once './_INCLUDES/01_HEAD.php'; ?>
 
 			<script>			
@@ -120,7 +120,9 @@
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
 
 					<div style="color:red;"><?= $msg ?></div><br/><br/>
+
 					<h2>Update Series</h2> 
+					
 					<?php
 					if(!$creatednew){
 					?>
@@ -256,6 +258,60 @@
 						 echo $seriesSelectBox;
 					 }
 					  ?>
+
+
+					<p><br /></p>  	
+					<p><br /></p> 
+					<h2>New Update Series</h2> 
+					  	
+					<table class="hidden lined">
+					<!--	
+						<tr class="heading">
+							<td class="c"><span class="note">series</span><br />#</td>
+							<td class="">
+								Series Details	
+							</td>
+							<td class="">
+								<br />	
+							</td>
+						</tr>
+					-->
+
+						<tr class="">
+							<td class="c">101</td>
+							<td class=""><b>TOR vs WPG</b> - <nobr>4 games completed</nobr><br />
+								<span class="note">Last Updated 3 minutes ago</span><br />
+								<!-- Series creator: matt -->
+								</td>
+							<td class=""><button type="button" class="square" onclick="location.href='resultsSeries.php'">Select</button></td>
+						</tr>
+						<tr class="">
+							<td class="c">98</td>
+							<td class="">TOR vs WPG - <nobr>4 games completed</nobr><br />
+								<span class="note">Last Updated 3 minutes ago</span><br />
+								<!-- Series creator: matt -->
+								</td>
+							<td class=""><button type="button" class="square" onclick="location.href='resultsSeries.php'">Select</button></td>
+						</tr>
+						<tr class="">
+							<td class="c">96</td>
+							<td class="">TOR vs WPG - <nobr>4 games completed</nobr><br />
+								<span class="note">Last Updated 3 minutes ago</span><br />
+								<!-- Series creator: matt -->
+								</td>
+							<td class=""><button type="button" class="square" onclick="location.href='resultsSeries.php'">Select</button></td>
+						</tr>
+						<tr class="">
+							<td class="c">95</td>
+							<td class="">TOR vs WPG - <nobr>4 games completed</nobr><br />
+								<span class="note">Last Updated 3 minutes ago</span><br />
+								<!-- Series creator: matt -->
+								</td>
+							<td class=""><button type="button" class="square" onclick="location.href='resultsSeries.php'">Select</button></td>
+						</tr>
+
+
+					</table>						  
 				</div>	
 		
 		</div><!-- end: #page -->	

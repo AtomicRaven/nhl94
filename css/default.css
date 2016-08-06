@@ -188,11 +188,11 @@ a.small-button {
 }
 
 
-table.standard {
+table {
 	border-collapse: separate;
 }
 
-table.standard td {
+table  td {
 	padding: 10px 5px;
 }
 
@@ -227,7 +227,7 @@ h3 {
 }
 
 td {
-	border: 1px dotted #333;
+	
 }
 
 td.c {
@@ -246,8 +246,12 @@ tr.stripe {
 	background-color: #ddd;
 }
 
-tr.heading {
+table.standard tr.heading {
 	background-color: #bbb;
+	font-weight: bold;
+}
+
+tr.heading {
 	font-weight: bold;
 }
 
@@ -256,10 +260,13 @@ td.heading {
 	vertical-align: middle;
 }
 
-table.standard {
+table.standard, table.hidden  {
 	min-width: 400px;
-	border: 1px solid #bbb;
 	border-collapse: collapse;
+}
+
+table.standard {
+	border: 1px solid #bbb; 
 }
 
 table.standard td {
@@ -273,6 +280,15 @@ tr.heading.stripe td {
 tr.heading td {
 	vertical-align: middle;
 }	
+
+table.hidden td {
+	border: none;
+	line-height: 1.5;
+}
+
+table.hidden tr.heading td {
+	vertical-align: bottom;
+}
 
 div.gamestats {
 	background-color: #fff;
@@ -314,7 +330,7 @@ div#allGames:hover {
 
 
 
-tr.heading td {
+table.standard tr.heading td {
 	border: 1px solid #999;
 }
 
@@ -342,9 +358,13 @@ table.standard td.stanley {
 }
 
 
+table.lined tr:first-child td {
+	border-top: 1px solid #bbb;
+}
 
-
-
+table.lined td {
+	border-bottom: 1px solid #bbb;
+}
 
 
 
@@ -360,7 +380,7 @@ table.standard td.stanley {
 		margin-top: 20px;
 	}
 
-	table.standard {
+	table.standard, table.hidden  {
 		min-width: 100%;
 	}
 }

@@ -24,7 +24,7 @@
 				
 					<h2>Manage Series</h2>
 					
-					<table class="standard">
+					<table class="hidden">
 						<tr class="">
 							<td class=""><a href="./create.php" class="square-button">Create</a></td>
 							<td class="">Create a new series</td>
