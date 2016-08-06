@@ -34,7 +34,7 @@
 							<td class="">MTL</td>
 							<td class="">vs</td>
 							<td class="">BOS</td>
-							<td class="">MTL wins <nobr>in 7</nobr><br /> 
+							<td class="stanley">MTL wins <nobr>in 7</nobr><br /> 
 								<span class="note">Updated Aug 01, 2016 @ 6:30pm</span></td>
 							<td class=""><button type="button" class="square" onclick="location.href='resultsSeries.php'">Details</button></td>
 						</tr>
@@ -52,7 +52,7 @@
 							<td class="">BOS</td>
 							<td class="">vs</td>
 							<td class="">MTL</td>
-							<td class="">BOS wins <nobr>in 6</nobr><br /> 
+							<td class="stanley">BOS wins <nobr>in 6</nobr><br /> 
 								<span class="note">Updated Aug 01, 2016 @ 6:30pm</span></td>
 							<td class=""><button type="button" class="square" onclick="location.href='resultsSeries.php'">Details</button></td>
 						</tr>												
