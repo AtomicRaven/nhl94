@@ -193,3 +193,57 @@ div.loginInfo {
 }
 
 
+
+
+
+
+
+
+
+h3 {
+	font-weight: bold;
+	margin: 1em 0;
+}
+
+td {
+	border: 1px dotted #333;
+}
+
+td.c {
+	text-align: center;
+}
+
+td.winner {
+	font-weight: bold;
+}
+
+tr.tight td  {
+	padding: 2px 5px;
+}
+
+tr.stripe {
+	background-color: #ddd;
+}
+
+tr.heading {
+	background-color: #bbb;
+	font-weight: bold;
+}
+
+td.heading {
+	font-weight: bold;
+}
+
+table.standard {
+	min-width: 400px;
+	border: 1px solid #bbb;
+	border-collapse: collapse;
+}
+
+table.standard td {
+	border: 1px solid #bbb;
+}
+
+tr.heading.stripe td {
+	background-color: #ddd;
+}
