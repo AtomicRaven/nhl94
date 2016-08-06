@@ -28,7 +28,6 @@
 							<td class="seriesName mainTD">MTL</td>
 							<td class="seriesName mainTD">vs</td>
 							<td class="seriesName mainTD">BOS</td>
-							<td class="seriesName mainTD"><!-- checkmark for completed! -->&#x2713;</td>
 							<td class="seriesName mainTD">MTL wins in 7</td>
 							<td class="seriesName mainTD"><button type="button" class="square" onclick="location.href='resultsSeries.php'">Details</button></td>
 						</tr>
@@ -37,8 +36,7 @@
 							<td class="seriesName mainTD">TOR</td>
 							<td class="seriesName mainTD">vs</td>
 							<td class="seriesName mainTD">WPG</td>
-							<td class="seriesName mainTD"><!-- incomplete -->&nbsp;</td>
-							<td class="seriesName mainTD">Incomplete (4 gms)</td>
+							<td class="seriesName mainTD">In progress (4 gms)</td>
 							<td class="seriesName mainTD"><button type="button" class="square" onclick="location.href='resultsSeries.php'">Details</button></td>
 						</tr>
 						<tr class="heading stripe">
@@ -46,7 +44,6 @@
 							<td class="seriesName mainTD">BOS</td>
 							<td class="seriesName mainTD">vs</td>
 							<td class="seriesName mainTD">MTL</td>
-							<td class="seriesName mainTD"><!-- checkmark for completed! -->&#x2713;</td>
 							<td class="seriesName mainTD">BOS wins in 6</td>
 							<td class="seriesName mainTD"><button type="button" class="square" onclick="location.href='resultsSeries.php'">Details</button></td>
 						</tr>												
