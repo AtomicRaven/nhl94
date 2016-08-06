@@ -22,7 +22,7 @@
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
 				
-					<h2>Manage Series</h2>
+					<h2>1. Create New Series</h2>
 					
 					<table class="hidden">
 						<tr class="">
@@ -34,6 +34,54 @@
 							<td class="">Update existing series</td>
 						</tr>
 					</table>
+
+
+
+					<p><br /></p>  	
+					<p><br /></p> 
+					<h2>2. Update Existing Series (Rob, this replaces Update button above)</h2> 
+					  	
+					<table class="hidden lined">
+						<tr class="">
+							<td><button type="button" class="square">X</button></td>
+							<td class="c">101</td>
+							<td class=""><b>TOR vs WPG</b> - <nobr>4 games completed</nobr><br />
+								<span class="note">Last Updated 3 minutes ago</span><br />
+								<!-- Series creator: matt -->
+								</td>
+							<td class=""><button type="button" class="square" onclick="location.href='update.php?seriesId=94'">Select</button></td>
+						</tr>
+						<tr class="">
+							<td><button type="button" class="square">X</button></td>
+							<td class="c">98</td>
+							<td class="">BUF vs WPG - <nobr>6 games completed</nobr><br />
+								<span class="note">Last Updated 1 week ago</span><br />
+								<!-- Series creator: matt -->
+								</td>
+							<td class=""><button type="button" class="square" onclick="location.href='update.php?seriesId=94'">Select</button></td>
+						</tr>
+						<tr class="">
+							<td><button type="button" class="square">X</button></td>
+							<td class="c">96</td>
+							<td class="">BUF vs MTL - <nobr>1 game completed</nobr><br />
+								<span class="note">Last Updated 2 weeks ago</span><br />
+								<!-- Series creator: matt -->
+								</td>
+							<td class=""><button type="button" class="square" onclick="location.href='update.php?seriesId=94'">Select</button></td>
+						</tr>
+						<tr class="">
+							<td><button type="button" class="square">X</button></td>
+							<td class="c">95</td>
+							<td class="">TOR vs WPG - <nobr>4 games completed</nobr><br />
+								<span class="note">Last Updated over 2 weeks ago</span><br />
+								<!-- Series creator: matt -->
+								</td>
+							<td class=""><button type="button" class="square" onclick="location.href='update.php?seriesId=94'">Select</button></td>
+						</tr>
+
+
+					</table>						  
+
 					
 				</div>	
 		
