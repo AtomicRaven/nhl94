@@ -61,20 +61,20 @@
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
 					
-					<h2>Series Results</h2>
+					<h2>Results - Specific Series</h2>
 					
 					<table class="standard">
 						<tr class="heading">
-							<td class=""><!-- Rob: series_id -->1.</td>
+							<td class="c"><span class="note">series</span><br /><!-- Rob: series_id -->99</td>
 							<td class="" colspan="5">MTL (rob) vs BOS (matt)</td>
 						</tr>			
-						<tr class="tight">
-							<td class="">&nbsp;</td>
-							<td class="" colspan="5">&#x2713; MTL wins in 7<br /> 
+						<tr class="heading">
+							<td class="c">&nbsp;<!-- checkmark icon will go here for completed series --></td>
+							<td class="" colspan="5">MTL wins in 7<br /> 
 								<span class="note">series updated Aug 01, 2016 @ 6:30pm</span></td>
 						</tr>							
 						<tr class="heading">
-							<td class="">#</td>
+							<td class="c"><span class="note">game</span><br />#</td>
 							<td class="">HOME</td>
 							<td class="">&nbsp;</td>
 							<td class="">AWAY</td>
@@ -87,7 +87,7 @@
 			{
 ?>						
 						<tr class="tight<?php print $stripe[$i & 1]; ?>">
-							<td class="c"><?php print $i; ?>.</td>
+							<td class="c"><?php print $i; ?></td>
 							<td class="c winner">MTL</td>
 							<td class="c winner">5</td>
 							<td class="c">BOS</td>

@@ -232,6 +232,7 @@ tr.heading {
 
 td.heading {
 	font-weight: bold;
+	vertical-align: middle;
 }
 
 table.standard {
@@ -247,6 +248,10 @@ table.standard td {
 tr.heading.stripe td {
 	background-color: #ddd;
 }
+
+tr.heading td {
+	vertical-align: middle;
+}	
 
 @media only screen and (max-width: 600px) {
 	table.standard {
