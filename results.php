@@ -34,21 +34,21 @@
 							<td class="c">MTL<br/>vs<br/>BOS</td>
 							<td class="stanley">MTL wins <nobr>in 7</nobr><br /> 
 								<span class="note">Updated Aug 01, 2016 @ 6:30pm</span></td>
-							<td class=""><button type="button" class="square" onclick="location.href='resultsSeries.php'">Select</button></td>
+							<td class="c"><button type="button" class="square" onclick="location.href='resultsSeries.php'">Select</button></td>
 						</tr>
 						<tr class="">
 							<td class="c">100</td>
 							<td class="c">TOR<br/>vs<br/>WPG</td>
 							<td class="">In progress <nobr>(4 gms)</nobr><br /> 
 								<span class="note">Updated Aug 01, 2016 @ 6:30pm</span></td>
-							<td class=""><button type="button" class="square" onclick="location.href='resultsSeries.php'">Select</button></td>
+							<td class="c"><button type="button" class="square" onclick="location.href='resultsSeries.php'">Select</button></td>
 						</tr>
 						<tr class="stripe">
 							<td class="c">99</td>
 							<td class="c">BOS<br/>vs<br/>MTL</td>
 							<td class="stanley">BOS wins <nobr>in 6</nobr><br /> 
 								<span class="note">Updated Aug 01, 2016 @ 6:30pm</span></td>
-							<td class=""><button type="button" class="square" onclick="location.href='resultsSeries.php'">Select</button></td>
+							<td class="c"><button type="button" class="square" onclick="location.href='resultsSeries.php'">Select</button></td>
 						</tr>												
 					</table>	
 					
