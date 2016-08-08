@@ -165,8 +165,8 @@ function MarkSeriesAsInactive($seriesid){
 function ResetScheduleByGameID($gameid){	
 
 	$conn = $GLOBALS['$conn'];
-	$sql = "UPDATE schedule SET HomeScore= NULL, AwayScore= NULL, 
-	HomeTeamID=NULL, AwayTeamID=NULL, OT= NULL, ConfirmTime= NULL, GameID=NULL, WinnerUserID=NULL
+	$sql = "UPDATE schedule SET HomeScore= NULL, AwayScore= NULL, ConfirmTime = NOW(),
+	HomeTeamID=NULL, AwayTeamID=NULL, OT= NULL, GameID=NULL, WinnerUserID=NULL
 	WHERE GameID= '$gameid' LIMIT 1";
 	
 	$tmr = mysqli_query($conn, $sql);
