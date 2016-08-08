@@ -22,7 +22,7 @@ if (!$GLOBALS['$conn']) {
     die("Connection failed: " . mysqli_connect_error());
 } else{
 	logMsg("DB Connected");
-    date_default_timezone_set('America/Fort_Wayne'); // set timezone in php
+    date_default_timezone_set('America/Toronto'); // set timezone in php
     mysql_query("SET `time_zone` = '".date('P')."'"); // set timezone in MySQL
 }
 

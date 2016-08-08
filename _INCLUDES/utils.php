@@ -80,4 +80,42 @@ function HumanTiming ($time)
 
 }
 
+function CheckSeriesForWinner($seriesid, $homeuserid, $awayuserid){
+
+    //Check to see if series is complete.  If so Mark as Complete
+    $gamesplayed = GetGamesBySeriesId($seriesid);
+    $homeWinnerCount = 0;
+    $awayWinnerCount = 0;
+
+    while($row = mysqli_fetch_array($gamesplayed, MYSQL_ASSOC)){
+        if($row["WinnerUserID"] != 0){								
+                            
+            if($row["WinnerUserID"] == $homeuserid){
+                $homeWinnerCount++;
+            }
+
+            if($row["WinnerUserID"] == $awayuserid){
+                $awayWinnerCount++;
+            }
+        }
+    }
+
+    if($homeWinnerCount >= 4 || $awayWinnerCount >= 4){
+
+        if($homeWinnerCount >= 4){        
+            MarkSeriesAsWon($seriesid, $homeuserid, $awayWinnerCount);
+        }
+
+        if($awayWinnerCount >= 4){
+            MarkSeriesAsWon($seriesid, $awayuserid, $homeWinnerCount);	
+        } 
+    }else{
+
+        //If game has been deleted and series is no longer won we set back to 0
+         MarkSeriesAsWon($seriesid, 0, 0);
+        
+    }    
+
+}
+
 ?>

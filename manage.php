@@ -17,13 +17,22 @@
 				$gamesCompleteText = $row["TotalGames"];
 				$lastEntryTime = "";
 
-				if($row["TotalGames"] == 0){
+				if($row["SeriesWonBy"] != 0){
+
+					$lastEntryTime = "Series Completed " . $row["DateCompleted"];
+					$gamesCompleteText = "Series won by " . GetUserAlias($row["SeriesWonBy"]) . " 4 games to " . $row["LoserNumGames"];
+
+				}else if($row["TotalGames"] == 0){
 					$lastEntryTime = "Series Created " . $row["DateCreated"];
 					$gamesCompleteText = "Series not yet started.";
 
 				}else{
 
-					$gamesCompleteText .= " games completed";
+					if($row["TotalGames"] == 1)
+						$gamesCompleteText .= " game completed";
+					else 
+						$gamesCompleteText .= " games completed";
+
 					$lastEntryTime = "Last Updated " . HumanTiming($row["lastEntryDate"]) . " ago";
 				}
 																									
@@ -71,8 +80,7 @@
 
 
 					<p><br /></p>  	
-					<p><br /></p> 
-					<h2>2. Update Existing Series (Rob, this replaces Update button above)</h2> 
+					<h2>2. Update Existing Series</h2> 
 					
 
 								

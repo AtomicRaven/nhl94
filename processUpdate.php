@@ -329,6 +329,9 @@ require_once("./_INCLUDES/errorchk.php");
 		} else {
 			logMsg("Error: Schedule: " . $schupr . "<br>" . mysqli_error($conn));
 		}
+
+		//Check to see if series is complete.  If so Mark as Complete
+		CheckSeriesForWinner($seriesid, $homeuserid, $awayuserid);		
 		
 		//logMsg($schupq);
 			
@@ -836,6 +839,8 @@ require_once("./_INCLUDES/errorchk.php");
 
 	$homeuserid = $_POST['homeUser'];
 	$awayuserid = $_POST['awayUser'];
+
+	$error ="";
 
 	//echo "FileName: " . $filename . "</br>";
 

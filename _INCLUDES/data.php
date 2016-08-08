@@ -14,7 +14,7 @@ function GetNextGameId(){
 
 }
 
-function DeleteGameDataById($gameid){
+function DeleteGameDataById($gameid, $seriesid){
 
 	//Tables gamestats, pensum, playerstats, scoresum, schedule
 	DeleteGameFromTable('gamestats', $gameid);
@@ -22,6 +22,8 @@ function DeleteGameDataById($gameid){
 	DeleteGameFromTable('playerstats', $gameid);
 	DeleteGameFromTable('scoresum', $gameid);
 	ResetScheduleByGameID($gameid);		
+
+	CheckSeriesForWinner($seriesid, 0,0);
 	
 }
 
@@ -98,13 +100,12 @@ function GetSeriesAndGames(){
 	$conn = $GLOBALS['$conn'];
 	//$sql = "SELECT * FROM schedule INNER JOIN series ON schedule.SeriesID = series.ID ORDER BY series.ID ASC";
 
-	$sql = "SELECT a.ID, a.Name, a.DateCreated, b.*, MAX(b.ConfirmTime) as lastEntryDate,
+	$sql = "SELECT a.*, b.*, MAX(b.ConfirmTime) as lastEntryDate,
 		COUNT(CASE WHEN b.GameID >= 0 then 1 ELSE NULL END) AS TotalGames
 		FROM series a INNER JOIN schedule b
 		ON a.ID = b.SeriesID		
 		GROUP BY a.ID
 		ORDER BY (CASE WHEN MAX(b.ConfirmTime) > MAX(a.DateCreated) THEN MAX(b.ConfirmTime) ELSE MAX(a.DateCreated) END) DESC";
-
 			
 	$result = mysqli_query($conn, $sql);
 
@@ -131,6 +132,23 @@ function GetSeriesTypes(){
 
 	return $result;
 
+
+}
+
+function MarkSeriesAsWon($seriesid, $winneruserid, $losernumgames){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "UPDATE series SET SeriesWonBy= $winneruserid, LoserNumGames= $losernumgames, DateCompleted= NOW()	
+	WHERE ID= '$seriesid' LIMIT 1";
+	
+	$tmr = mysqli_query($conn, $sql);
+	//$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	
+	//if ($row) {
+	//	logMsg("Updated Series Won");		
+	//} else {
+	//	echo("Error: MarkSeriesAsWon: " . $sql . "<br>" . mysqli_error($conn));
+	//}
 
 }
 
