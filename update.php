@@ -187,30 +187,8 @@
 							// End While
 						 }			
 						 
-						 $winnerText = "";
-
-						 if($homeWinnerCount >= 4 || $awayWinnerCount >= 4){
-
-							$winnerText = "Series Won By: ";
-
-							if($homeWinnerCount >= 4){
-
-								$winnerText .= $homeUserAlias ."<br/>" . $homeUserAlias; 
-							}
-
-							if($awayWinnerCount >= 4){
-
-								$winnerText .= $awayUserAlias ."<br/>" . $awayUserAlias;
-
-							}
-
-							$winnerText .= " Wins the fucking Stanley Cup!!!";
-						 }
-
-						 ?>
-						 <tr>
-							<td colspan="3"><?= $winnerText ?></td>						
-						</tr>
+						 
+						 ?>						 
 						 
 						<?php
 							

@@ -93,6 +93,31 @@ function GetScheduleByID($scheduleid){
 
 }
 
+function GetSeriesAndGames(){
+
+	$conn = $GLOBALS['$conn'];
+	//$sql = "SELECT * FROM schedule INNER JOIN series ON schedule.SeriesID = series.ID ORDER BY series.ID ASC";
+
+	$sql = "SELECT a.ID, a.Name, a.DateCreated, b.*, MAX(b.ConfirmTime) as lastEntryDate,
+		COUNT(CASE WHEN b.GameID >= 0 then 1 ELSE NULL END) AS TotalGames
+		FROM series a INNER JOIN schedule b
+		ON a.ID = b.SeriesID		
+		GROUP BY a.ID
+		ORDER BY (CASE WHEN MAX(b.ConfirmTime) > MAX(a.DateCreated) THEN MAX(b.ConfirmTime) ELSE MAX(a.DateCreated) END) DESC";
+
+			
+	$result = mysqli_query($conn, $sql);
+
+	if ($result) {
+		//logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
+	} else {
+		echo("Error:  GetSeriesAndGames: " . $sql . "<br>" . mysqli_error($conn));
+	}
+	
+	return $result;
+
+}
+
 function GetSeriesTypes(){
 
 	$conn = $GLOBALS['$conn'];
