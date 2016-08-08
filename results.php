@@ -3,6 +3,63 @@
 		session_start();
 		$ADMIN_PAGE = false;
 		include_once './_INCLUDES/00_SETUP.php';
+		include_once './_INCLUDES/dbconnect.php';
+
+		$allseries = GetSeriesAndGames();
+		$numSeries = mysqli_num_rows($allseries);
+		$seriesHtml = "";	
+		$i = 0;
+
+		while($row = mysqli_fetch_array($allseries)){
+
+			$gamesCompleteText = "";
+			$lastEntryTime = "";
+			$homeTeam = GetUserAlias($row["HomeUserID"]);
+			$awayTeam = GetUserAlias($row["AwayUserID"]);
+
+			if($row["SeriesWonBy"] != 0){
+
+				$totalGames = 4 + $row["LoserNumGames"];
+				$lastEntryTime = "Series Completed " . $row["DateCompleted"];
+				$gamesCompleteText = GetUserAlias($row["SeriesWonBy"]) . " wins <nobr>in ".$totalGames."</nobr>" ;
+
+			}else if($row["TotalGames"] == 0){
+				$lastEntryTime = "Series Created " . $row["DateCreated"];
+				//$gamesCompleteText = "Series not yet started.";
+
+			}else{
+
+				$gamesCompleteText .= "In progress <nobr>(" .$row["TotalGames"]. " gms)</nobr>";	
+				$lastEntryTime = "Last Updated " . HumanTiming($row["lastEntryDate"]) . " ago";
+			}
+
+			$seriesHtml .= '<tr';
+
+			if($i % 2 == 0){
+				$seriesHtml .= " class='stripe'";
+			}
+
+			//Format the Date 
+			$lastEntryDate = new DateTime($row["lastEntryDate"]);
+			$formattedEntryDate = date_format($lastEntryDate, 'M d, Y @ h:i A');
+
+			$seriesHtml .= '>';
+			$seriesHtml .= '<td class="c">'.$row['SeriesID'].'</td>';
+			$seriesHtml .= '<td class="c">'.$awayTeam .'<br/>@<br/>'.$homeTeam.'</td>';
+			$seriesHtml .= '<td class="stanley">'.$gamesCompleteText.'<br />'; 
+			$seriesHtml .= '<span class="note">Updated ' . $formattedEntryDate. '</span></td>';
+			$seriesHtml .= '<td class="c"><button type="button" class="square" onclick="location.href=\'resultsSeries.php?seriesId='. $row['SeriesID'].'\'">Select</button></td>';
+			$seriesHtml .= '</tr>';
+
+			$i++;
+			
+			//$seriesHtml .= '<td><button type="button" class="square" onclick="DeleteSeries(\'' .$row['SeriesID'].'\',\'' . $row["Name"] .'\')">X</button></td>';
+			//$seriesHtml .= '<td class="c">' . $row['SeriesID'] .'</td>';
+			//$seriesHtml .= '<td class=""><b>'.$row['Name'].'</b> - <nobr>' . $gamesCompleteText.'</nobr><br />';
+			//$seriesHtml .= '<span class="note">'.$lastEntryTime. '</span><br />';			
+			//$seriesHtml .= '<td class="r"><button type="button" class="square" onclick="location.href=\'update.php?seriesId='. $row['SeriesID'].'\'">Select</button></td>';
+			
+		}	
 
 ?><!DOCTYPE HTML>
 <html>
@@ -28,8 +85,10 @@
 							<td class="c">Teams</td>
 							<td class="c">Status / Update</td>
 							<td class="">&nbsp;</td>
-						</tr>						
-						<tr class="stripe">
+						</tr>	
+						<?= $seriesHtml ?>
+
+						<!--<tr class="stripe">
 							<td class="c">101</td>
 							<td class="c">MTL<br/>vs<br/>BOS</td>
 							<td class="stanley">MTL wins <nobr>in 7</nobr><br /> 
@@ -49,7 +108,7 @@
 							<td class="stanley">BOS wins <nobr>in 6</nobr><br /> 
 								<span class="note">Updated Aug 01, 2016 @ 6:30pm</span></td>
 							<td class="c"><button type="button" class="square" onclick="location.href='resultsSeries.php'">Select</button></td>
-						</tr>												
+						</tr>	-->											
 					</table>	
 					
 				</div>	
