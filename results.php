@@ -16,12 +16,14 @@
 			$lastEntryTime = "";
 			$homeTeam = GetUserAlias($row["HomeUserID"]);
 			$awayTeam = GetUserAlias($row["AwayUserID"]);
+			$stanleyClass = "";
 
 			if($row["SeriesWonBy"] != 0){
 
 				$totalGames = 4 + $row["LoserNumGames"];
 				$lastEntryTime = "Series Completed " . $row["DateCompleted"];
 				$gamesCompleteText = GetUserAlias($row["SeriesWonBy"]) . " wins <nobr>in ".$totalGames."</nobr>" ;
+				$stanleyClass = "stanley";
 
 			}else if($row["TotalGames"] == 0){
 				$lastEntryTime = "Series Created " . $row["DateCreated"];
@@ -46,7 +48,7 @@
 			$seriesHtml .= '>';
 			$seriesHtml .= '<td class="c">'.$row['SeriesID'].'</td>';
 			$seriesHtml .= '<td class="c">'.$awayTeam .'<br/>@<br/>'.$homeTeam.'</td>';
-			$seriesHtml .= '<td class="stanley">'.$gamesCompleteText.'<br />'; 
+			$seriesHtml .= '<td class="'. $stanleyClass .'">'.$gamesCompleteText.'<br />'; 
 			$seriesHtml .= '<span class="note">Updated ' . $formattedEntryDate. '</span></td>';
 			$seriesHtml .= '<td class="c"><button type="button" class="square" onclick="location.href=\'resultsSeries.php?seriesId='. $row['SeriesID'].'\'">Select</button></td>';
 			$seriesHtml .= '</tr>';
