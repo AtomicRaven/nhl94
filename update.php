@@ -161,7 +161,7 @@
 							
 						?>
 						<tr>
-							<td><button type="button" class="square" onclick="location.href='processGameDelete.php?gameId=<?= $row['GameID']?>&seriesId=<?=$seriesid?>'">X</button></td>
+							<td><button type="button" class="square" onclick="DeleteGame('<?=$row['GameID']?>','<?=$seriesid?>')">X</button></td>
 							<td>Gm <?=$i?>. <?= GetTeamABVById($row["AwayTeamID"]) ?> (<?= GetUserAlias($row["AwayUserID"])?>) <?=$row["AwayScore"]?> | <?= GetTeamABVById($row["HomeTeamID"])?> (<?= GetUserAlias($row["HomeUserID"]) ?>) <?=$row["HomeScore"]?></td>
 							<td><button type="button" class="square" onclick="location.href='gamestats.php?gameId=<?= $row['GameID']?>'">Game Stats</button></td>
 						</tr>

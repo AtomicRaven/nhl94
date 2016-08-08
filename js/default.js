@@ -69,4 +69,32 @@
 
 	}
 
+	function DeleteSeries(seriesId, seriesName){
+
+		var deleteSeries = confirm("Are you sure you want to delete series #" + seriesId + " | " + seriesName + "??");
+
+		if (deleteSeries == true) {
+			txt = "You pressed OK!";
+		} else {
+			txt = "You pressed Cancel!";
+		}
+
+		alert(txt);
+
+	}
+
+	function DeleteGame(gameId, seriesId){
+
+
+		var deleteGame = confirm("Are you sure you want to delete game #" + gameId + "??");
+
+		if (deleteGame == true) {
+			location.href="processGameDelete.php?gameId=" + gameId + "&seriesId=" + seriesId;
+		} else {
+			//txt = "You pressed Cancel!";
+		}
+
+		
+	}
+
 /// End of Create.js functions
