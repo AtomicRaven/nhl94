@@ -7,9 +7,25 @@
 
 		if ($LOGGED_IN == true) {
 
+			$msg = "";
+			if(isset($_GET['err'])){
+				switch ($_GET['err']){
+					
+					case 0:
+						$seriesid= $_GET['seriesId'];
+						$msg = "Series # " . $seriesid ." has been deleted.";
+					break;			
+					default:
+						$msg = "";
+					break;
+			
+				}
+			}	
+
 
 			// User wants to update an existing series so gab all the series games and show in drop down box
 			$allseries = GetSeriesAndGames();
+			$numSeries = mysqli_num_rows($allseries);
 			$seriesHtml = '<table class="hidden lined">';
 
 			while($row = mysqli_fetch_array($allseries)){
@@ -68,6 +84,8 @@
 					<h1>Manage</h1>
 
 					<h2>1. Create New Series</h2>
+
+					<div style="color:red;"><?= $msg ?></div><br/><br/>
 					
 					<table class="two-column">
 						<tr class="">
@@ -83,7 +101,7 @@
 					<h2>2. Update Existing Series</h2> 
 					
 
-								
+						Total Series: <?= $numSeries ?></br>
 						<?= $seriesHtml ?>
 											  
 						<!-- Example

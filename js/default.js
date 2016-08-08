@@ -74,12 +74,10 @@
 		var deleteSeries = confirm("Are you sure you want to delete series #" + seriesId + " | " + seriesName + "??");
 
 		if (deleteSeries == true) {
-			txt = "You pressed OK!";
+			location.href="processSeriesDelete.php?seriesId=" + seriesId;	
 		} else {
-			txt = "You pressed Cancel!";
+			//txt = "You pressed Cancel!";
 		}
-
-		alert(txt);
 
 	}
 

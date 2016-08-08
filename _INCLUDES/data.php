@@ -102,8 +102,8 @@ function GetSeriesAndGames(){
 
 	$sql = "SELECT a.*, b.*, MAX(b.ConfirmTime) as lastEntryDate,
 		COUNT(CASE WHEN b.GameID >= 0 then 1 ELSE NULL END) AS TotalGames
-		FROM series a INNER JOIN schedule b
-		ON a.ID = b.SeriesID		
+		FROM series a INNER JOIN schedule b		
+		ON a.ID = b.SeriesID WHERE a.Active != 0
 		GROUP BY a.ID
 		ORDER BY (CASE WHEN MAX(b.ConfirmTime) > MAX(a.DateCreated) THEN MAX(b.ConfirmTime) ELSE MAX(a.DateCreated) END) DESC";
 			
@@ -149,6 +149,16 @@ function MarkSeriesAsWon($seriesid, $winneruserid, $losernumgames){
 	//} else {
 	//	echo("Error: MarkSeriesAsWon: " . $sql . "<br>" . mysqli_error($conn));
 	//}
+
+}
+
+function MarkSeriesAsInactive($seriesid){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "UPDATE series SET Active= 0	
+	WHERE ID= '$seriesid' LIMIT 1";
+	
+	$tmr = mysqli_query($conn, $sql);
 
 }
 
