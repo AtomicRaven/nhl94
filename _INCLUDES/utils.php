@@ -114,7 +114,26 @@ function CheckSeriesForWinner($seriesid, $homeuserid, $awayuserid){
         //If game has been deleted and series is no longer won we set back to 0
          MarkSeriesAsWon($seriesid, 0, 0);
         
-    }    
+    } 
+
+}
+
+function GetPercent($val1, $val2){
+
+    return round($val1 / $val2 * 100, 1);
+
+}
+
+function FormatZoneTime($time){
+
+    $t = explode(':', $time); 
+    return $t[1] . ":" .$t[2];
+}
+
+function FormatPercent($val1, $val2){
+
+    return $val1 . "/" . $val2 ." (" . GetPercent($val1, $val2) . "%)";
+
 
 }
 

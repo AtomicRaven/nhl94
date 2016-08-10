@@ -95,4 +95,50 @@
 		
 	}
 
+	//resultsSeries Page
+	function showGameDetails(obj, x, gameId, gameNum) {
+		if ( obj.innerHTML === '+ Details' ) {
+			// fetch game stats
+			$('#fetch_' + x).load('fragment_game_stats_template.php?gameId=' + gameId + "&gameNum=" + gameNum);
+			// dipslay table row beneath button	
+			$('#' + x).fadeIn();
+			// toggle button	
+			obj.innerHTML = '- Details'
+		}
+		else {
+			// hide table row beneath button	
+			$('#' + x).fadeOut();	
+			// toggle button	
+			obj.innerHTML = '+ Details'
+		}	
+
+		return;
+	}
+
+	function showAllGames(obj) {
+
+		var gameId;
+
+		if (obj.innerHTML === '+ All') {
+			obj.innerHTML = '- All';
+			$('button.details').html('- Details');
+			// show all $('.detail_row').css('- Details')
+			$( ".detail_row" ).each(function( index ) {
+					//
+
+					gameId = $(this).attr("data-game-id");
+
+					console.log('#fetch_detail_' + parseInt(index+1));
+					
+					$('#fetch_detail_' + parseInt(index+1)).load('fragment_game_stats_template.php?gameId=' + gameId + "&gameNum=" + (index+1));
+					$('#detail_' + parseInt(index+1)).fadeIn();
+			});			
+		}
+		else {
+			obj.innerHTML = '+ All'	
+			$('button.details').html('+ Details')
+			$('.detail_row').css('display','none')
+		}
+	}
+
 /// End of Create.js functions

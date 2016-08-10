@@ -63,7 +63,10 @@ function GetGameById($gameid){
 function GetGamesBySeriesId($seriesid){	
 
 	$conn = $GLOBALS['$conn'];
-	$sql = "SELECT * FROM schedule Where SeriesID='$seriesid' ORDER BY ID ASC";
+	//$sql = "SELECT * FROM schedule Where SeriesID='$seriesid' ORDER BY ID ASC";
+	$sql = "SELECT *,  
+			(select count(CASE WHEN GameID >= 0 then 1 ELSE NULL END) FROM schedule Where SeriesID='$seriesid') as TotalGames, 
+			(select MAX(ConfirmTime) FROM schedule Where SeriesID='$seriesid') AS LastEntryDate FROM schedule Where SeriesID='$seriesid' ORDER BY ID ASC";
 	
 	$result = mysqli_query($conn, $sql);
 
@@ -95,12 +98,30 @@ function GetScheduleByID($scheduleid){
 
 }
 
+function  GetScheduleByGameId($gameid){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT * FROM schedule WHERE GameID = '$gameid' LIMIT 1";
+	
+	$tmr = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	
+	if ($row) {
+		logMsg("Retrieved GameById");		
+	} else {
+		echo("Error: GetGameById: " . $sql . "<br>" . mysqli_error($conn));
+	}
+	
+	return $row;
+
+}
+
 function GetSeriesAndGames(){
 
 	$conn = $GLOBALS['$conn'];
 	//$sql = "SELECT * FROM schedule INNER JOIN series ON schedule.SeriesID = series.ID ORDER BY series.ID ASC";
 
-	$sql = "SELECT a.*, b.*, MAX(b.ConfirmTime) as lastEntryDate,
+	$sql = "SELECT a.*, b.*, MAX(b.ConfirmTime) as LastEntryDate,
 		COUNT(CASE WHEN b.GameID >= 0 then 1 ELSE NULL END) AS TotalGames
 		FROM series a INNER JOIN schedule b		
 		ON a.ID = b.SeriesID WHERE a.Active != 0
@@ -116,7 +137,6 @@ function GetSeriesAndGames(){
 	}
 	
 	return $result;
-
 }
 
 function GetSeriesTypes(){
@@ -188,8 +208,8 @@ function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype){
 	//$sql = "INSERT INTO series (Name, HomeTeamId, AwayTeamId, HomeUserId, AwayUserId, DateCreated) 
 	//		VALUES ('$seriesname', '$hometeamid', '$awayteamid', '$homeuserid', '$awayuserid', NOW())";	
 
-	$sql = "INSERT INTO series (Name, HomeUserId, AwayUserId, DateCreated) 
-			VALUES ('$seriesname', '$homeuserid', '$awayuserid', NOW())";
+	$sql = "INSERT INTO series (Name, HomeUserId, AwayUserId, DateCreated, Active) 
+			VALUES ('$seriesname', '$homeuserid', '$awayuserid', NOW(), 1)";
 		
 	$sqlr = mysqli_query($conn, $sql);
 	
@@ -466,7 +486,7 @@ function GetUserAlias($userid){
 	$tmr = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
 	
-	return $row['Alias'];
+	return strtoupper($row['Alias']);
 	
 }  // end of function
 

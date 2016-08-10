@@ -3,51 +3,42 @@
 		session_start();
 		$ADMIN_PAGE = false;
 		include_once './_INCLUDES/00_SETUP.php';
+		include_once './_INCLUDES/dbconnect.php';
+
+		$seriesid = $_GET["seriesId"];
+		$series = GetSeriesById($seriesid);
+		$gamesplayed = GetGamesBySeriesId($seriesid);
+
+		$homeUserAlias = GetUserAlias($series["HomeUserID"]);
+		$awayUserAlias = GetUserAlias($series["AwayUserID"]);
+
+		if($series["SeriesWonBy"] != 0){
+
+			$totalGames = 4 + $series["LoserNumGames"];
+			$lastEntryTime = "series updated " .HumanTiming($series["DateCompleted"]) . " ago";
+			$gamesCompleteText = GetUserAlias($series["SeriesWonBy"]) . " wins <nobr>in ".$totalGames."</nobr>" ;
+			$stanleyClass = "stanley";		
+
+		}else{
+			
+			while($row = mysqli_fetch_array($gamesplayed)){
+				
+				$gamesCompleteText = "In progress <nobr>(" .$row["TotalGames"]. " gms)</nobr>";	
+				$lastEntryTime = "series updated " . HumanTiming($row["LastEntryDate"]) . " ago";
+				break;
+			}
+
+			mysqli_data_seek($gamesplayed, 0);
+		}
 
 ?><!DOCTYPE HTML>
 <html>
 <head>
-<title>No Title</title>
+<title>Series Results</title>
 <?php include_once './_INCLUDES/01_HEAD.php'; ?>
 <script>
 
-	function showGameDetails(obj, x) {
-		if ( obj.innerHTML === '+ Details' ) {
-			// fetch game stats
-			$('#fetch_' + x).load('fragment_game_stats_template.php');
-			// dipslay table row beneath button	
-			$('#' + x).fadeIn();
-			// toggle button	
-			obj.innerHTML = '- Details'
-		}
-		else {
-			// hide table row beneath button	
-			$('#' + x).fadeOut();	
-			// toggle button	
-			obj.innerHTML = '+ Details'
-		}	
-
-		return;
-	}
-
-	function showAllGames(obj) {
-		if (obj.innerHTML === '+ All') {
-			obj.innerHTML = '- All'	
-			$('button.details').html('- Details')
-			// show all $('.detail_row').css('- Details')
-			$( ".detail_row" ).each(function( index ) {
-					//
-					console.log('#fetch_detail_' + parseInt(index+1));
-					$('#fetch_detail_' + parseInt(index+1)).load('fragment_game_stats_template.php');
-					$('#detail_' + parseInt(index+1)).fadeIn();
-			});			
-		}
-		else {
-			obj.innerHTML = '+ All'	
-			$('button.details').html('+ Details')
-			$('.detail_row').css('display','none')
-		}
-	}
+	
 
 </script>	
 </head>
@@ -68,15 +59,15 @@
 					
 					<table class="standard">
 						<tr class="heading">
-							<td class="c brt"><span class="note">series</span><br /><!-- Rob: series_id -->99</td>
-							<td class="" colspan="5">MTL (rob) vs BOS (matt)</td>
+							<td class="c brt"><span class="note">series</span><br /><!-- Rob: series_id --><?= $seriesid ?></td>
+							<td class="" colspan="5"><?= $awayUserAlias ?> @ <?= $homeUserAlias ?></td>
 						</tr>			
 						<tr class="heading">
 							<td class="c brt" style="padding: 2px 0 0 0;">
-								<a class="stanley"><br/></a><!-- put here only for complete series -->								
+							<a class="<?=$stanley?>"><br/></a>							
 							</td>
-							<td class="" colspan="5">MTL wins in 7<br /> 
-								<span class="note">series updated Aug 01, 2016 @ 6:30pm</span></td>
+							<td class="" colspan="5"><?= $gamesCompleteText?><br /> 
+								<span class="note"><?= $lastEntryTime?></span></td>
 						</tr>							
 						<tr class="heading">
 							<td class="c"><span class="note">game</span><br />#</td>
@@ -88,24 +79,30 @@
 						</tr>	
 						<!-- loop starts here -->
 <?php 
-			for ($i=1; $i <= 7; $i++)
+			$i=1;
+			while($row = mysqli_fetch_array($gamesplayed))
 			{
-?>						
-						<tr class="tight<?php print $stripe[$i & 1]; ?>">
+				if($row["WinnerUserID"] != 0)
+				{
+						$gameid = $row["GameID"]; 
+?>				
+						<tr class="tight<?php print $stripe[$i & 1]; ?>" >
 							<td class="c"><?php print $i; ?></td>
-							<td class="c winner">MTL</td>
-							<td class="c winner">5</td>
-							<td class="c">BOS</td>
-							<td class="c">3</td>
-							<td class="c"><button type="button" class="square details" onclick="showGameDetails(this, 'detail_<?php print $i; ?>')">+ Details</button></td>
+							<td class="c winner"><?= GetTeamABVById($row["HomeTeamID"]) ?></td>
+							<td class="c winner"><?=$row["HomeScore"]?></td>
+							<td class="c"><?= GetTeamABVById($row["AwayTeamID"]) ?></td>
+							<td class="c"><?=$row["AwayScore"]?></td>
+							<td class="c"><button type="button" class="square details" onclick="showGameDetails(this, 'detail_<?php print $i; ?>', <?=$gameid?>, <?=$i?>)">+ Details</button></td>
 						</tr>	
-						<tr class="tight detail_row" id="detail_<?php print $i; ?>" style="display: none">
+						<tr class="tight detail_row" id="detail_<?php print $i; ?>" style="display: none" data-game-id="<?=$gameid?>">
 							<td colspan="6" id="fetch_detail_<?php print $i; ?>">
 
 							</td>
 
 						</tr>		
 <?php 
+				}
+			$i++;
 			}
 ?>								
 						<!-- loop ends -->	

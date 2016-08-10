@@ -49,7 +49,7 @@
 					else 
 						$gamesCompleteText .= " games completed";
 
-					$lastEntryTime = "Last Updated " . HumanTiming($row["lastEntryDate"]) . " ago";
+					$lastEntryTime = "Last Updated " . HumanTiming($row["LastEntryDate"]) . " ago";
 				}
 																									
 				$seriesHtml .= '<tr class="">';

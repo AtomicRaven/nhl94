@@ -6,7 +6,6 @@
 		include_once './_INCLUDES/dbconnect.php';
 
 		$allseries = GetSeriesAndGames();
-		$numSeries = mysqli_num_rows($allseries);
 		$seriesHtml = "";	
 		$i = 0;
 
@@ -32,7 +31,7 @@
 			}else{
 
 				$gamesCompleteText .= "In progress <nobr>(" .$row["TotalGames"]. " gms)</nobr>";	
-				$lastEntryTime = "Last Updated " . HumanTiming($row["lastEntryDate"]) . " ago";
+				$lastEntryTime = "Last Updated " . HumanTiming($row["LastEntryDate"]) . " ago";
 			}
 
 			$seriesHtml .= '<tr';
@@ -42,7 +41,7 @@
 			}
 
 			//Format the Date 
-			$lastEntryDate = new DateTime($row["lastEntryDate"]);
+			$lastEntryDate = new DateTime($row["LastEntryDate"]);
 			$formattedEntryDate = date_format($lastEntryDate, 'M d, Y @ h:i A');
 
 			$seriesHtml .= '>';
@@ -66,7 +65,7 @@
 ?><!DOCTYPE HTML>
 <html>
 <head>
-<title>No Title</title>
+<title>Series Results</title>
 <?php include_once './_INCLUDES/01_HEAD.php'; ?>
 </head>
 

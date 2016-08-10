@@ -1,60 +1,121 @@
 <?php
+		include_once './_INCLUDES/dbconnect.php';
+
 		$stripe[0] = '';
-		$stripe[1] = ' stripe'; // odd
+		$stripe[1] = ' stripe'; // odd		
+
+		$gameid = $_GET["gameId"];
+		$gameNum = $_GET["gameNum"];
+
+		$gStats = GetGameById($gameid);
+		$schedule = GetScheduleByGameId($gameid);
+
+		$homeTeam = GetTeamABVById($schedule["HomeTeamID"]);
+		$awayTeam = GetTeamABVById($schedule["AwayTeamID"]);
+
+		$dateSubmitted = new DateTime($schedule["ConfirmTime"]);
+		$formattedDate = date_format($dateSubmitted, 'M d, Y @ h:i A');
+
+		///Add up everything
+
+		$homeGoals = $gStats["GHP1"] + $gStats["GHP2"] + $gStats["GHP3"]; 
+		$awayGoals = $gStats["GAP1"] + $gStats["GAP2"] + $gStats["GAP3"];
+
+		$homeShots = $gStats["SHP1"] + $gStats["SHP2"] + $gStats["SHP3"];
+		$awayShots = $gStats["SAP1"] + $gStats["SAP2"] + $gStats["SAP3"];
+
+		$homeShotPerCent = GetPercent($homeGoals,$homeShots);
+		$awayShotPerCent = GetPercent($awayGoals,$awayShots);
+
+		//FaceOffs
+		$totalFO = $gStats["FOH"] + $gStats["FOA"]; 
+		$FOHP = FormatPercent($gStats["FOH"], $totalFO);
+		$FOAP = FormatPercent($gStats["FOA"], $totalFO);
+
+		//Passing
+		$pHome = FormatPercent($gStats["PCH"], $gStats["PH"]);
+		$pAway = FormatPercent($gStats["PCA"], $gStats["PA"]);
+
+		//AttackZone
+		$hZone = FormatZoneTime($gStats["AZH"]);
+		$aZone =  FormatZoneTime($gStats["AZA"]);
+
+		//
 ?>		
+
+
+<!-- This is what we can pull from game stats table
+14			Shots	11
+50.0%		Shooting Pct.	45.5%
+0/0			Power Play	2/3
+0			SH Goals	0
+0/0			Breakaways	0/4
+3/5			One-Timers	5/7
+0/0			Penalty Shots	0/0
+13/20(65%)	Faceoffs	7/20 (35%)
+44			Checks	32
+6			PIM	0
+05:28		Attack Zone	04:25
+28/50 (56%)	Passing 35/62 (56%)
+
+-->
 
 					<!-- rob: start of series stats table -->	
 					<div class="gamestats">
 
-							<h3>Game 3 Stats</h3>
-							<h4>submitted Aug 01, 2016 @ 6:30pm</h4>
+							<h3>Game <?=$gameNum?> Stats</h3>
+							<h4>submitted <?=$formattedDate?></h4>
 
 							<table class="standard">
 								<tr class="heading">
 									<td class="">&nbsp;</td>
-									<td class="c">TEAM 1</td>
-									<td class="c">TEAM 2</td>
+									<td class="c"><?=$homeTeam?></td>
+									<td class="c"><?=$awayTeam?></td>
 								</tr>	
 								<tr class="tight"><!-- GOALS -->
-									<td class="heading">Goals</td><td class="c">xxx</td><td class="c">xxx</td>
+									<td class="heading">Goals</td><td class="c"><?=$homeGoals?></td><td class="c"><?=$awayGoals?></td>
 								</tr>							
-								<tr class="tight stripe"><!-- ASSISTS -->
+								<!--<tr class="tight stripe"><!-- ASSISTS - This doesn't exist
 									<td class="heading">Assists</td><td class="c">xxx</td><td class="c">xxx</td>
-								</tr>							
-								<tr class="tight"><!-- POINTS -->
+								</tr>
+								What are Points?							
+								<tr class="tight"><!-- POINTS
 									<td class="heading">Points</td><td class="c">xxx</td><td class="c">xxx</td>
-								</tr>							
-								<tr class="tight stripe"><!-- Points Per Game -->
+								</tr>	
+								<tr class="tight stripe"><!-- Points Per Game
 									<td class="heading">PPG</td><td class="c">xxx</td><td class="c">xxx</td>
-								</tr>							
+								</tr>-->
 								<tr class="tight"><!-- Shooting % -->
-									<td class="heading">Shooting %</td><td class="c">xxx</td><td class="c">xxx</td>
+									<td class="heading">Shooting %</td><td class="c"><?=$homeShotPerCent?></td><td class="c"><?=$awayShotPerCent?></td>
 								</tr>							
 								<tr class="tight stripe"><!-- Faceoffs -->
-									<td class="heading">Faceoffs</td><td class="c">xxx</td><td class="c">xxx</td>
+									<td class="heading">Faceoffs</td><td class="c"><?=$FOHP?></td><td class="c"><?=$FOAP?></td>
 								</tr>							
 								<tr class="tight"><!-- Att Zone -->
-									<td class="heading">Attack Zone</td><td class="c">xxx</td><td class="c">xxx</td>
+									<td class="heading">Attack Zone</td><td class="c"><?=$hZone?></td><td class="c"><?=$aZone?></td>
 								</tr>							
 								<tr class="tight stripe"><!-- Passing -->
-									<td class="heading">Passing</td><td class="c">xxx</td><td class="c">xxx</td>
+									<td class="heading">Passing</td><td class="c"><?=$pHome?></td><td class="c"><?=$pAway?></td>
 								</tr>							
 								<tr class="tight"><!-- Penalty Shots -->
-									<td class="heading">Pen. Shots</td><td class="c">xxx</td><td class="c">xxx</td>
+									<td class="heading">Pen. Shots</td><td class="c"><?=$gStats["PSHG"]?>/<?=$gStats["PSH"]?></td><td class="c"><?=$gStats["PSAG"]?>/<?=$gStats["PSA"]?></td>
 								</tr>							
 								<tr class="tight stripe"><!-- PIM 
 																			 This should be number of penalties a team takes.  
 																			 Note: Each Penalty shot (for opposition) should be added here, which
 																			 will give total penatlies	
 																											-->
-									<td class="heading"># Penalties</td><td class="c">xxx</td><td class="c">xxx</td>
+									<td class="heading"># Penalties</td><td class="c"><?=$gStats["PPA"]?></td><td class="c"><?=$gStats["PPH"]?></td>
 								</tr>							
 								<tr class="tight"><!-- Breakways -->
-									<td class="heading">Breakways</td><td class="c">xxx</td><td class="c">xxx</td>
+									<td class="heading">Breakways</td><td class="c"><?=$gStats["BAH"]?></td><td class="c"><?=$gStats["BAA"]?></td>
 								</tr>							
 								<tr class="tight stripe"><!-- One Timers -->
-									<td class="heading">One Timers</td><td class="c">xxx</td><td class="c">xxx</td>
-								</tr>							
+									<td class="heading">One Timers</td><td class="c"><?=$gStats["1THG"]?>/<?=$gStats["1TH"]?></td><td class="c"><?=$gStats["1TAG"]?>/<?=$gStats["1TA"]?></td>
+								</tr>
+								<tr class="tight"><!-- Checks -->
+									<td class="heading">Checks</td><td class="c"><?=$gStats["BCH"]?></td><td class="c"><?=$gStats["BCA"]?></td>
+								</tr>						
 
 							</table>		
 
