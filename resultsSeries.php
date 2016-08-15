@@ -9,6 +9,9 @@
 		$series = GetSeriesById($seriesid);
 		$gamesplayed = GetGamesBySeriesId($seriesid);
 
+		$sPlayerStats = GetPlayerStatsBySeriesId($seriesid, 'P');
+		$sGoalieStats = GetPlayerStatsBySeriesId($seriesid, 'G');
+
 		$homeUserAlias = GetUserAlias($series["HomeUserID"]);
 		$awayUserAlias = GetUserAlias($series["AwayUserID"]);
 
@@ -22,7 +25,7 @@
 		}else{
 			
 			while($row = mysqli_fetch_array($gamesplayed)){
-				
+
 				$gamesCompleteText = "In progress <nobr>(" .$row["TotalGames"]. " gms)</nobr>";	
 				$lastEntryTime = "series updated " . HumanTiming($row["LastEntryDate"]) . " ago";
 				break;
@@ -30,6 +33,142 @@
 
 			mysqli_data_seek($gamesplayed, 0);
 		}
+
+		// add up series stats
+
+		$sHomeWins = 0;
+		$sAwayWins= 0;
+		$sHomeGoals = 0;
+		$sAwayGoals = 0;
+		$sHomeShooting = 0;
+		$sAwayShooting = 0;
+		
+		//Shots per game
+		$sHomeShots = 0;
+		$sAwayShots = 0;
+
+		//FaceOffs
+		$sFO = 0;
+		$sFOH = 0;
+		$sFOA = 0;
+
+		//Passing
+		$sPH = 0;
+		$sPCH = 0;
+		$sPA = 0;
+		$sPCA = 0;
+
+		//AttackZone
+		$shZone = 0;
+		$saZone = 0;
+
+		//Penalties Shots
+		$PSHG = 0;
+		$PSH = 0;
+		$PSAG = 0;
+		$PSA = 0;
+
+		//Penalites
+		$PPA = 0;
+		$PPH = 0;
+
+		//Breakaways
+		$BAH = 0;
+		$BAA = 0;
+
+		//One Timers
+		$OneTHG = 0;
+		$OneTH = 0;
+		$OneTAG = 0;
+		$OneTA = 0;
+
+		//Checks
+		$BCH = 0;
+		$BCA = 0;
+
+		while($row = mysqli_fetch_array($gamesplayed)){
+				
+				if($series["HomeUserID"] == $row["WinnerUserID"]){
+					$sHomeWins++;
+				}else if ($series["AwayUserID"] == $row["WinnerUserID"]){
+					$sAwayWins++;
+				}
+				
+				$sHomeGoals += $row["HomeScore"];
+				$sAwayGoals += $row["AwayScore"];
+
+				//ADd up stats for each game
+				
+				if($row["GameID"] != NULL){
+					$gStats = GetGameById($row["GameID"]);
+
+					$sHomeShooting += $gStats["GHP1"] + $gStats["GHP2"] + $gStats["GHP3"]; 
+					$sAwayShooting += $gStats["GAP1"] + $gStats["GAP2"] + $gStats["GAP3"];
+
+					//Shots per game
+					$sHomeShots += $gStats["SHP1"] + $gStats["SHP2"] + $gStats["SHP3"];
+					$sAwayShots += $gStats["SAP1"] + $gStats["SAP2"] + $gStats["SAP3"];
+
+					//FaceOffs
+					$sFO += $gStats["FOH"] + $gStats["FOA"]; 
+					$sFOH += $gStats["FOH"];
+					$sFOA += $gStats["FOA"];
+					
+					//Passing
+					$sPH += $gStats["PH"];
+					$sPCH += $gStats["PCH"];
+					$sPA += $gStats["PA"];
+					$sPCA += $gStats["PCA"];
+
+					//AttackZone
+					$shZone += strtotime($gStats["AZH"]);
+					$saZone += strtotime($gStats["AZA"]);
+
+					//Penalties Shots
+					$PSHG += $gStats["PSHG"];
+					$PSH += $gStats["PSH"];
+					$PSAG += $gStats["PSAG"];
+					$PSA += $gStats["PSA"];
+
+					//Penalites
+					$PPA += $gStats["PPA"];
+					$PPH += $gStats["PPH"];
+
+					//Breakaways
+					$BAH += $gStats["BAH"];
+					$BAA += $gStats["BAA"];
+
+					//One Timers
+					$OneTHG += $gStats["1THG"];
+					$OneTH += $gStats["1TH"];
+					$OneTAG += $gStats["1TAG"];
+					$OneTA += $gStats["1TA"];
+
+					//Checks
+					$BCH += $gStats["BCH"];
+					$BCA += $gStats["BCA"];
+				}
+
+				
+		}
+
+		//Shot Percentage per series
+		$sHomeShotPerCent = GetPercent($sHomeGoals,$sHomeShots) ."%";
+		$sAwayShotPerCent = GetPercent($sAwayGoals,$sAwayShots). "%";
+
+		//FaceOffs per series
+		$sFOHP = GetPercent($sFOH, $sFO). "%";
+		$sFOAP = GetPercent($sFOA, $sFO). "%";
+
+		//Passing
+		$spHome = GetPercent($sPCH, $sPH). "%";
+		$spAway = GetPercent($sPCA, $sPA). "%";
+
+		//AttackZone
+		$shZoneP = FormatZoneTime(date("Y-m-d H:i:s", $shZone));
+		$saZoneP =  FormatZoneTime(date("Y-m-d H:i:s", $saZone));
+
+		mysqli_data_seek($gamesplayed, 0);
 
 ?><!DOCTYPE HTML>
 <html>
@@ -115,51 +254,54 @@
 					<table class="standard">
 						<tr class="heading">
 							<td class="">&nbsp;</td>
-							<td class="c">TEAM 1</td>
-							<td class="c">TEAM 2</td>
+							<td class="c"><?= $homeUserAlias?></td>
+							<td class="c"><?= $awayUserAlias?></td>
 						</tr>	
 						<tr class="tight stripe"><!-- RECORD -->
-							<td class="heading">Record</td><td class="c">3 wins</td><td class="c">4 wins</td>
+							<td class="heading">Record</td><td class="c"><?=$sHomeWins?> wins</td><td class="c"><?=$sAwayWins?> wins</td>
 						</tr>							
 						<tr class="tight"><!-- GOALS -->
-							<td class="heading">Goals</td><td class="c">xxx</td><td class="c">xxx</td>
+							<td class="heading">Goals</td><td class="c"><?=$sHomeGoals?></td><td class="c"><?=$sAwayGoals?></td>
 						</tr>							
-						<tr class="tight stripe"><!-- ASSISTS -->
+						<!--<tr class="tight stripe"><!-- ASSISTS
 							<td class="heading">Assists</td><td class="c">xxx</td><td class="c">xxx</td>
 						</tr>							
-						<tr class="tight"><!-- POINTS -->
+						<tr class="tight"><!-- POINTS
 							<td class="heading">Points</td><td class="c">xxx</td><td class="c">xxx</td>
-						</tr>							
-						<tr class="tight stripe"><!-- Points Per Game -->
+						</tr>-->							
+						<tr class="tight stripe"><!-- Points Per Game
 							<td class="heading">PPG</td><td class="c">xxx</td><td class="c">xxx</td>
-						</tr>							
+						</tr>-->
 						<tr class="tight"><!-- Shooting % -->
-							<td class="heading">Shooting %</td><td class="c">xxx</td><td class="c">xxx</td>
+							<td class="heading">Shooting %</td><td class="c"><?=$sHomeShotPerCent?></td><td class="c"><?=$sAwayShotPerCent?></td>
 						</tr>							
 						<tr class="tight stripe"><!-- Faceoffs -->
-							<td class="heading">Faceoffs</td><td class="c">xxx</td><td class="c">xxx</td>
+							<td class="heading">Faceoffs</td><td class="c"><?=$sFOHP?></td><td class="c"><?=$sFOAP?></td>
 						</tr>							
 						<tr class="tight"><!-- Att Zone -->
-							<td class="heading">Attack Zone</td><td class="c">xxx</td><td class="c">xxx</td>
+							<td class="heading">Attack Zone</td><td class="c"><?=$shZoneP?></td><td class="c"><?=$saZoneP?></td>
 						</tr>							
 						<tr class="tight stripe"><!-- Passing -->
-							<td class="heading">Passing</td><td class="c">xxx</td><td class="c">xxx</td>
+							<td class="heading">Passing</td><td class="c"><?=$spHome?></td><td class="c"><?=$spAway?></td>
 						</tr>							
 						<tr class="tight"><!-- Penalty Shots -->
-							<td class="heading">Pen. Shots</td><td class="c">xxx</td><td class="c">xxx</td>
+							<td class="heading">Pen. Shots</td><td class="c"><?= $PSHG . "/" . $PSH?></td><td class="c"><?= $PSAG . "/" . $PSA?></td>
 						</tr>							
 						<tr class="tight stripe"><!-- PIM 
 																	 This should be number of penalties a team takes.  
 																	 Note: Each Penalty shot (for opposition) should be added here, which
 																	 will give total penatlies	
 																									-->
-							<td class="heading"># Penalties</td><td class="c">xxx</td><td class="c">xxx</td>
+							<td class="heading"># Penalties</td><td class="c"><?=$PPH?></td><td class="c"><?=$PPA?></td>
 						</tr>							
 						<tr class="tight"><!-- Breakways -->
-							<td class="heading">Breakways</td><td class="c">xxx</td><td class="c">xxx</td>
+							<td class="heading">Breakways</td><td class="c"><?=$BAH?></td><td class="c"><?=$BAA?></td>
 						</tr>							
 						<tr class="tight stripe"><!-- One Timers -->
-							<td class="heading">One Timers</td><td class="c">xxx</td><td class="c">xxx</td>
+							<td class="heading">One Timers</td><td class="c"><?=$OneTHG . "/" . $OneTH?></td><td class="c"><?=$OneTAG . "/" . $OneTA?></td>
+						</tr>	
+						<tr class="tight stripe"><!-- Checks -->
+							<td class="heading">Checks</td><td class="c"><?=$BCH?></td><td class="c"><?=$BCA?></td>
 						</tr>							
 
 					</table>		
@@ -172,28 +314,39 @@
 							<td class="heading">#</td>
 							<td class="heading">Name</td>
 							<td class="heading">Team</td>
+							<td class="heading">Pos</td>
 							<td class="heading">Pts</td>
 							<td class="heading">G</td>
 							<td class="heading">A</td>
-							<td class="heading">PPG</td>
+							<td class="heading">SOG</td>
+							<td class="heading">PIM</td>
 						</tr>	
 						<!-- start loop for all players with points -->
-<?php 
-			for ($i=1; $i <= 11; $i++)
-			{
-?>								
-						<tr class="tight<?php print $stripe[$i & 1]; ?>">
-							<td class=""><?php print $i; ?></td>
-							<td class="">Denis Savard</td>
-							<td class="">MTL</td>
-							<td class="">14</td>
-							<td class="">9</td>
-							<td class="">5</td>
-							<td class="">2.0/7</td>
-						</tr>	
-<?php 
-			}
-?>							
+		<?php 
+					$j = 1;
+					while(($row = mysqli_fetch_array($sPlayerStats)))
+					{						
+						$player = GetPlayerFromID($row["PlayerID"]);						
+
+						if($row["Pos"] != "G"){		?>						
+
+								<tr class="tight<?php print $stripe[$j & 1]; ?>">
+									<td class=""><?php print $j; ?></td>
+									<td class=""><?=$player["First"] . " " . $player["Last"]?></td>
+									<td class=""><?=GetTeamABVById($row["TeamID"])?></td>
+									<td class=""><?=$row["Pos"]?></td>
+									<td class=""><?=$row["tPoints"]?></td>
+									<td class=""><?=$row["tG"]?></td>
+									<td class=""><?=$row["tA"]?></td>
+									<td class=""><?=$row["tSOG"]?></td>
+									<td class=""><?=$row["tPIM"]?></td>
+								</tr>	
+		<?php 
+					$j++;
+						}
+					}						
+					
+		?>						
 						<!-- end of loop -->	
 
 					</table>					
@@ -212,18 +365,29 @@
 						</tr>	
 
 <?php 
-			for ($i=1; $i <= 3; $i++)
-			{
-?>								
-						<tr class="tight<?php print $stripe[$i & 1]; ?>">
-							<td class=""><?php print $i; ?></td>
-							<td class="">Patrick Roi</td>
-							<td class="">MTL</td>
-							<td class=""> 72.3% (17/72)<!-- 17 goals on 72 shots) --></td>
-						</tr>	
-<?php 
-			}
-?>							
+					$j = 1;
+					while($row = mysqli_fetch_array($sGoalieStats))
+					{
+						$player = GetPlayerFromID($row["PlayerID"]);					
+
+						if($row["Pos"] == "G"){
+
+								if($row["SOG"]!= 0)
+									$savePct = FormatPercent($row["tG"], $row["tSOG"]);
+								else 
+									$savePct = "0 SOG";
+		?>								
+								<tr class="tight<?php print $stripe[$j & 1]; ?>">
+									<td class=""><?php print $j; ?></td>
+									<td class=""><?=$player["First"] . " " . $player["Last"]?></td>
+									<td class=""><?=GetTeamABVById($row["TeamID"])?></td>
+									<td class=""> <?=$savePct?><!-- 17 goals on 72 shots) --></td>
+								</tr>	
+		<?php 
+						}
+					$j++;
+					}
+		?>						
 						<!-- end of loop -->	
 
 					</table>					

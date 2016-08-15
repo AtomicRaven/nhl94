@@ -116,6 +116,46 @@ function  GetScheduleByGameId($gameid){
 
 }
 
+function GetPlayerStatsByGameId($gameid){	
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT * FROM playerstats Where GameID='$gameid' ORDER BY G+A DESC";
+	
+	$result = mysqli_query($conn, $sql);		
+	
+	return $result;
+}
+
+function GetPlayerStatsBySeriesId($seriesid, $pos){	
+
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "SELECT s.*, p.*, 
+		SUM(p.G) as 'tG', 
+		SUM(p.A) as 'tA', 
+		SUM(p.SOG) as 'tSOG', 
+		SUM(p.PIM) as 'tPIM', 
+		SUM(p.G + p.A) as 'tPoints' 
+		FROM schedule s INNER JOIN playerstats p 
+		ON s.GameID = p.GameID WHERE s.SeriesID = '$seriesid' 
+		GROUP BY p.PlayerID ";
+
+		if($pos == 'G')
+			$sql .= "ORDER BY ROUND(SUM(p.G)/SUM(p.SOG)*100) DESC";
+		if($pos == 'P')
+			$sql .= "ORDER BY tPoints DESC";
+	
+	$result = mysqli_query($conn, $sql);
+
+	if ($result) {
+		//logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
+	} else {
+		echo("Error:  GetPlayerStatsBySeriesId: " . $sql . "<br>" . mysqli_error($conn));
+	}		
+	
+	return $result;
+}
+
 function GetSeriesAndGames(){
 
 	$conn = $GLOBALS['$conn'];
@@ -390,6 +430,23 @@ function GetPlayerID($teamid, $offset){
 	
 }  // end of function
 
+function GetPlayerFromID($playerid){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT * FROM roster WHERE PlayerID = '$playerid' LIMIT 1";
+	
+	$tmr = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	
+	if ($row) {
+		//logMsg("Retrieved GameById");		
+	} else {
+		echo("Error: GetPlayerFromID: " . $sql . "<br>" . mysqli_error($conn));
+	}
+	
+	return $row;	
+
+}  // 
 function GetTeams(){
 
 	$conn = $GLOBALS['$conn'];

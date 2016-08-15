@@ -7,25 +7,34 @@
 		$gameid = $_GET["gameId"];
 		$gameNum = $_GET["gameNum"];
 
+
+		//Get data from DB
 		$gStats = GetGameById($gameid);
 		$schedule = GetScheduleByGameId($gameid);
+		$pStats = GetPlayerStatsByGameId($gameid);
 
-		$homeTeam = GetTeamABVById($schedule["HomeTeamID"]);
-		$awayTeam = GetTeamABVById($schedule["AwayTeamID"]);
+		$homeTeamAbv = GetTeamABVById($schedule["HomeTeamID"]);
+		$awayTeamAbv = GetTeamABVById($schedule["AwayTeamID"]);
+
+		$homeTeamName = GetTeamNameById($schedule["HomeTeamID"]);
+		$awayTeamName = GetTeamNameById($schedule["AwayTeamID"]);
 
 		$dateSubmitted = new DateTime($schedule["ConfirmTime"]);
 		$formattedDate = date_format($dateSubmitted, 'M d, Y @ h:i A');
 
 		///Add up everything
 
+		//Goals per game
 		$homeGoals = $gStats["GHP1"] + $gStats["GHP2"] + $gStats["GHP3"]; 
 		$awayGoals = $gStats["GAP1"] + $gStats["GAP2"] + $gStats["GAP3"];
 
+		//Shots per game
 		$homeShots = $gStats["SHP1"] + $gStats["SHP2"] + $gStats["SHP3"];
 		$awayShots = $gStats["SAP1"] + $gStats["SAP2"] + $gStats["SAP3"];
 
-		$homeShotPerCent = GetPercent($homeGoals,$homeShots);
-		$awayShotPerCent = GetPercent($awayGoals,$awayShots);
+		//Shot Percentage per game
+		$homeShotPerCent = FormatPercent($homeGoals,$homeShots);
+		$awayShotPerCent = FormatPercent($awayGoals,$awayShots);
 
 		//FaceOffs
 		$totalFO = $gStats["FOH"] + $gStats["FOA"]; 
@@ -69,8 +78,8 @@
 							<table class="standard">
 								<tr class="heading">
 									<td class="">&nbsp;</td>
-									<td class="c"><?=$homeTeam?></td>
-									<td class="c"><?=$awayTeam?></td>
+									<td class="c"><?=$homeTeamAbv?></td>
+									<td class="c"><?=$awayTeamAbv?></td>
 								</tr>	
 								<tr class="tight"><!-- GOALS -->
 									<td class="heading">Goals</td><td class="c"><?=$homeGoals?></td><td class="c"><?=$awayGoals?></td>
@@ -121,7 +130,7 @@
 
 
 							<!-- rob: start of series stats table -->	
-							<h3>Game 3 Points Leaderboard</h3>
+							<h3>Game <?=$gameNum?> Points Leaderboard</h3>
 							<table class="standard">
 								<tr class="heading">
 									<td class="heading">#</td>
@@ -130,24 +139,36 @@
 									<td class="heading">Pts</td>
 									<td class="heading">G</td>
 									<td class="heading">A</td>
-									<td class="heading">PPG</td>
+									<td class="heading">SOH</td>
+									<td class="heading">PIM</td>
 								</tr>	
 								<!-- start loop for all players with points -->
 		<?php 
-					for ($j=1; $j <= 11; $j++)
+					$j = 1;
+					while($row = mysqli_fetch_array($pStats))
 					{
-		?>								
+						$points = $row["G"] + $row["A"];
+						$player = GetPlayerFromID($row["PlayerID"]);
+
+						if($row["Pos"] != "G"){
+		?>						
+
 								<tr class="tight<?php print $stripe[$j & 1]; ?>">
 									<td class=""><?php print $j; ?></td>
-									<td class="">Denis Savard</td>
-									<td class="">MTL</td>
-									<td class="">14</td>
-									<td class="">9</td>
-									<td class="">5</td>
-									<td class="">2.0/7</td>
+									<td class=""><?=$player["First"] . " " . $player["Last"]?></td>
+									<td class=""><?=GetTeamABVById($row["TeamID"])?></td>
+									<td class=""><?=$points?></td>
+									<td class=""><?=$row["G"]?></td>
+									<td class=""><?=$row["A"]?></td>
+									<td class=""><?=$row["SOG"]?></td>
+									<td class=""><?=$row["PIM"]?></td>
 								</tr>	
 		<?php 
+					$j++;
+						}
 					}
+						mysqli_data_seek($pStats, 0);
+					
 		?>							
 								<!-- end of loop -->	
 
@@ -155,7 +176,7 @@
 
 
 							<!-- rob: start of series goalies table -->	
-							<h3>Game 3 Goalies Leaderboard</h3>
+							<h3>Game <?=$gameNum?> Goalies Leaderboard</h3>
 							
 							<!-- start loop for all goalies with time on ice, sorted by save % -->
 							<table class="standard" style="margin-bottom: 1em;">
@@ -167,16 +188,28 @@
 								</tr>	
 
 		<?php 
-					for ($j=1; $j <= 3; $j++)
+					$j = 1;
+					while($row = mysqli_fetch_array($pStats))
 					{
+						$points = $row["G"] + $row["A"];
+						$player = GetPlayerFromID($row["PlayerID"]);
+						
+
+						if($row["Pos"] == "G"){
+								if($row["SOG"]!= 0)
+									$savePct = FormatPercent($row["G"], $row["SOG"]);
+								else 
+									$savePct = "0 SOG";
 		?>								
 								<tr class="tight<?php print $stripe[$j & 1]; ?>">
 									<td class=""><?php print $j; ?></td>
-									<td class="">Patrick Roi</td>
-									<td class="">MTL</td>
-									<td class=""> 72.3% (17/72)<!-- 17 goals on 72 shots) --></td>
+									<td class=""><?=$player["First"] . " " . $player["Last"]?></td>
+									<td class=""><?=GetTeamABVById($row["TeamID"])?></td>
+									<td class=""> <?=$savePct?><!-- 17 goals on 72 shots) --></td>
 								</tr>	
 		<?php 
+						}
+					$j++;
 					}
 		?>							
 								<!-- end of loop -->	
