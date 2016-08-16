@@ -77,7 +77,9 @@
 		} else{
 
 			msgBox.html(msgHtml.substring(0, msgHtml.length - 2) + "</br>");
-			msgBox2.html(msgHtml2 + "</br></br>");
+			
+			if(msgBox.html == "")
+				msgBox2.html(msgHtml2 + "</br></br>");
 		}
 	}
 
