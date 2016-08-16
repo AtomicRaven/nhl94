@@ -21,6 +21,9 @@
 	<li>
 		<a href="./results.php">RESULTS</a>
 	</li>
+	<li>
+		<a href="./resultsLeader.php">LEADER</a>
+	</li>
 </ul>	
 
 <?php

@@ -124,6 +124,11 @@ function GetPercent($val1, $val2){
 
 }
 
+function GetAvg($val1, $val2){
+
+    return ltrim(number_format((float)$val1 / $val2, 3, '.', ''), "0");
+}
+
 function FormatZoneTime($time){
 
     $t = explode(':', $time); 

@@ -156,6 +156,51 @@ function GetPlayerStatsBySeriesId($seriesid, $pos){
 	return $result;
 }
 
+function GetGamesLeaders(){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT HomeUserID, AwayUserID, 
+			SUM(HomeScore) as 'gFor', 
+			SUM(AwayScore) as 'gAgainst', 
+			SUM(HomeScore + AwayScore) as 'gTotal',
+			SUM(OT) as 'OT', 
+			COUNT(CASE WHEN WinnerUserID = HomeUserID then 1 ELSE NULL END) as Wins, 
+			COUNT(CASE WHEN WinnerUserID = AwayUserID then 1 ELSE NULL END) as Losses,
+			COUNT(CASE WHEN GameID > 0 then 1 ELSE NULL END) as GP
+			FROM schedule 
+			GROUP BY HomeUserID 
+			ORDER BY Wins DESC";
+		
+	$result = mysqli_query($conn, $sql);
+
+	if ($result) {
+		//logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
+	} else {
+		echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
+	}		
+	
+	return $result;
+}
+
+function GetSeriesLeadersByUserID($userid){
+
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "SELECT COUNT(CASE WHEN SeriesWonBy = '$userid' then 1 ELSE NULL END) as sWins
+			FROM series LIMIT 1";
+			
+	$result = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_array($result, MYSQL_ASSOC);
+
+	if ($row) {
+		//logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
+	} else {
+		echo("Error:  GetSeriesLeadersByUserID: " . $sql . "<br>" . mysqli_error($conn));
+	}
+	
+	return $row;
+}
+
 function GetSeriesAndGames(){
 
 	$conn = $GLOBALS['$conn'];
