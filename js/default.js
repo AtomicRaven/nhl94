@@ -21,6 +21,72 @@
 		$("#seriesName").val(homeTeam + " vs " + awayTeam);
 	}
 
+	function SubmitRegisterForm(){
+		
+		var userName = document.getElementById("username"),
+			fullName = document.getElementById("fullname"),
+			email = document.getElementById("email"),
+			password = document.getElementById("password"),
+			confirmPassword = document.getElementById("confirmPassword"),
+			submit = true,
+			msgBox = $("#msg"),
+			msgBox2 = $("#msg2"),
+			msgHtml = "Please enter the following: ",
+			msgHtml2 = "Please correct the following: ";
+				
+		if(userName.value == ""){
+			submit = false;
+			msgHtml += "username, ";
+		}
+
+		if(fullName.value == ""){
+			submit = false;
+			msgHtml += "fullname, ";
+		}
+
+		if(email.value == ""){
+
+			submit = false;
+			msgHtml += "email, ";
+
+		}else{
+
+			if(!validateEmail(email.value)){
+				submit = false;
+				msgHtml2 += " Invalid email address.";
+			}
+		}
+
+		if(password.value == ""){
+			submit = false;
+			msgHtml += "password, ";
+
+		}else{
+
+			if(password.value != confirmPassword.value){
+				submit = false;
+				msgHtml2 += " Passwords do not match.";
+			}
+
+		}
+
+		if(submit){
+
+			document.registerForm.submit();
+
+		} else{
+
+			msgBox.html(msgHtml.substring(0, msgHtml.length - 2) + "</br>");
+			msgBox2.html(msgHtml2 + "</br></br>");
+		}
+	}
+
+	function validateEmail(email) {
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(email);
+
+	}
+
 	function SubmitForm(){
 
 		var homeSelect = document.getElementById("homeTeam");
