@@ -166,8 +166,9 @@ function GetGamesLeaders(){
 			SUM(OT) as 'OT', 
 			COUNT(CASE WHEN WinnerUserID = HomeUserID then 1 ELSE NULL END) as Wins, 
 			COUNT(CASE WHEN WinnerUserID = AwayUserID then 1 ELSE NULL END) as Losses,
-			COUNT(CASE WHEN GameID > 0 then 1 ELSE NULL END) as GP
+			COUNT(CASE WHEN GameID > 0 then 1 ELSE NULL END) as GP			
 			FROM schedule 
+			WHERE WinnerUserID > 0
 			GROUP BY HomeUserID 
 			ORDER BY Wins DESC";
 		
@@ -187,7 +188,7 @@ function GetSeriesLeadersByUserID($userid){
 	$conn = $GLOBALS['$conn'];
 
 	$sql = "SELECT COUNT(CASE WHEN SeriesWonBy = '$userid' then 1 ELSE NULL END) as sWins
-			FROM series LIMIT 1";
+			FROM series WHERE active=1 LIMIT 1";
 			
 	$result = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($result, MYSQL_ASSOC);
@@ -266,10 +267,21 @@ function MarkSeriesAsWon($seriesid, $winneruserid, $losernumgames){
 function MarkSeriesAsInactive($seriesid){
 
 	$conn = $GLOBALS['$conn'];
+
+	//Mark series as inactive
+
 	$sql = "UPDATE series SET Active= 0	
 	WHERE ID= '$seriesid' LIMIT 1";
-	
+
 	$tmr = mysqli_query($conn, $sql);
+
+	//Update Schedule
+
+	//Delete all the games for this series (actual delete)
+	$gamestodelete = GetGamesBySeriesId($seriesid);
+	while($row = mysqli_fetch_array($gamestodelete, MYSQL_ASSOC)){
+		DeleteGameDataById($row["GameID"], $seriesid);
+	}	
 
 }
 
