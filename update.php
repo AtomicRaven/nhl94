@@ -91,9 +91,7 @@
 				
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
-
-					<h1>Update</h1>	
-					<div style="color:red;"><?= $msg ?></div><br/><br/>
+					<div style="color:red;"><?= $msg ?></div>
 
 					<h2>Update Series</h2> 
 										
