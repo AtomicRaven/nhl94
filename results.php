@@ -51,7 +51,7 @@
 			$seriesHtml .= '<span class="note">Updated ' . $formattedEntryDate. '</span></td>';
 			$seriesHtml .= '<td class="c"><button type="button" class="square" onclick="location.href=\'resultsSeries.php?seriesId='. $row['SeriesID'].'\'">Select</button>';
 
-			if($LOGGED_IN == true)
+			if($LOGGED_IN == true &&  $_SESSION['userId'] == $row["HomeUserID"] || $_SESSION['userId'] == $row["AwayUserID"])
 				$seriesHtml .= '<br/><button type="button" style="margin-top: 10px;" class="square" onclick="location.href=\'update.php?seriesId='. $row['SeriesID'].'\'">&nbsp;Edit&nbsp;</button></td>';
 			$seriesHtml .= '</tr>';
 
