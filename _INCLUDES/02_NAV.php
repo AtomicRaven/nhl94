@@ -30,6 +30,7 @@
 			if ($LOGGED_IN == true) {
 ?>	
 <div class="loginInfo"><a href="./logout.php" class="small-button">Log out</a> <?php print $_SESSION['username']; ?></div>
+<!--<div class="loginInfo"><a href="reg/change-pwd.php" class="small-button">Change Password</a></div>-->
 <?php
 			}
 ?>	

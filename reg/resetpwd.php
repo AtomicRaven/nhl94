@@ -12,7 +12,6 @@ if($fgmembersite->ResetPassword())
 <!DOCTYPE HTML>
 <html>
 <head>
-      <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
       <title>Reset Password</title>
       <link rel="STYLESHEET" type="text/css" href="../css/default.css">
       <script type='text/javascript' src='scripts/gen_validatorv31.js'></script>
