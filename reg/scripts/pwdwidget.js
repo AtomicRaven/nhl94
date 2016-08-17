@@ -50,13 +50,13 @@ function _MakePWDWidget()
 
 	this.pwdshow_anch = pwdname + "_show_anch";
 
-	code += "<div class='pwdopsdiv' id='"+this.pwdshowdiv+"'><a href='#' id='"+this.pwdshow_anch+"'>"+this.txtShow+"</a></div>";
+	//code += "<div class='pwdopsdiv' id='"+this.pwdshowdiv+"'><a href='#' id='"+this.pwdshow_anch+"'>"+this.txtShow+"</a></div>";
 
 	this.pwdgendiv = pwdname+"_gendiv";
 
 	this.pwdgenerate_anch = pwdname + "_gen_anch";
 
-	code += "<div class='pwdopsdiv'id='"+this.pwdgendiv+"'><a href='#' id='"+this.pwdgenerate_anch+"'>"+this.txtGenerate+"</a></div>";
+	//code += "<div class='pwdopsdiv'id='"+this.pwdgendiv+"'><a href='#' id='"+this.pwdgenerate_anch+"'>"+this.txtGenerate+"</a></div>";
 
 	this.pwdstrengthdiv = pwdname + "_strength_div";
 
@@ -88,19 +88,19 @@ function _MakePWDWidget()
 
 	this._showGeneatedPwd = showGeneatedPwd;
 
-	this.generate_anch_obj = document.getElementById(this.pwdgenerate_anch);
+	//this.generate_anch_obj = document.getElementById(this.pwdgenerate_anch);
 	
-	this.generate_anch_obj.pwdwidget=this;
+	//this.generate_anch_obj.pwdwidget=this;
 
-	this.generate_anch_obj.onclick = function(){ this.pwdwidget._showGeneatedPwd(); }
+	//this.generate_anch_obj.onclick = function(){ this.pwdwidget._showGeneatedPwd(); }
 
 	this._showpwdchars = showpwdchars;
 
-	this.show_anch_obj = document.getElementById(this.pwdshow_anch);
+	//this.show_anch_obj = document.getElementById(this.pwdshow_anch);
 
-	this.show_anch_obj.pwdwidget = this;
+	//this.show_anch_obj.pwdwidget = this;
 
-	this.show_anch_obj.onclick = function(){ this.pwdwidget._showpwdchars();}
+	//this.show_anch_obj.onclick = function(){ this.pwdwidget._showpwdchars();}
 
 	this.pwdtxtfield_obj = document.getElementById(this.pwdtxtfieldid);
 

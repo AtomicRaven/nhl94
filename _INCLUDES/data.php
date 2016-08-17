@@ -572,7 +572,7 @@ function GetUserName($userid){
 	
 	$conn = $GLOBALS['$conn'];
 	
-	$sql = "SELECT Name FROM users WHERE ID='$userid'";
+	$sql = "SELECT Name FROM users WHERE id_user='$userid'";
 	$tmr = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
 	
@@ -584,11 +584,11 @@ function GetUserAlias($userid){
 	
 	$conn = $GLOBALS['$conn'];
 	
-	$sql = "SELECT Alias FROM users WHERE ID='$userid'";
+	$sql = "SELECT username FROM users WHERE id_user='$userid'";
 	$tmr = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
 	
-	return strtoupper($row['Alias']);
+	return strtoupper($row['username']);
 	
 }  // end of function
 
@@ -596,7 +596,7 @@ function GetUsers(){
 
 	$conn = $GLOBALS['$conn'];
 
-	$sql = "SELECT * FROM users ORDER BY Name DESC";
+	$sql = "SELECT * FROM users ORDER BY username DESC";
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) { 
@@ -614,7 +614,7 @@ function GetUsersFromSeries($seriesid){
 	$homeuserid = $series['HomeUserID'];
 	$awayuserid = $series['AwayUserID'];
 
-	$sql = "SELECT * FROM users WHERE ID = '$homeuserid' OR ID = '$awayuserid'   ORDER BY Name DESC";
+	$sql = "SELECT * FROM users WHERE id_user = '$homeuserid' OR id_user = '$awayuserid'   ORDER BY username DESC";
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) { 
@@ -630,19 +630,14 @@ function ChkPass($userid, $pwd){
     // Retrieve password
 
     $conn = $GLOBALS['$conn'];
-
-    $sql = "SELECT * FROM users WHERE Alias = '$userid' LIMIT 1";
+	$pwdmd5 = md5($pwd);
+    
+	$sql = "Select * from users where username='$userid' and password='$pwdmd5' and confirmcode='y'";
     $tmr = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
 
 	if ($row) {
-
-		logMsg("Retrieved User");
-		if($pwd == $row['Password'])
-            return $row;
-        else
-            return FALSE; //  CHANGE TO FALSE BEFORE UPLOADING TO SITE
-
+		return $row;	
 	} else {
 		//echo("Error: ChkPass: " . $sql . "<br>" . mysqli_error($conn));
 		return FALSE; //  CHANGE TO FALSE BEFORE UPLOADING TO SITE

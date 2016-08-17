@@ -21,10 +21,12 @@
 		$("#seriesName").val(homeTeam + " vs " + awayTeam);
 	}
 
+
+	//Register Form
 	function SubmitRegisterForm(){
 		
 		var userName = document.getElementById("username"),
-			fullName = document.getElementById("fullname"),
+			name = document.getElementById("name"),
 			email = document.getElementById("email"),
 			password = document.getElementById("password"),
 			confirmPassword = document.getElementById("confirmPassword"),
@@ -39,9 +41,9 @@
 			msgHtml += "username, ";
 		}
 
-		if(fullName.value == ""){
+		if(name.value == ""){
 			submit = false;
-			msgHtml += "fullname, ";
+			msgHtml += "name, ";
 		}
 
 		if(email.value == ""){
@@ -72,12 +74,12 @@
 
 		if(submit){
 
-			document.registerForm.submit();
+			document.register.submit();
 
 		} else{
 
 			msgBox.html(msgHtml.substring(0, msgHtml.length - 2) + "</br>");
-			
+
 			if(msgBox.html == "")
 				msgBox2.html(msgHtml2 + "</br></br>");
 		}
@@ -88,6 +90,7 @@
 		return re.test(email);
 
 	}
+	
 
 	function SubmitForm(){
 

@@ -24,12 +24,12 @@
 		
 		if ($user !== FALSE) {
 				
-				$currentUser = $user["Alias"];
+				$currentUser = $user["username"];
 				
 				$_SESSION['username'] = $currentUser;
 				$_SESSION['loggedin'] = true;					
 				$_SESSION['Admin'] = true;
-				$_SESSION['userId'] = $user['ID'];
+				$_SESSION['userId'] = $user['id_user'];
 					header('Location: manage.php');
 		}
 		else {

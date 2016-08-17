@@ -1,4 +1,6 @@
 <?PHP
+
+
 /*
     Registration/Login script from HTML Form Guide
     V1.0
@@ -534,7 +536,7 @@ class FGMembersite
         $mailer->From = $this->GetFromAddress();
         
         $link = $this->GetAbsoluteURLFolder().
-                '/reg/resetpwd.php?email='.
+                '/resetpwd.php?email='.
                 urlencode($email).'&code='.
                 urlencode($this->GetResetPasswordCode($email));
 
@@ -574,7 +576,7 @@ class FGMembersite
         "username:".$user_rec['username']."\r\n".
         "password:$new_password\r\n".
         "\r\n".
-        "Login here: ".$this->GetAbsoluteURLFolder()."/login.php\r\n".
+        "Login here: ".$this->GetAbsoluteURLFolder()."../index.php\r\n".
         "\r\n".
         "Regards,\r\n".
         "Webmaster\r\n".

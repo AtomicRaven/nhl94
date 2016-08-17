@@ -45,39 +45,18 @@
 			if(isset($_GET['seriesId'])){
 
 				$seriesid = $_GET['seriesId'];
-				$creatednew = false;
 			}
 
-			if(!$creatednew){
 
-				$series = GetSeriesById($seriesid);
-				$gamesplayed = GetGamesBySeriesId($seriesid);
+			$series = GetSeriesById($seriesid);
+			$gamesplayed = GetGamesBySeriesId($seriesid);
 
-				//$hometeam = GetTeamById($series["HomeTeamId"]);
-				//$awayteam = GetTeamById($series["AwayTeamId"]);
+			$homeUserAlias = GetUserAlias($series["HomeUserID"]);
+			$awayUserAlias = GetUserAlias($series["AwayUserID"]);
 
-				$homeUserAlias = GetUserAlias($series["HomeUserID"]);
-				$awayUserAlias = GetUserAlias($series["AwayUserID"]);
-
-				$submitBtn ="<input type='hidden' name='MAX_FILE_SIZE' value='400000' />";
-				$submitBtn .="<input type='hidden' name='userid' value='" . $_SESSION['userId'] . "' />"; 
-				$submitBtn .="<input type='hidden' name='seriesid' value='" . $seriesid ."' />";	
-
-
-			}else{
-				
-				// User wants to update an existing series so gab all the series games and show in drop down box
-				$allseries = GetSeries();
-				$seriesSelectBox = "<select id='Series' name='Series' onchange='LoadSeries(this.value)'>";
-				$seriesSelectBox .= "<option value='0'>Select Series</option>";
-
-				while($row = mysqli_fetch_array($allseries)){
-					$seriesSelectBox .= "<option value='" . $row['ID'] . "'>" . $row['Name'] . "  |  " . $row['DateCreated']. "</option>";					
-				}	
-
-				$seriesSelectBox .= "</select>";
-				
-			}
+			$submitBtn ="<input type='hidden' name='MAX_FILE_SIZE' value='400000' />";
+			$submitBtn .="<input type='hidden' name='userid' value='" . $_SESSION['userId'] . "' />"; 
+			$submitBtn .="<input type='hidden' name='seriesid' value='" . $seriesid ."' />";
 
 			$fileInput = "Choose file: <input type='file' name='uploadfile' />";			
 			$fileInput .= "<input type='submit' name='submit' value='Upload' />";
@@ -100,12 +79,6 @@
 
 			}
 
-			function LoadSeries(seriesId){
-
-				if(seriesId != 0)
-					document.location.href = "update.php?seriesId=" + seriesId;
-
-			}
 			</script>
 
 </head>
@@ -123,10 +96,7 @@
 					<div style="color:red;"><?= $msg ?></div><br/><br/>
 
 					<h2>Update Series</h2> 
-					
-					<?php
-					if(!$creatednew){
-					?>
+										
 					<form method="post" action="processUpdate.php" enctype="multipart/form-data">	
 					<?= $submitBtn?>
 					<table class="standard">
@@ -143,10 +113,11 @@
 						$awayWinnerCount = 0;
 						$uploadCount = 0;
 
-						while($row = mysqli_fetch_array($gamesplayed, MYSQL_ASSOC)){
+						while($row = mysqli_fetch_array($gamesplayed, MYSQL_ASSOC)){						
 
-							$homeUserSelectBox = CreateSelectBox("homeUser", null, GetUsersFromSeries($seriesid), "ID", "Alias", null, $row["HomeUserID"]);
-							$awayUserSelectBox = CreateSelectBox("awayUser", null, GetUsersFromSeries($seriesid), "ID", "Alias", null, $row["AwayUserID"]);							
+
+							$homeUserSelectBox = CreateSelectBox("homeUser", null, GetUsersFromSeries($seriesid), "id_user", "username", null, $row["HomeUserID"]);
+							$awayUserSelectBox = CreateSelectBox("awayUser", null, GetUsersFromSeries($seriesid), "id_user", "username", null, $row["AwayUserID"]);							
 								
 							if($row["WinnerUserID"] != 0){								
 							
@@ -225,21 +196,11 @@
 							$seriesText .= "</h2>";
 
 							echo $seriesText;	 
-							//logMsg("hw:" . $homeWinnerCount);
-							//logMsg("aw:" . $awayWinnerCount);	
 					
 						?>
 											
 					</table>
-					</form>	
-					<?php						 
-					 }else{
-						 echo $seriesSelectBox;
-					 }
-					  ?>
-
-
-
+					</form>
 				</div>	
 		
 		</div><!-- end: #page -->	

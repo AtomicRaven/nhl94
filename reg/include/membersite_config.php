@@ -1,6 +1,5 @@
 <?PHP
-require_once("./reg/include/fg_membersite.php");
-require_once("./_INCLUDES/dbconnect.php");
+require_once("fg_membersite.php");
 
 $fgmembersite = new FGMembersite();
 
@@ -18,7 +17,7 @@ $fgmembersite->InitDB(/*hostname*/$servername,
                       /*username*/$username,
                       /*password*/$password,
                       /*database name*/$dbname,
-                      /*table name*/'users2', 'Nhl94 Buds');
+                      /*table name*/'users', 'Nhl94 Rocks');
 
 //For better security. Get a random string from this link: http://tinyurl.com/randstr
 // and put it here

@@ -17,7 +17,7 @@
 ?><!DOCTYPE HTML>
 <html>
 <head>
-<title>NHL 94 Game Saver</title>
+<title>NHL94Rocks Game Saver</title>
 <?php include_once './_INCLUDES/01_HEAD.php'; ?>
 </head>
 
@@ -38,7 +38,9 @@
 							<label>password</label><br>
 							<input type="password" name="password" value=""><br>
 					
-							<button id="submit">SUBMIT</button>
+							<button id="submit">SUBMIT</button><br/><br/>
+							<a href='register.php'>Register</a><br/>
+							<a href='reg/reset-pwd-req.php'>Forgot Password?</a>
 					</form>
 					
 				</div>	

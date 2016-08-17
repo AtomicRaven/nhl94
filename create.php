@@ -13,8 +13,8 @@
 			$homeTeamSelectBox = CreateSelectBox("homeTeam", "Select Home Team", GetTeams(), "TeamID", "Name", "UpdateSeriesName()", null);	
 			$awayTeamSelectBox = CreateSelectBox("awayTeam", "Select Away Team", GetTeams(), "TeamID", "Name", "UpdateSeriesName()", null);
 			
-			$homeUserSelectBox = CreateSelectBox("homeUser", "Select Home User", GetUsers(), "ID", "Alias", "UpdateSeriesName()", null);
-			$awayUserSelectBox = CreateSelectBox("awayUser", "Select Away User", GetUsers(), "ID", "Alias", "UpdateSeriesName()", null);
+			$homeUserSelectBox = CreateSelectBox("homeUser", "Select Home User", GetUsers(), "id_user", "username", "UpdateSeriesName()", null);
+			$awayUserSelectBox = CreateSelectBox("awayUser", "Select Away User", GetUsers(), "id_user", "username", "UpdateSeriesName()", null);
 
 			$seriesTypeSelectBox = CreateSelectBox("seriesType", null, GetSeriesTypes(), "SeriesID", "Description", null, null);			
 			

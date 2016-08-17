@@ -1,106 +1,72 @@
-<?PHP
-require_once("./reg/include/membersite_config.php");
-include_once './_INCLUDES/00_SETUP.php';
+<?php
+		session_start();
+		$ADMIN_PAGE = false;
+		include_once './_INCLUDES/config.php';
+		require_once("./reg/include/membersite_config.php");
+		include_once './_INCLUDES/00_SETUP.php';
 
-if(isset($_POST['submitted']))
-{
-   if($fgmembersite->RegisterUser())
-   {
-        $fgmembersite->RedirectToURL("reg/thank-you.html");
-   }
-}
-
-?>
-<!DOCTYPE HTML>
+		if(isset($_POST['submitted']))
+		{
+			if($fgmembersite->RegisterUser())
+			{
+					$fgmembersite->RedirectToURL("reg/thank-you.html");
+			}
+		}
+		
+		if ($LOGGED_IN == false) {
+	
+?><!DOCTYPE HTML>
 <html>
 <head>
-    <title>Register</title>
-    <link rel="STYLESHEET" type="text/css" href="./reg/style/fg_membersite.css" />    
-    <link rel="STYLESHEET" type="text/css" href="./reg/style/pwdwidget.css" />          
-    <link rel="stylesheet" type="text/css" href="./css/default.css" />
-
-    <script type='text/javascript' src='./reg/scripts/gen_validatorv31.js'></script>
-    <script src="./reg/scripts/pwdwidget.js" type="text/javascript"></script>
-
+<title>Register</title>
+<?php include_once './_INCLUDES/01_HEAD.php'; ?>
 </head>
+
 <body>
-<div id="page">
+
+		<div id="page">
 		
 				<?php include_once './_INCLUDES/02_NAV.php'; ?>
 				
 				<div id="main">				
-            <!-- Form Code Start -->
-            <div id='fg_membersite'>
-            <form id='register' action='<?php echo $fgmembersite->GetSelfScript(); ?>' method='post' accept-charset='UTF-8'>
-            <fieldset >
-            <legend>Register</legend>
 
-            <input type='hidden' name='submitted' id='submitted' value='1'/>
+					<h1>Register</h1>
 
-            <div class='short_explanation'>* required fields</div>
-            <input type='text'  class='spmhidip' name='<?php echo $fgmembersite->GetSpamTrapInputName(); ?>' />
+					<h2><?php echo $fgmembersite->GetErrorMessage(); ?></h2>
+					<div id="msg" style="color:red;"></div><br/>
+					<div id="msg2" style="color:red;"></div>
 
-            <div><span class='error'><?php echo $fgmembersite->GetErrorMessage(); ?></span></div>
-            <div class='container'>
-                <label for='name' >Your Full Name*: </label><br/>
-                <input type='text' name='name' id='name' value='<?php echo $fgmembersite->SafeDisplay('name') ?>' maxlength="50" /><br/>
-                <span id='register_name_errorloc' class='error'></span>
-            </div>
-            <div class='container'>
-                <label for='email' >Email Address*:</label><br/>
-                <input type='text' name='email' id='email' value='<?php echo $fgmembersite->SafeDisplay('email') ?>' maxlength="50" /><br/>
-                <span id='register_email_errorloc' class='error'></span>
-            </div>
-            <div class='container'>
-                <label for='username' >UserName*:</label><br/>
-                <input type='text' name='username' id='username' value='<?php echo $fgmembersite->SafeDisplay('username') ?>' maxlength="50" /><br/>
-                <span id='register_username_errorloc' class='error'></span>
-            </div>
-            <div class='container' style='height:80px;'>
-                <label for='password' >Password*:</label><br/>
-                <div class='pwdwidgetdiv' id='thepwddiv' ></div>
-                <noscript>
-                <input type='password' name='password' id='password' maxlength="50" />
-                </noscript>    
-                <div id='register_password_errorloc' class='error' style='clear:both'></div>
-            </div>
+					<form id='register' name='register' action='<?php echo $fgmembersite->GetSelfScript(); ?>' method='post' accept-charset='UTF-8'>
 
-            <div class='container'>
-                <button type='submit' name='Submit' style="margin-top: 10px;">SUBMIT</button>
-            </div>
+							<input type='hidden' name='submitted' id='submitted' value='1'/>
+							<input type='text'  class='spmhidip' name='<?php echo $fgmembersite->GetSpamTrapInputName(); ?>' />
+							<label>full name</label><br>
+							<input type="text" id="name" name="name" maxlength="50" value=""><br>
+							<label>username</label><br>
+							<input type="text" id="username" name="username" maxlength="6" value=""><br>
+							<label>email</label><br>
+							<input type="text" id="email" name="email" maxlength="50" value=""><br>
+							<label>password</label><br>
+							<input type="password" id="password" name="password" maxlength="50" value=""><br>
+							<label>confirm password</label><br>
+							<input type="password" id="confirmPassword" name="confirmPassword" maxlength="50" value=""><br>
+					
+							<button id="submitBtn" type="button" onclick="SubmitRegisterForm()" style="margin-top: 10px;">SUBMIT</button>
+					</form>
 
-            </fieldset>
-            </form>
-            <!-- client-side Form Validations:
-            Uses the excellent form validation script from JavaScript-coder.com-->
-
-            <script type='text/javascript'>
-            
-                var pwdwidget = new PasswordWidget('thepwddiv','password');
-                pwdwidget.MakePWDWidget();
-                
-                var frmvalidator  = new Validator("register");
-                frmvalidator.EnableOnPageErrorDisplay();
-                frmvalidator.EnableMsgsTogether();
-                frmvalidator.addValidation("name","req","Please provide your name");
-
-                frmvalidator.addValidation("email","req","Please provide your email address");
-
-                frmvalidator.addValidation("email","email","Please provide a valid email address");
-
-                frmvalidator.addValidation("username","req","Please provide a username");
-                
-                frmvalidator.addValidation("password","req","Please provide a password");
-
-            
-            </script>
-
-            <!--
-            Form Code End (see html-form-guide.com for more info.)
-            -->
-            </div>	
+					
+				</div>	
 		
 		</div><!-- end: #page -->	
 		
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+<script src="./js/default.js"></script>
+
 </body>
 </html>
+<?php
+		}
+		else {
+				header('Location: manage.php');
+		}	
+?>	
