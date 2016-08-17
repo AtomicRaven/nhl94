@@ -201,17 +201,23 @@ function GetSeriesLeadersByUserID($userid){
 	return $row;
 }
 
-function GetSeriesAndGames(){
+function GetSeriesAndGames($useronly){
 
 	$conn = $GLOBALS['$conn'];
 	//$sql = "SELECT * FROM schedule INNER JOIN series ON schedule.SeriesID = series.ID ORDER BY series.ID ASC";
+	$userid = $_SESSION['userId'];
 
 	$sql = "SELECT a.*, b.*, MAX(b.ConfirmTime) as LastEntryDate,
 		COUNT(CASE WHEN b.GameID >= 0 then 1 ELSE NULL END) AS TotalGames
 		FROM series a INNER JOIN schedule b		
-		ON a.ID = b.SeriesID WHERE a.Active != 0
-		GROUP BY a.ID
-		ORDER BY (CASE WHEN MAX(b.ConfirmTime) > MAX(a.DateCreated) THEN MAX(b.ConfirmTime) ELSE MAX(a.DateCreated) END) DESC";
+		ON a.ID = b.SeriesID WHERE a.Active != 0";
+		
+		if($useronly){
+			$sql .= " and (b.HomeUserID ='$userid' or b.AwayUserID = '$userid')";
+		}
+
+	$sql .= " GROUP BY a.ID
+			ORDER BY (CASE WHEN MAX(b.ConfirmTime) > MAX(a.DateCreated) THEN MAX(b.ConfirmTime) ELSE MAX(a.DateCreated) END) DESC";
 			
 	$result = mysqli_query($conn, $sql);
 
