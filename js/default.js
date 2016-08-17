@@ -33,8 +33,8 @@
 			submit = true,
 			msgBox = $("#msg"),
 			msgBox2 = $("#msg2"),
-			msgHtml = "Please enter the following: ",
-			msgHtml2 = "Please correct the following: ";
+			msgHtml = "",
+			msgHtml2 = "";
 				
 		if(userName.value == ""){
 			submit = false;
@@ -78,10 +78,17 @@
 
 		} else{
 
-			msgBox.html(msgHtml.substring(0, msgHtml.length - 2) + "</br>");
+			if(msgHtml != ""){
+				msgBox.html("Please enter the following: " + msgHtml.substring(0, msgHtml.length - 2) + "</br>");
+			}else{
+				msgBox.html("");
+			}
 
-			if(msgBox.html == "")
-				msgBox2.html(msgHtml2 + "</br></br>");
+			if(msgHtml2 != ""){
+				msgBox2.html("Please correct the following: " + msgHtml2 + "</br></br>");
+			}else{
+				msgBox2.html("");
+			}
 		}
 	}
 

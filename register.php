@@ -12,7 +12,7 @@
 					$fgmembersite->RedirectToURL("reg/thank-you.html");
 			}
 		}
-		
+
 		if ($LOGGED_IN == false) {
 	
 ?><!DOCTYPE HTML>
@@ -39,8 +39,8 @@
 					<form id='register' name='register' action='<?php echo $fgmembersite->GetSelfScript(); ?>' method='post' accept-charset='UTF-8'>
 
 							<input type='hidden' name='submitted' id='submitted' value='1'/>
-							<input type='text'  class='spmhidip' name='<?php echo $fgmembersite->GetSpamTrapInputName(); ?>' />
-							<label>full name</label><br>
+							<input type='hidden' class='spmhidip' name='<?php echo $fgmembersite->GetSpamTrapInputName(); ?>' />
+							<label>name</label><br>
 							<input type="text" id="name" name="name" maxlength="50" value=""><br>
 							<label>username</label><br>
 							<input type="text" id="username" name="username" maxlength="6" value=""><br>

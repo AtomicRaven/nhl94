@@ -49,7 +49,8 @@
 			$seriesHtml .= '<td class="c">'.$awayTeam .'<br/>@<br/>'.$homeTeam.'</td>';
 			$seriesHtml .= '<td class="'. $stanleyClass .'">'.$gamesCompleteText.'<br />'; 
 			$seriesHtml .= '<span class="note">Updated ' . $formattedEntryDate. '</span></td>';
-			$seriesHtml .= '<td class="c"><button type="button" class="square" onclick="location.href=\'resultsSeries.php?seriesId='. $row['SeriesID'].'\'">Select</button></td>';
+			$seriesHtml .= '<td class="c"><button type="button" class="square" onclick="location.href=\'resultsSeries.php?seriesId='. $row['SeriesID'].'\'">Select</button>';
+			$seriesHtml .= '<br/><button type="button" style="margin-top: 10px;" class="square" onclick="location.href=\'update.php?seriesId='. $row['SeriesID'].'\'">&nbsp;Edit&nbsp;</button></td>';
 			$seriesHtml .= '</tr>';
 
 			$i++;

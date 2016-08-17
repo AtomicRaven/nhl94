@@ -37,7 +37,7 @@ function CreateSelectBox($selectName, $selectTitle, $data, $id, $value, $onChang
     }		
     
     while($row = mysqli_fetch_array($data)){
-
+        
         $selectBox .= "<option value='" . $row[$id] . "'"; 
         
         if($indexSelected != null){

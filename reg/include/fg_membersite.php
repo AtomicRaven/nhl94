@@ -471,7 +471,7 @@ class FGMembersite
         $mailer->FromName = $this->fromname;    
         
         $mailer->Body ="Hello ".$user_rec['name']."\r\n\r\n".
-        "Welcome! Your registration  with ".$this->sitename." is completed.\r\n".
+        "Welcome! Your registration with ".$this->sitename." is completed.\r\n".
         "\r\n".
         "Regards,\r\n".
         "Webmaster\r\n".
@@ -576,7 +576,7 @@ class FGMembersite
         "username:".$user_rec['username']."\r\n".
         "password:$new_password\r\n".
         "\r\n".
-        "Login here: ".$this->GetAbsoluteURLFolder()."../index.php\r\n".
+        "Login here: ".$this->sitename.
         "\r\n".
         "Regards,\r\n".
         "Webmaster\r\n".

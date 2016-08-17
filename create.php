@@ -8,10 +8,7 @@
 
 		if ($LOGGED_IN == true) {
 
-			// Get Data to populate select boxes from DB			
-
-			$homeTeamSelectBox = CreateSelectBox("homeTeam", "Select Home Team", GetTeams(), "TeamID", "Name", "UpdateSeriesName()", null);	
-			$awayTeamSelectBox = CreateSelectBox("awayTeam", "Select Away Team", GetTeams(), "TeamID", "Name", "UpdateSeriesName()", null);
+			// Get Data to populate select boxes from DB
 			
 			$homeUserSelectBox = CreateSelectBox("homeUser", "Select Home User", GetUsers(), "id_user", "username", "UpdateSeriesName()", null);
 			$awayUserSelectBox = CreateSelectBox("awayUser", "Select Away User", GetUsers(), "id_user", "username", "UpdateSeriesName()", null);
@@ -45,7 +42,7 @@
 								</tr>			
 								<tr class="normal">
 									<td>
-										<?= $homeUserSelectBox?> <!--as <?= $homeTeamSelectBox ?>-->			
+										<?= $homeUserSelectBox?> 		
 									</td>
 								</tr>
 								<tr>
@@ -53,7 +50,7 @@
 								</tr>	
 								<tr>
 									<td>
-										<?= $awayUserSelectBox?> <!--as <?= $awayTeamSelectBox ?>-->
+										<?= $awayUserSelectBox?>
 									</td>
 								</tr>
 							</table>

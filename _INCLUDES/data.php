@@ -596,7 +596,7 @@ function GetUsers(){
 
 	$conn = $GLOBALS['$conn'];
 
-	$sql = "SELECT * FROM users ORDER BY username DESC";
+	$sql = "SELECT * FROM users WHERE confirmcode='y' ORDER BY username DESC";
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) { 
@@ -614,7 +614,7 @@ function GetUsersFromSeries($seriesid){
 	$homeuserid = $series['HomeUserID'];
 	$awayuserid = $series['AwayUserID'];
 
-	$sql = "SELECT * FROM users WHERE id_user = '$homeuserid' OR id_user = '$awayuserid'   ORDER BY username DESC";
+	$sql = "SELECT * FROM users WHERE id_user = '$homeuserid' OR id_user = '$awayuserid'  ORDER BY username DESC";
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) { 
