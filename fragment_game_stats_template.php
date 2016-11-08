@@ -11,7 +11,8 @@
 		//Get data from DB
 		$gStats = GetGameById($gameid);
 		$schedule = GetScheduleByGameId($gameid);
-		$pStats = GetPlayerStatsByGameId($gameid);
+		$pStats = GetPlayerStatsByGameId($gameid, 'DESC');
+		$goalieStats = GetPlayerStatsByGameId($gameid, 'ASC');
 
 		$homeTeamAbv = GetTeamABVById($schedule["HomeTeamID"]);
 		$awayTeamAbv = GetTeamABVById($schedule["AwayTeamID"]);
@@ -24,13 +25,17 @@
 
 		///Add up everything
 
-		//Goals per game
-		$homeGoals = $gStats["GHP1"] + $gStats["GHP2"] + $gStats["GHP3"]; 
-		$awayGoals = $gStats["GAP1"] + $gStats["GAP2"] + $gStats["GAP3"];
+		//Goals per game	
+		$homeGoals = $schedule["HomeScore"]; 
+		$awayGoals = $schedule["AwayScore"];
 
 		//Shots per game
 		$homeShots = $gStats["SHP1"] + $gStats["SHP2"] + $gStats["SHP3"];
 		$awayShots = $gStats["SAP1"] + $gStats["SAP2"] + $gStats["SAP3"];
+
+		//Penalites per game
+		$homePen = $gStats["PIMH"];
+		$awayPen = $gStats["PIMA"];
 
 		//Shot Percentage per game
 		$homeShotPerCent = FormatPercent($homeGoals,$homeShots);
@@ -49,7 +54,17 @@
 		$hZone = FormatZoneTime($gStats["AZH"]);
 		$aZone =  FormatZoneTime($gStats["AZA"]);
 
-		//
+		$GHOT = "";
+		$GAOT = "";
+
+		if($gStats["GHOT"] == 1){
+			$GHOT = " (OT)";
+		}
+
+		if($gStats["GAOT"] == 1){
+			$GAOT = " (OT)";
+		}  
+
 ?>		
 
 
@@ -72,7 +87,7 @@
 					<!-- rob: start of series stats table -->	
 					<div class="gamestats">
 
-							<h3>Game <?=$gameNum?> Stats</h3>
+							<h3 data-id="<?=$gameid?>">Game <?=$gameNum?> Stats</h3>
 							<h4>submitted <?=$formattedDate?></h4>
 
 							<table class="standard">
@@ -82,7 +97,7 @@
 									<td class="c"><?=$awayTeamAbv?></td>
 								</tr>	
 								<tr class="tight"><!-- GOALS -->
-									<td class="heading">Goals</td><td class="c"><?=$homeGoals?></td><td class="c"><?=$awayGoals?></td>
+									<td class="heading">Goals</td><td class="c"><?=$homeGoals?><?=$GHOT?></td><td class="c"><?=$awayGoals?><?=$GAOT?></td>
 								</tr>							
 								<!--<tr class="tight stripe"><!-- ASSISTS - This doesn't exist
 									<td class="heading">Assists</td><td class="c">xxx</td><td class="c">xxx</td>
@@ -114,10 +129,10 @@
 																			 Note: Each Penalty shot (for opposition) should be added here, which
 																			 will give total penatlies	
 																											-->
-									<td class="heading"># Penalties</td><td class="c"><?=$gStats["PPA"]?></td><td class="c"><?=$gStats["PPH"]?></td>
+									<td class="heading"># Penalties</td><td class="c"><?=$homePen?></td><td class="c"><?=$awayPen?></td>
 								</tr>							
 								<tr class="tight"><!-- Breakways -->
-									<td class="heading">Breakways</td><td class="c"><?=$gStats["BAH"]?></td><td class="c"><?=$gStats["BAA"]?></td>
+									<td class="heading">Breakways</td><td class="c"><?=$gStats["BAHG"]?>/<?=$gStats["BAH"]?></td><td class="c"><?=$gStats["BAAG"]?>/<?=$gStats["BAA"]?></td>
 								</tr>							
 								<tr class="tight stripe"><!-- One Timers -->
 									<td class="heading">One Timers</td><td class="c"><?=$gStats["1THG"]?>/<?=$gStats["1TH"]?></td><td class="c"><?=$gStats["1TAG"]?>/<?=$gStats["1TA"]?></td>
@@ -167,7 +182,6 @@
 					$j++;
 						}
 					}
-						mysqli_data_seek($pStats, 0);
 					
 		?>							
 								<!-- end of loop -->	
@@ -189,15 +203,17 @@
 
 		<?php 
 					$j = 1;
-					while($row = mysqli_fetch_array($pStats))
+					while($row = mysqli_fetch_array($goalieStats))
 					{
 						$points = $row["G"] + $row["A"];
 						$player = GetPlayerFromID($row["PlayerID"]);
 						
 
 						if($row["Pos"] == "G"){
-								if($row["SOG"]!= 0)
-									$savePct = FormatPercent($row["G"], $row["SOG"]);
+								if($row["SOG"]!= 0){
+									$savePct = 100 - GetPercent($row["G"], $row["SOG"]);
+									$savePct = $row["G"] . "/" . $row["SOG"] . " (" . $savePct . "%)";
+								}
 								else 
 									$savePct = "0 SOG";
 		?>								

@@ -98,6 +98,40 @@
 
 	}
 	
+	function SubmitChangePWDForm(){
+
+			var oldpwd = document.getElementById("oldpwd"),
+			newpwd = document.getElementById("newpwd");
+			submit = true,
+			msgBox = $("#msg"),
+			msgHtml = "";
+				
+		if(oldpwd.value == ""){
+			submit = false;
+			msgHtml += "Old Password, ";
+		}
+
+		if(newpwd.value == ""){
+			submit = false;
+			msgHtml += "New Password, ";
+		}
+
+		
+
+		if(submit){
+
+			document.changepwd.submit();
+
+		} else{
+
+			if(msgHtml != ""){
+				msgBox.html("Please enter the following: " + msgHtml.substring(0, msgHtml.length - 2) + "</br>");
+			}else{
+				msgBox.html("");
+			}
+		}
+
+	}
 
 	function SubmitForm(){
 

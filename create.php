@@ -12,7 +12,6 @@
 			
 			$homeUserSelectBox = CreateSelectBox("homeUser", "Select Home User", GetUsers(), "id_user", "username", "UpdateSeriesName()", null);
 			$awayUserSelectBox = CreateSelectBox("awayUser", "Select Away User", GetUsers(), "id_user", "username", "UpdateSeriesName()", null);
-
 			$seriesTypeSelectBox = CreateSelectBox("seriesType", null, GetSeriesTypes(), "SeriesID", "Description", null, null);			
 			
 ?><!DOCTYPE HTML>

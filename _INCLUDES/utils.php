@@ -120,7 +120,10 @@ function CheckSeriesForWinner($seriesid, $homeuserid, $awayuserid){
 
 function GetPercent($val1, $val2){
 
-    return round($val1 / $val2 * 100, 1);
+    if($val2 > 0)
+        return round($val1 / $val2 * 100, 1);
+    else
+        return 0;
 
 }
 

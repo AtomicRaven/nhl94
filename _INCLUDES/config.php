@@ -7,7 +7,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "nhl94db";
+$dbname = "nhl94";
 
 //prod
 

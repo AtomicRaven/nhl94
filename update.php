@@ -50,6 +50,17 @@
 
 			$series = GetSeriesById($seriesid);
 			$gamesplayed = GetGamesBySeriesId($seriesid);
+			$numGames = mysqli_num_rows($gamesplayed);
+
+			if($numGames == 1){
+
+				$titleText = "Add Game";
+
+			}else{
+				
+				$titleText = "Update Series";
+
+			}
 
 			$homeUserAlias = GetUserAlias($series["HomeUserID"]);
 			$awayUserAlias = GetUserAlias($series["AwayUserID"]);
@@ -93,7 +104,7 @@
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
 					<div style="color:red;"><?= $msg ?></div>
 
-					<h2>Update Series</h2> 
+					<h2><?= $titleText ?></h2> 
 										
 					<form method="post" action="processUpdate.php" enctype="multipart/form-data">	
 					<?= $submitBtn?>
@@ -189,8 +200,8 @@
 
 								$seriesText .= $awayUserAlias . " Wins The Stanley " . $awayWinnerCount . " games to " . $homeWinnerCount . "!!";
 
-							}
-							
+							}					
+
 							$seriesText .= "</h2>";
 
 							echo $seriesText;	 

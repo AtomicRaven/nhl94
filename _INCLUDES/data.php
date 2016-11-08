@@ -116,10 +116,10 @@ function  GetScheduleByGameId($gameid){
 
 }
 
-function GetPlayerStatsByGameId($gameid){	
+function GetPlayerStatsByGameId($gameid, $dir){	
 
 	$conn = $GLOBALS['$conn'];
-	$sql = "SELECT * FROM playerstats Where GameID='$gameid' ORDER BY G+A DESC";
+	$sql = "SELECT * FROM playerstats Where GameID='$gameid' ORDER BY G+A $dir";
 	
 	$result = mysqli_query($conn, $sql);		
 	
@@ -141,7 +141,7 @@ function GetPlayerStatsBySeriesId($seriesid, $pos){
 		GROUP BY p.PlayerID ";
 
 		if($pos == 'G')
-			$sql .= "ORDER BY ROUND(SUM(p.G)/SUM(p.SOG)*100) DESC";
+			$sql .= "ORDER BY ROUND(SUM(p.G)/SUM(p.SOG)*100) ASC";
 		if($pos == 'P')
 			$sql .= "ORDER BY tPoints DESC";
 	
@@ -308,8 +308,10 @@ function ResetScheduleByGameID($gameid){
 function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype){
 	
 	$conn = $GLOBALS['$conn'];
-	//$sql = "INSERT INTO series (Name, HomeTeamId, AwayTeamId, HomeUserId, AwayUserId, DateCreated) 
-	//		VALUES ('$seriesname', '$hometeamid', '$awayteamid', '$homeuserid', '$awayuserid', NOW())";	
+	$numGames = 7;
+
+	if($seriestype == 0)
+		$numGames = 1;	
 
 	$sql = "INSERT INTO series (Name, HomeUserId, AwayUserId, DateCreated, Active) 
 			VALUES ('$seriesname', '$homeuserid', '$awayuserid', NOW(), 1)";
@@ -323,7 +325,7 @@ function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype){
 		echo("Error: AddNewSeries: " . $sql . "<br>" . mysqli_error($conn));
 	}
 	
-	for ($x = 1; $x <= 7; $x++) {
+	for ($x = 1; $x <= $numGames; $x++) {
 
 		// $seriestype
 		// Type 1: 3-3-1
@@ -375,7 +377,7 @@ function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype){
 					
 			}
 
-		}elseif ($seriestype == 3) {
+		}elseif ($seriestype == 3 || $seriestype == 0) {
 
 			$team1 =  $hometeamid;
 			$team2 = $awayteamid;				

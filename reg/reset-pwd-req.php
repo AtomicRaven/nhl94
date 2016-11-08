@@ -17,6 +17,10 @@ if(isset($_POST['submitted']))
 <html>
 <head>
       <title>Reset Password Request</title>
+            <meta name="description" content=""/>
+      <meta name="keywords" content="" />
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta name="viewport" content="width=device-width">
       <link rel="STYLESHEET" type="text/css" href="../css/default.css">
       <script type='text/javascript' src='scripts/gen_validatorv31.js'></script>
 </head>

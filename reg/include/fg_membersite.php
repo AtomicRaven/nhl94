@@ -246,11 +246,11 @@ class FGMembersite
     
     function ChangePassword()
     {
-        if(!$this->CheckLogin())
-        {
-            $this->HandleError("Not logged in!");
-            return false;
-        }
+        //if(!$this->CheckLogin())
+        //{
+          //  $this->HandleError("Not logged in!");
+           // return false;
+        //}
         
         if(empty($_POST['oldpwd']))
         {

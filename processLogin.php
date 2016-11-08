@@ -27,6 +27,7 @@
 				$currentUser = $user["username"];
 				
 				$_SESSION['username'] = $currentUser;
+				$_SESSION['email_of_user'] = $user['email'];
 				$_SESSION['loggedin'] = true;					
 				$_SESSION['Admin'] = true;
 				$_SESSION['userId'] = $user['id_user'];

@@ -32,7 +32,7 @@
 
 					<h1>Register</h1>
 
-					<h2><?php echo $fgmembersite->GetErrorMessage(); ?></h2>
+					<h2 style="color:red;"><?php echo $fgmembersite->GetErrorMessage(); ?></h2>
 					<div id="msg" style="color:red;"></div><br/>
 					<div id="msg2" style="color:red;"></div>
 
@@ -43,7 +43,7 @@
 							<label>name</label><br>
 							<input type="text" id="name" name="name" maxlength="50" value=""><br>
 							<label>username</label><br>
-							<input type="text" id="username" name="username" maxlength="6" value=""><br>
+							<input type="text" id="username" name="username" maxlength="15" value=""><br>
 							<label>email</label><br>
 							<input type="text" id="email" name="email" maxlength="50" value=""><br>
 							<label>password</label><br>
