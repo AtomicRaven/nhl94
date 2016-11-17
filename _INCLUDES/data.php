@@ -305,13 +305,9 @@ function ResetScheduleByGameID($gameid){
 //Series Functions
 //function AddNewSeries($seriesname, $hometeamid, $awayteamid, $homeuserid, $awayuserid, $seriestype){
 
-function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype){
+function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGames){
 	
-	$conn = $GLOBALS['$conn'];
-	$numGames = 7;
-
-	if($seriestype == 0)
-		$numGames = 1;	
+	$conn = $GLOBALS['$conn'];		
 
 	$sql = "INSERT INTO series (Name, HomeUserId, AwayUserId, DateCreated, Active) 
 			VALUES ('$seriesname', '$homeuserid', '$awayuserid', NOW(), 1)";

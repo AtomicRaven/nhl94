@@ -120,6 +120,12 @@
 						$sFOH += $gStats["FOH"];
 						$sFOA += $gStats["FOA"];
 
+						//One Timers
+						$OneTHG += $gStats["1THG"];
+						$OneTH += $gStats["1TH"];
+						$OneTAG += $gStats["1TAG"];
+						$OneTA += $gStats["1TA"];
+
 						//Passing
 						$sPH += $gStats["PH"];
 						$sPCH += $gStats["PCH"];
@@ -147,12 +153,6 @@
 						//Breakaway Goals
 						$BAHG += $gStats["BAHG"];
 						$BAAG += $gStats["BAAG"];
-
-						//One Timers
-						$OneTHG += $gStats["1THG"];
-						$OneTH += $gStats["1TH"];
-						$OneTAG += $gStats["1TAG"];
-						$OneTA += $gStats["1TA"];
 
 						//Checks
 						$BCH += $gStats["BCH"];
@@ -219,6 +219,10 @@
 
 				
 		}
+
+		//Add onetimers to complete passes (genesis bug)
+		$sPCH = $sPCH + $OneTH;
+		$sPCA = $sPCA + $OneTA;
 
 		//Shot Percentage per series
 		$sHomeShotPerCent = GetPercent($sHomeGoals,$sHomeShots) ."%";
@@ -374,7 +378,8 @@
 							<td class="heading">Attack Zone</td><td class="c"><?=$shZoneP?></td><td class="c"><?=$saZoneP?></td>
 						</tr>							
 						<tr class="tight"><!-- Passing -->
-							<td class="heading">Passing</td><td class="c"><?=$spHome?></td><td class="c"><?=$spAway?></td>
+							<td class="heading">Passing</td><td class="c"><?=$spHome?><br/><span class="note"><?=$sPCH?> / <?=$sPH?></span></td>
+							<td class="c"><?=$spAway?><br/><span class="note"><?=$sPCA?> / <?=$sPA?></span></td>
 						</tr>							
 						<tr class="tight stripe"><!-- Penalty Shots -->
 							<td class="heading">Pen. Shots</td><td class="c"><?= $PSHG . "/" . $PSH?></td><td class="c"><?= $PSAG . "/" . $PSA?></td>

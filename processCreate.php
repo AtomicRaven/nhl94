@@ -11,6 +11,7 @@
 		//$hometeam = $_POST['homeTeam'];
 		//$awayteam = $_POST['awayTeam'];
 		$seriestype = $_POST['seriesType'];
+		$numGames = $_POST['numGames'];
 
 		$homeuserid = $_POST['homeUser'];
 		$awayuserid = $_POST['awayUser'];
@@ -20,7 +21,7 @@
 		//$seriesid = AddNewSeries($seriesname, $hometeam, $awayteam, $homeuserid, $awayuserid, $seriestype);
 
 		//No more teams all open ended
-		$seriesid = AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype);
+		$seriesid = AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGames);
 
 
 		//Logs for debugging

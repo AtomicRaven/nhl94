@@ -47,8 +47,8 @@
 		$FOAP = FormatPercent($gStats["FOA"], $totalFO);
 
 		//Passing
-		$pHome = FormatPercent($gStats["PCH"], $gStats["PH"]);
-		$pAway = FormatPercent($gStats["PCA"], $gStats["PA"]);
+		$pHome = FormatPercent($gStats["PCH"] + $gStats["1TH"], $gStats["PH"]);
+		$pAway = FormatPercent($gStats["PCA"] + $gStats["1TA"], $gStats["PA"]);
 
 		//AttackZone
 		$hZone = FormatZoneTime($gStats["AZH"]);

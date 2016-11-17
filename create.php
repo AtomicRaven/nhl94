@@ -56,10 +56,20 @@
 							<table class="tight">
 								<tr class="normal">
 									<td><label>series type</label></td>
-								</tr>
+									<td><label>length</label></td>
+								</tr>					
+									
 								<tr class="normal">
 									<td>
 										<?= $seriesTypeSelectBox?>
+									</td>
+									<td>
+										<select id='numGames' name='numGames'>
+											<option value='1'>1</option>
+											<option value='3'>3</option>
+											<option value='5'>5</option>
+											<option value='7' selected>7</option>
+										</select>
 									</td>
 								</tr>						
 							</table>
