@@ -21,6 +21,25 @@ function CleanTable($tableName){
 
 }
 
+function NeededWins($seriesId){
+
+    $gamesplayed = GetGamesBySeriesId($seriesId);  
+    
+    $half = ( 50/100 * mysqli_num_rows($gamesplayed));
+    $win = $half + 1;
+
+    return floor($win);
+
+}
+
+
+function NumGamesPerSeries($seriesId){
+
+    $gamesplayed = GetGamesBySeriesId($seriesId);  
+    
+    return mysqli_num_rows($gamesplayed);
+
+}
 
 function CreateSelectBox($selectName, $selectTitle, $data, $id, $value, $onChange, $indexSelected){
 
@@ -80,10 +99,18 @@ function HumanTiming ($time)
 
 }
 
+function secondsToTime($seconds) {
+    $dtF = new \DateTime('@0');
+    $dtT = new \DateTime("@$seconds");
+    return $dtF->diff($dtT)->format('%I:%S');
+}
+
 function CheckSeriesForWinner($seriesid, $homeuserid, $awayuserid){
 
     //Check to see if series is complete.  If so Mark as Complete
     $gamesplayed = GetGamesBySeriesId($seriesid);
+	$gamesNeededToWin = NeededWins($seriesid);
+
     $homeWinnerCount = 0;
     $awayWinnerCount = 0;
 
@@ -100,13 +127,13 @@ function CheckSeriesForWinner($seriesid, $homeuserid, $awayuserid){
         }
     }
 
-    if($homeWinnerCount >= 4 || $awayWinnerCount >= 4){
+    if($homeWinnerCount >= $gamesNeededToWin || $awayWinnerCount >= $gamesNeededToWin){
 
-        if($homeWinnerCount >= 4){        
+        if($homeWinnerCount >= $gamesNeededToWin){        
             MarkSeriesAsWon($seriesid, $homeuserid, $awayWinnerCount);
         }
 
-        if($awayWinnerCount >= 4){
+        if($awayWinnerCount >= $gamesNeededToWin){
             MarkSeriesAsWon($seriesid, $awayuserid, $homeWinnerCount);	
         } 
     }else{
@@ -144,5 +171,33 @@ function FormatPercent($val1, $val2){
 
 
 }
+
+
+//LeaderBoard sorting
+
+function SortByGP($x, $y) {
+    return $y['GP'] - $x['GP'];
+}
+function SortByWins($x, $y) {
+    return $y['Wins'] - $x['Wins'];
+}
+function SortByLosses($x, $y) {
+    return $y['Losses'] - $x['Losses'];
+}
+function SortByPercent($x, $y) {
+    return $y['PCT'] > $x['PCT'] ? 1 : -1;
+}
+function SortByGF($x, $y) {
+    return $y['gFor'] - $x['gFor'];
+}
+function SortByGA($x, $y) {
+    return $y['gAgainst'] - $x['gAgainst'];
+}
+function SortByGFA($x, $y) {
+    return $y['GFA'] > $x['GFA'] ? 1 : -1;
+}
+function SortByGAA($x, $y) {
+    return $y['GAA'] > $x['GAA'] ? 1 : -1;
+}                        
 
 ?>

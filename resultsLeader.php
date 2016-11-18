@@ -5,7 +5,12 @@
 		include_once './_INCLUDES/00_SETUP.php';
 		include_once './_INCLUDES/dbconnect.php';	
 
-        $gamesleaders = GetGamesLeaders();
+        $gamesleaders = GetGamesLeaders2();
+        $s = "";
+
+        if (isset($_GET["s"]) && !empty($_GET["s"])) {
+				$s =  $_GET["s"];
+		}
 
 
 ?><!DOCTYPE HTML>
@@ -25,42 +30,138 @@
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
 					<h1>Leaderboard</h1>					
 					
-					<table class="standard">
+					<table class="standard smallify">
 						<tr class="heading">
 							<td class="c">Team</td>
-                            <td class="c">Series Wins</td>
-                            <td class="c">GP</td>							
-							<td class="c">W</td>
-							<td class="c">L</td>
-                            <td class="c">PCT</td>
-                            <td class="c">GF</td>
-                            <td class="c">GA</td>
-                            <td class="c">GFA</td>
-                            <td class="c">GAA</td>
+                            <td class="c"><a href="resultsLeader.php?s=gp">GP</td>							
+							<td class="c"><a href="resultsLeader.php?s=w">W</a></td>
+							<td class="c"><a href="resultsLeader.php?s=l">L</td>
+                            <td class="c"><a href="resultsLeader.php?s=pct">%</a></td>
+                            <td class="c"><a href="resultsLeader.php?s=gf">GF</td>
+                            <td class="c"><a href="resultsLeader.php?s=ga">GA</td>
+                            <td class="c"><a href="resultsLeader.php?s=gfa">GFA</td>
+                            <td class="c"><a href="resultsLeader.php?s=gaa">GAA</td>
 						</tr>
                         <?php 
                             $j = 1;
-                            while($row = mysqli_fetch_array($gamesleaders)){
+                            $sortedLeaders = array();
+
+                            while($row = mysqli_fetch_array($gamesleaders)){  
+
+                                $games = GetGamesByUser($row["id_user"]);
+                                $GP = 0;
+                                $Wins = 0;   
+                                $Losses = 0;
+                                $gFor = 0;
+                                $gAgainst = 0;
+                                $gTotal = 0;   
                                 
-                                $seriesWins = GetSeriesLeadersByUserID($row["HomeUserID"]);
+                                while($game = mysqli_fetch_array($games)){
+
+                                    if($game["WinnerUserID"] == $row["id_user"]){
+
+                                        $Wins++;
+                                        //$gFor = $game[""];
+                                    }
+
+                                    if($game["HomeUserID"] == $row["id_user"] ){
+                                        
+                                        $gFor += $game["HomeScore"];
+                                        $gAgainst += $game["AwayScore"];
+                                    }
+
+                                    if($game["AwayUserID"] == $row["id_user"] ){
+                                        
+                                        $gFor += $game["AwayScore"];
+                                        $gAgainst += $game["HomeScore"];
+                                    }
+
+
+                                    $GP++;                                   
+
+                                }
+                                
+                                $Losses = $GP - $Wins;
+                                $gTotal = $gFor + $gAgainst;  
+
+                                
+                                $sortedLeaders[] = array(
+                                                    "UserName"=>GetUserAlias($row["id_user"]),
+                                                    "Wins"=>$Wins,
+                                                    "Losses"=>$Losses,
+                                                    "gFor"=>$gFor,
+                                                    "gAgainst"=>$gAgainst,
+                                                    "gTotal"=>$gTotal,
+                                                    "GP"=>$GP,
+                                                    "PCT"=>GetAvg($Wins, $GP),
+                                                    "GFA"=>GetAvg($gFor, $GP),
+                                                    "GAA"=>GetAvg($gAgainst, $GP)
+                                );
+
+                                  
+
+                             
+                            }
+
+                            $sBy = "Wins";
+
+                            switch ($s) {
+
+                                case 'gp':                                    
+                                    usort($sortedLeaders, 'SortByGP');
+                                    $sBy = "Games Played";
+                                    break;
+                                case 'w':   
+                                default:                                 
+                                    usort($sortedLeaders, 'SortByWins');
+                                    $sBy = "Wins";
+                                    break;
+                                case 'l':                                    
+                                    usort($sortedLeaders, 'SortByLosses');
+                                    $sBy = "Losses";
+                                    break;
+                                 case 'pct':                                 					
+                                    usort($sortedLeaders, 'SortByPercent');                                                
+                                    break;
+                                case 'gf':                                    
+                                    usort($sortedLeaders, 'SortByGF');
+                                    $sBy = "Goals For";
+                                    break;
+                                case 'ga':                                    
+                                    usort($sortedLeaders, 'SortByGA');
+                                    $sBy = "Goals Against";
+                                    break;
+                                case 'gfa':                                    
+                                    usort($sortedLeaders, 'SortByGFA');
+                                    $sBy = "Goals For Average";
+                                    break;                                
+                                case 'gaa':                                    
+                                    usort($sortedLeaders, 'SortByGAA');
+                                    $sBy = "Goals Against Average";
+                                    break; 
+                               
+                            }
+                             
+                             echo "Sorted By: " . $sBy;
+
+                             foreach($sortedLeaders as $user){  
                         ?>
 
                                 <tr class="<?php print $stripe[$j & 1]; ?>">
-                                    <td class="c"><?=GetUserAlias($row["HomeUserID"])?></td>
-                                    <td class="c"><?=$seriesWins["sWins"]?></td>
-                                    <td class="c"><?=$row["GP"]?></td>
-                                    <td class="c"><?=$row["Wins"]?></td>
-                                    <td class="c"><?=$row["Losses"]?></td>
-                                    <td class="c"><?=GetAvg($row["Wins"], $row["GP"])?></td>
-                                    <td class="c"><?=$row["gFor"]?></td>
-                                    <td class="c"><?=$row["gAgainst"]?></td>
-                                    <td class="c"><?=GetAvg($row["gFor"], $row["gTotal"])?></td>
-                                    <td class="c"><?=GetAvg($row["gAgainst"], $row["gTotal"])?></td>
-                                </tr>							
+                                    <td class="c"><?=$user["UserName"]?></td>
+                                    <td class="c"><?=$user["GP"]?></td>
+                                    <td class="c"><?=$user["Wins"]?></td>
+                                    <td class="c"><?=$user["Losses"]?></td>
+                                    <td class="c"><?=$user["PCT"]?></td>
+                                    <td class="c"><?=$user["gFor"]?></td>
+                                    <td class="c"><?=$user["gAgainst"]?></td>
+                                    <td class="c"><?=$user["GFA"]?></td>
+                                    <td class="c"><?=$user["GAA"]?></td>
+                                </tr>					
                             
                         <?php
                             $j++;
-                            }
+                            }  
                         ?>									
 					</table>	
 					

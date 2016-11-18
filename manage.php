@@ -22,6 +22,7 @@
 				}
 			}	
 
+			echo "admin:" .$_SESSION['Admin'];
 
 			// User wants to update an existing series so gab all the series games and show in drop down box
 			$allseries = GetSeriesAndGames(true);
@@ -32,11 +33,12 @@
 
 				$gamesCompleteText = $row["TotalGames"];
 				$lastEntryTime = "";
+				$gamesNeededToWin = NeededWins($row["SeriesID"]);
 
 				if($row["SeriesWonBy"] != 0){
 
 					$lastEntryTime = "Series Completed " . $row["DateCompleted"];
-					$gamesCompleteText = "Series won by " . GetUserAlias($row["SeriesWonBy"]) . " 4 games to " . $row["LoserNumGames"];
+					$gamesCompleteText = "Series won by " . GetUserAlias($row["SeriesWonBy"]) . " " . $gamesNeededToWin ." games to " . $row["LoserNumGames"];
 
 				}else if($row["TotalGames"] == 0){
 					$lastEntryTime = "Series Created " . $row["DateCreated"];

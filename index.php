@@ -39,8 +39,8 @@
 							<input type="password" name="password" value=""><br>
 					
 							<button id="submit">SUBMIT</button><br/><br/>
-							<a href='register.php'>Register</a><br/>
-							<a href='reg/reset-pwd-req.php'>Forgot Password?</a>
+							<a href='register.php' class="link">Register</a><br/>
+							<a href='reg/reset-pwd-req.php' class="link"'>Forgot Password?</a>
 					</form>
 					
 				</div>	

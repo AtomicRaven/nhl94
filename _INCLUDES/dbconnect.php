@@ -3,9 +3,6 @@
 require_once("config.php");
 require_once("utils.php");
 require_once("data.php");
-require_once("config.php");
-
-
 
 // Create connection
 $GLOBALS['$conn'] = mysqli_connect($servername, $username, $password, $dbname);

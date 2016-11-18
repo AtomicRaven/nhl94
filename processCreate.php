@@ -11,6 +11,8 @@
 		//$hometeam = $_POST['homeTeam'];
 		//$awayteam = $_POST['awayTeam'];
 		$seriestype = $_POST['seriesType'];
+		echo $seriestype;
+
 		$numGames = $_POST['numGames'];
 
 		$homeuserid = $_POST['homeUser'];
@@ -27,8 +29,8 @@
 		//Logs for debugging
 		logMsg("SeriesId:" . $seriesid);
 		logMsg("name:" . $seriesname);
-		logMsg("home:" . $hometeam);
-		logMsg("away:" . $awayteam);
+		//logMsg("home:" . $hometeam);
+		//logMsg("away:" . $awayteam);
 		logMsg("awayUser:" . $homeuserid);
 		logMsg("homeUser:" . $awayuserid);
 		logMsg("SeriesType:" . $seriestype);	

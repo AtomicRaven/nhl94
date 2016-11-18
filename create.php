@@ -55,21 +55,20 @@
 							</table>
 							<table class="tight">
 								<tr class="normal">
-									<td><label>series type</label></td>
-									<td><label>length</label></td>
+									<!--<td><label>series type</label></td>-->
+									<td><label>number of games</label></td>
 								</tr>					
 									
 								<tr class="normal">
-									<td>
+									<!--<td>
 										<?= $seriesTypeSelectBox?>
-									</td>
+									</td>-->
+									<input type="hidden" id='seriesType' name='seriesType' value='1'/>
 									<td>
-										<select id='numGames' name='numGames'>
-											<option value='1'>1</option>
-											<option value='3'>3</option>
-											<option value='5'>5</option>
-											<option value='7' selected>7</option>
-										</select>
+										<input type="radio" name="numGames" value="1">1 &nbsp;
+										<input type="radio" name="numGames" value="3">3 &nbsp;
+										<input type="radio" name="numGames" value="5">5 &nbsp;
+										<input type="radio" name="numGames" value="7" checked>7 &nbsp;
 									</td>
 								</tr>						
 							</table>

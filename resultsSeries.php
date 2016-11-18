@@ -14,10 +14,11 @@
 
 		$homeUserAlias = GetUserAlias($series["HomeUserID"]);
 		$awayUserAlias = GetUserAlias($series["AwayUserID"]);
+		$gamesNeededToWin = NeededWins($seriesid);
 
 		if($series["SeriesWonBy"] != 0){
 
-			$totalGames = 4 + $series["LoserNumGames"];
+			$totalGames = $gamesNeededToWin + $series["LoserNumGames"];
 			$lastEntryTime = "series updated " .HumanTiming($series["DateCompleted"]) . " ago";
 			$gamesCompleteText = GetUserAlias($series["SeriesWonBy"]) . " wins <nobr>in ".$totalGames."</nobr>" ;
 			$stanleyClass = "stanley";		
@@ -275,7 +276,7 @@
 					<table class="standard">
 						<tr class="heading">
 							<td class="c brt"><span class="note">series</span><br /><!-- Rob: series_id --><?= $seriesid ?></td>
-							<td class="" colspan="5"><?= $awayUserAlias ?> @ <?= $homeUserAlias ?></td>
+							<td class="" colspan="5"><?= $awayUserAlias ?> vs <?= $homeUserAlias ?></td>
 						</tr>			
 						<tr class="heading">
 							<td class="c brt" style="padding: 2px 0 0 0;">
@@ -407,17 +408,20 @@
 
 					<!-- rob: start of series stats table -->	
 					<h3>Series Points Leaderboard</h3>
-					<table class="standard">
+					<table class="standard smallify">
 						<tr class="heading">
 							<td class="heading">#</td>
 							<td class="heading">Name</td>
-							<td class="heading">Team</td>
-							<td class="heading">Pos</td>
-							<td class="heading">Pts</td>
+							<td class="heading">Tm</td>
+							<td class="heading">P</td>
+							<td class="heading c" style="font-size: 72%;">G<br/>P</td>
+							<td class="heading c" style="font-size: 72%;">P<br/>t<br/>s</td>
+							<td class="heading">PPG</td>							
 							<td class="heading">G</td>
 							<td class="heading">A</td>
-							<td class="heading">SOG</td>
-							<td class="heading">Pen</td>
+							<td class="heading c" style="font-size: 72%;">S<br/>O<br/>G</td>
+							<!-- <td class="heading">TOI/G</td> -->
+							<td class="heading c" style="font-size: 72%;">P<br/>e<br/>n</td>
 						</tr>	
 						<!-- start loop for all players with points -->
 		<?php 
@@ -426,21 +430,28 @@
 					{						
 						$player = GetPlayerFromID($row["PlayerID"]);
 						$pen = $row["tPIM"];
+						
+						$timePerGame = round($row["tTOI"]/ $row["GP"]);
+						$TOIG = secondsToTime($timePerGame);						
+						$avgPts = number_format($row["tPoints"] / $row["GP"], 2);
 
 						if($pen > 0 )
 							$pen = $pen / 2;						
 
-						if($row["Pos"] != "G"){		?>						
+						if($row["Pos"] != "G"){		?>							
 
 								<tr class="tight<?php print $stripe[$j & 1]; ?>">
 									<td class=""><?php print $j; ?></td>
 									<td class=""><?=$player["First"] . " " . $player["Last"]?></td>
 									<td class=""><?=GetTeamABVById($row["TeamID"])?></td>
 									<td class=""><?=$row["Pos"]?></td>
+									<td class=""><?=$row["GP"]?></td>
 									<td class=""><?=$row["tPoints"]?></td>
+									<td class=""><?=$avgPts?></td>
 									<td class=""><?=$row["tG"]?></td>
 									<td class=""><?=$row["tA"]?></td>
 									<td class=""><?=$row["tSOG"]?></td>
+									<!-- <td class=""><?=$TOIG?></td>		-->							
 									<td class=""><?=$pen?></td>
 								</tr>	
 		<?php 

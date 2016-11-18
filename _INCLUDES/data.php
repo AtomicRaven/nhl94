@@ -135,7 +135,9 @@ function GetPlayerStatsBySeriesId($seriesid, $pos){
 		SUM(p.A) as 'tA', 
 		SUM(p.SOG) as 'tSOG', 
 		SUM(p.PIM) as 'tPIM', 
-		SUM(p.G + p.A) as 'tPoints' 
+		SUM(p.G + p.A) as 'tPoints',
+		sum(TIME_TO_SEC(p.TOI)) as 'tTOI',		
+		COUNT(p.GameID) as 'GP'
 		FROM schedule s INNER JOIN playerstats p 
 		ON s.GameID = p.GameID WHERE s.SeriesID = '$seriesid' 
 		GROUP BY p.PlayerID ";
@@ -158,19 +160,19 @@ function GetPlayerStatsBySeriesId($seriesid, $pos){
 
 function GetGamesLeaders(){
 
-	$conn = $GLOBALS['$conn'];
+	$conn = $GLOBALS['$conn'];	
 	$sql = "SELECT HomeUserID, AwayUserID, 
 			SUM(HomeScore) as 'gFor', 
 			SUM(AwayScore) as 'gAgainst', 
 			SUM(HomeScore + AwayScore) as 'gTotal',
 			SUM(OT) as 'OT', 
-			COUNT(CASE WHEN WinnerUserID = HomeUserID then 1 ELSE NULL END) as Wins, 
-			COUNT(CASE WHEN WinnerUserID = AwayUserID then 1 ELSE NULL END) as Losses,
-			COUNT(CASE WHEN GameID > 0 then 1 ELSE NULL END) as GP			
+			COUNT(CASE WHEN WinnerUserID = HomeUserID then 1 ELSE NULL END) as HomeWins, 
+			COUNT(CASE WHEN WinnerUserID = AwayUserID then 1 ELSE NULL END) as AwayWins,
+			COUNT(CASE WHEN GameID > 0 then 1 ELSE NULL END) as GP						
 			FROM schedule 
 			WHERE WinnerUserID > 0
 			GROUP BY HomeUserID 
-			ORDER BY Wins DESC";
+			ORDER BY HomeWins DESC";
 		
 	$result = mysqli_query($conn, $sql);
 
@@ -181,6 +183,33 @@ function GetGamesLeaders(){
 	}		
 	
 	return $result;
+}
+
+function GetGamesLeaders2(){
+
+	$conn = $GLOBALS['$conn'];	
+
+	$result = GetUsers();
+	return $result;	
+}
+
+function GetGamesByUser($userId){
+
+	$conn = $GLOBALS['$conn'];	
+	$sql = "SELECT * FROM `schedule` WHERE (HomeUserID = '$userId' OR AwayUserID = '$userId') AND WinnerUserID >0";
+		
+	$result = mysqli_query($conn, $sql);
+
+	if ($result) {
+		logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
+		//echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
+	} else {
+		echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
+	}		
+	
+	return $result;
+
+
 }
 
 function GetSeriesLeadersByUserID($userid){
@@ -206,7 +235,12 @@ function GetSeriesAndGames($useronly){
 
 	$conn = $GLOBALS['$conn'];
 	//$sql = "SELECT * FROM schedule INNER JOIN series ON schedule.SeriesID = series.ID ORDER BY series.ID ASC";
-	$userid = $_SESSION['userId'];
+	if (isset($_SESSION['userId'])){
+		$userid = $_SESSION['userId'];
+	}
+
+	if($_SESSION['Admin'])
+		$useronly = false;
 
 	$sql = "SELECT a.*, b.*, MAX(b.ConfirmTime) as LastEntryDate,
 		COUNT(CASE WHEN b.GameID >= 0 then 1 ELSE NULL END) AS TotalGames
@@ -307,7 +341,8 @@ function ResetScheduleByGameID($gameid){
 
 function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGames){
 	
-	$conn = $GLOBALS['$conn'];		
+	$conn = $GLOBALS['$conn'];
+		
 
 	$sql = "INSERT INTO series (Name, HomeUserId, AwayUserId, DateCreated, Active) 
 			VALUES ('$seriesname', '$homeuserid', '$awayuserid', NOW(), 1)";
@@ -335,55 +370,32 @@ function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGa
 				case 2:
 				case 3:
 				case 7:					
-					$team1 =  $hometeamid;
-					$team2 = $awayteamid;				
+					//$team1 =  $hometeamid;
+					//$team2 = $awayteamid;				
 					$user1 = $homeuserid;
 					$user2 = $awayuserid;
 					break;
 				case 4:
 				case 5:
 				case 6:
-					$team2 =  $hometeamid;
-					$team1 = $awayteamid;
+					//$team2 =  $hometeamid;
+					//$team1 = $awayteamid;
 					$user2 = $homeuserid;
 					$user1 = $awayuserid;				
 					break;
 					
 			}
-		}elseif ($seriestype == 2) {
-		
-			switch ($x) {
-				case 1:
-				case 2:
-				case 5:
-				case 7:					
-					$team1 =  $hometeamid;
-					$team2 = $awayteamid;				
-					$user1 = $homeuserid;
-					$user2 = $awayuserid;
-					break;
-				case 3:
-				case 4:
-				case 6:
-					$team2 =  $hometeamid;
-					$team1 = $awayteamid;
-					$user2 = $homeuserid;
-					$user1 = $awayuserid;				
-					break;
-					
-			}
-
 		}elseif ($seriestype == 3 || $seriestype == 0) {
 
-			$team1 =  $hometeamid;
-			$team2 = $awayteamid;				
+			//$team1 =  $hometeamid;
+			//$team2 = $awayteamid;				
 			$user1 = $homeuserid;
 			$user2 = $awayuserid;
 
 		}
 
 		//if seriesType = 4 we are uploading games 1 at a time
-		if($seriestype != 4){
+		//if($seriestype != 4){
 
 			//Add Games to Schedule Table - Create 7
 			//$sql = "INSERT INTO schedule (HomeTeamId, AwayTeamId, HomeUserId, AwayUserID, SeriesID) 
@@ -401,7 +413,7 @@ function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGa
 					echo("Error: AddNewSeries2: " . $sql . "<br>" . mysqli_error($conn));
 			}
 
-		}
+		//}
 	} 
 	
 	return $seriesid;

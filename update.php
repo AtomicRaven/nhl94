@@ -51,6 +51,10 @@
 			$series = GetSeriesById($seriesid);
 			$gamesplayed = GetGamesBySeriesId($seriesid);
 			$numGames = mysqli_num_rows($gamesplayed);
+			$gamesNeededToWin = NeededWins($seriesid);
+
+			//echo ("TotalGames: " . $numGames . "<br/> Winner must have " . $gamesNeededToWin . " to win series.");
+
 
 			if($numGames == 1){
 
@@ -149,7 +153,7 @@
 							}else{
 								
 								$uploadCount++;
-								if($homeWinnerCount < 4 && $awayWinnerCount < 4 && $uploadCount <=1){
+								if($homeWinnerCount < $gamesNeededToWin && $awayWinnerCount < $gamesNeededToWin && $uploadCount <=1){
 						?>
 						<tr class="normal">
 							<td>&nbsp;</td>
@@ -174,11 +178,11 @@
 							
 							$seriesText = "<h2>";
 
-							if($homeWinnerCount > $awayWinnerCount && $homeWinnerCount < 4){
+							if($homeWinnerCount > $awayWinnerCount && $homeWinnerCount < $gamesNeededToWin){
 								$seriesText .= $homeUserAlias . " leads series " . $homeWinnerCount . " to " . $awayWinnerCount;
 							}
 
-							if($awayWinnerCount > $homeWinnerCount && $awayWinnerCount < 4) {
+							if($awayWinnerCount > $homeWinnerCount && $awayWinnerCount < $gamesNeededToWin) {
 								$seriesText .= $awayUserAlias . " leads series " . $awayWinnerCount . " to " . $homeWinnerCount;
 							}
 
@@ -191,12 +195,12 @@
 								$seriesText .= "Series not yet started.";
 							}
 
-							if($homeWinnerCount >= 4){
+							if($homeWinnerCount >= $gamesNeededToWin){
 
 								$seriesText .= $homeUserAlias . " Wins The Stanley " .  $homeWinnerCount . " to " . $awayWinnerCount . "!!"; 
 							}
 
-							if($awayWinnerCount >= 4){
+							if($awayWinnerCount >= $gamesNeededToWin){
 
 								$seriesText .= $awayUserAlias . " Wins The Stanley " . $awayWinnerCount . " games to " . $homeWinnerCount . "!!";
 

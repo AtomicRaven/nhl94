@@ -28,10 +28,12 @@
 				
 				$_SESSION['username'] = $currentUser;
 				$_SESSION['email_of_user'] = $user['email'];
-				$_SESSION['loggedin'] = true;					
-				$_SESSION['Admin'] = true;
+				$_SESSION['loggedin'] = true;								
 				$_SESSION['userId'] = $user['id_user'];
 					header('Location: manage.php');
+
+				if($user['Role'] == 'admin')
+					$_SESSION['Admin'] = true;
 		}
 		else {
 			//logMsg("Uknown User");

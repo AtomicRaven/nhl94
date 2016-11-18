@@ -13,15 +13,29 @@
 
 			$gamesCompleteText = "";
 			$lastEntryTime = "";
-			$homeTeam = GetUserAlias($row["HomeUserID"]);
-			$awayTeam = GetUserAlias($row["AwayUserID"]);
+			$homeTeamPlayer = GetUserAlias($row["HomeUserID"]);
+			$awayTeamPlayer = GetUserAlias($row["AwayUserID"]);
 			$stanleyClass = "";
+			$bestofNum = NumGamesPerSeries($row["SeriesID"]);
 
-			if($row["SeriesWonBy"] != 0){
+			if($row["SeriesWonBy"] != 0){				
 
-				$totalGames = 4 + $row["LoserNumGames"];
+				$gamesNeededToWin = NeededWins($row["SeriesID"]);
+				
+				// got rid of player ID
+				//$homeTeam .= " (" . GetTeamABVById($row["HomeTeamID"]) . ")";
+				//$awayTeam .= " (" . GetTeamABVById($row["AwayTeamID"]) . ")";
+				$homeTeam = " " . GetTeamABVById($row["HomeTeamID"]);
+				$awayTeam = " " . GetTeamABVById($row["AwayTeamID"]);
+
+				//$homeTeam .= "<br/><span class='note'>Best of " . $bestofNum . "</span>"; 
+
+				//echo "Num:" . $numGames;
+
+				$totalGames = $gamesNeededToWin + $row["LoserNumGames"];
 				$lastEntryTime = "Series Completed " . $row["DateCompleted"];
-				$gamesCompleteText = GetUserAlias($row["SeriesWonBy"]) . " wins <nobr>in ".$totalGames."</nobr>" ;
+				// ***
+				$gamesCompleteText = GetUserAlias($row["SeriesWonBy"]) . " wins in ".$totalGames." " ;
 				$stanleyClass = "stanley";
 
 			}else if($row["TotalGames"] == 0){
@@ -29,8 +43,10 @@
 				//$gamesCompleteText = "Series not yet started.";
 
 			}else{
-
-				$gamesCompleteText .= "In progress <nobr>(" .$row["TotalGames"]. " gms)</nobr>";	
+				$homeTeam = " " . GetTeamABVById($row["HomeTeamID"]);
+				$awayTeam = " " . GetTeamABVById($row["AwayTeamID"]);
+				$gamesCompleteText .= "In progress (" .$row["TotalGames"]. " gms)";	
+				$gamesCompleteText .= '<br /><span class="note">(' . $homeTeamPlayer . ' v ' . $awayTeamPlayer . ')</span>';
 				$lastEntryTime = "Last Updated " . HumanTiming($row["LastEntryDate"]) . " ago";
 			}
 
@@ -46,13 +62,15 @@
 
 			$seriesHtml .= '>';
 			$seriesHtml .= '<td class="c">'.$row['SeriesID'].'</td>';
-			$seriesHtml .= '<td class="c">'.$awayTeam .'<br/>@<br/>'.$homeTeam.'</td>';
-			$seriesHtml .= '<td class="'. $stanleyClass .'">'.$gamesCompleteText.'<br />'; 
-			$seriesHtml .= '<span class="note">Updated ' . $formattedEntryDate. '</span></td>';
+			$seriesHtml .= '<td class="c">'.$awayTeam .'<br/>v<br/>'.$homeTeam.'</td>';
+			$seriesHtml .= '<td class="">'.$gamesCompleteText.'<br />'; 
+			$seriesHtml .= '<span class="note">Best of ' . $bestofNum . '<br/>Updated ' . $formattedEntryDate. '</span></td>';
 			$seriesHtml .= '<td class="c"><button type="button" class="square" onclick="location.href=\'resultsSeries.php?seriesId='. $row['SeriesID'].'\'">Select</button>';
 
-			if($LOGGED_IN == true &&  $_SESSION['userId'] == $row["HomeUserID"] || $_SESSION['userId'] == $row["AwayUserID"])
-				$seriesHtml .= '<br/><button type="button" style="margin-top: 10px;" class="square" onclick="location.href=\'update.php?seriesId='. $row['SeriesID'].'\'">&nbsp;Edit&nbsp;</button></td>';
+			if($LOGGED_IN == true){
+				if($_SESSION['userId'] == $row["HomeUserID"] || $_SESSION['userId'] == $row["AwayUserID"])
+					$seriesHtml .= '<br/><button type="button" style="margin-top: 10px;" class="square" onclick="location.href=\'update.php?seriesId='. $row['SeriesID'].'\'">&nbsp;Edit&nbsp;</button></td>';
+			}
 			$seriesHtml .= '</tr>';
 
 			$i++;
