@@ -289,7 +289,7 @@
 							<td class="c"><span class="note">game</span><br />#</td>
 							<td class="c">HOME</td>
 							<td class="">&nbsp;</td>
-							<td class="c">AWAY</td>
+							<td class="c">AWAY</div></td>
 							<td class="">&nbsp;</td>
 							<td class="c"><div id="allGames" onclick="showAllGames(this)">+ All</div></td>
 						</tr>	
@@ -321,9 +321,9 @@
 						<tr class="tight<?php print $stripe[$i & 1]; ?>" >
 
 							<td class="c"><?php print $i; ?></td>
-							<td class="<?=$homeClass?>"><?= GetTeamABVById($row["HomeTeamID"]) ?><?=$HOT?></td>
+							<td class="<?=$homeClass?>"><?= GetTeamABVById($row["HomeTeamID"]) ?><?=$HOT?><div class='logo small <?= GetTeamABVById($row["HomeTeamID"]) ?>'></td>
 							<td class="<?=$homeClass?>"><?=$row["HomeScore"]?></td>
-							<td class="<?=$awayClass?>"><?= GetTeamABVById($row["AwayTeamID"]) ?><?=$AOT?></td>
+							<td class="<?=$awayClass?>"><?= GetTeamABVById($row["AwayTeamID"]) ?><?=$AOT?><div class='logo small <?= GetTeamABVById($row["AwayTeamID"]) ?>'></td>
 							<td class="<?=$awayClass?>"><?=$row["AwayScore"]?></td>
 							<td class="c"><button type="button" class="square details" onclick="showGameDetails(this, 'detail_<?php print $i; ?>', <?=$gameid?>, <?=$i?>)">+ Details</button></td>
 						</tr>	
