@@ -1,0 +1,3 @@
+[08-Aug-2016 15:00:27 America/Fort_Wayne] PHP Fatal error:  Call to undefined function HumanTiming() in /home/robclarkson/public_html/manage.php on line 27
+[08-Aug-2016 15:00:35 America/Fort_Wayne] PHP Fatal error:  Call to undefined function HumanTiming() in /home/robclarkson/public_html/manage.php on line 27
+[16-Aug-2016 18:43:56 America/Toronto] PHP Fatal error:  Cannot access empty property in /home/robclarkson/public_html/reg/include/fg_membersite.php on line 642

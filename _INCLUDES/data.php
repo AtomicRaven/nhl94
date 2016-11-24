@@ -185,13 +185,7 @@ function GetGamesLeaders(){
 	return $result;
 }
 
-function GetGamesLeaders2(){
 
-	$conn = $GLOBALS['$conn'];	
-
-	$result = GetUsers();
-	return $result;	
-}
 
 function GetGamesByUser($userId){
 
@@ -209,6 +203,23 @@ function GetGamesByUser($userId){
 	
 	return $result;
 
+}
+
+function GetHeadToHead($userId1, $userId2){
+
+	$conn = $GLOBALS['$conn'];	
+	$sql = "SELECT * FROM `schedule` WHERE (HomeUserID = '$userId1' OR AwayUserID = '$userId1') AND (HomeUserID = '$userId2' OR AwayUserID = '$userId2')  AND WinnerUserID >0";
+		
+	$result = mysqli_query($conn, $sql);
+
+	if ($result) {
+		logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
+		//echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
+	} else {
+		echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
+	}		
+	
+	return $result;
 
 }
 
@@ -625,6 +636,21 @@ function GetUsers(){
 	$conn = $GLOBALS['$conn'];
 
 	$sql = "SELECT * FROM users WHERE confirmcode='y' ORDER BY username DESC";
+	$result = mysqli_query($conn, $sql);
+
+	if($result === FALSE) { 
+		die(mysql_error()); // TODO: better error handling
+	}	
+
+	return $result;
+}
+
+function CompareUsers($userid1, $userid2){
+
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "SELECT * FROM users WHERE id_user = '$userid1' OR id_user = '$userid2'  ORDER BY username DESC";
+
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) { 

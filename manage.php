@@ -22,7 +22,6 @@
 				}
 			}	
 
-			echo "admin:" .$_SESSION['Admin'];
 
 			// User wants to update an existing series so gab all the series games and show in drop down box
 			$allseries = GetSeriesAndGames(true);
@@ -57,7 +56,7 @@
 				$seriesHtml .= '<tr class="">';
 				$seriesHtml .= '<td><button type="button" class="square" onclick="DeleteSeries(\'' .$row['SeriesID'].'\',\'' . $row["Name"] .'\')">X</button></td>';
 				$seriesHtml .= '<td class="c">' . $row['SeriesID'] .'</td>';
-				$seriesHtml .= '<td class=""><b>'.$row['Name'].'</b> - <nobr>' . $gamesCompleteText.'</nobr><br />';
+				$seriesHtml .= '<td class=""><b>'.$row['Name'].'</b> - ' . $gamesCompleteText.'<br />';
 				$seriesHtml .= '<span class="note">'.$lastEntryTime. '</span><br />';
 				$seriesHtml .= '<!-- Series creator: matt -->';
 				$seriesHtml .= '</td>';
