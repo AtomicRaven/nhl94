@@ -198,7 +198,7 @@
                         <table class="standard smallify leader">
 						<tr class="heading">
 							<td class="c">Team</td>
-                            <td class="c"><button type="submit" name="s" value="gp">GP</button></td>							
+                            <td class="c">GP</td>							
 							<td class="c"><button type="submit" name="s" value="w">W</button></td>
 							<td class="c"><button type="submit" name="s" value="l">L</button></td>
                             <td class="c"><button type="submit" name="s" value="pct">%</button></td>
