@@ -46,10 +46,10 @@ function CreateSelectBox($selectName, $selectTitle, $data, $id, $value, $onChang
     $selectBox = "<select id='" . $selectName . "' name='" . $selectName . "'";
 
     if($onChange != null){
-        $selectBox .= "onchange='" . $onChange;
+        $selectBox .= " onchange='" . $onChange . "'";
     }        
 
-    $selectBox .= "'>";
+    $selectBox .= ">";
 
     if($selectTitle != null){
         $selectBox .= "<option value='0'>" . $selectTitle . "</option>";

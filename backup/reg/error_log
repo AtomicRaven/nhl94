@@ -1,0 +1,4 @@
+[17-Aug-2016 17:43:00 UTC] PHP Fatal error:  Call to a member function ConfirmUser() on a non-object in /home/robclarkson/public_html/reg/confirmreg.php on line 8
+[17-Aug-2016 18:16:23 UTC] PHP Fatal error:  Class 'PHPMailer' not found in /home/robclarkson/public_html/reg/fg_membersite.php on line 563
+[17-Aug-2016 18:17:51 UTC] PHP Fatal error:  Class 'PHPMailer' not found in /home/robclarkson/public_html/reg/fg_membersite.php on line 528
+[17-Aug-2016 18:18:41 UTC] PHP Fatal error:  Class 'PHPMailer' not found in /home/robclarkson/public_html/reg/fg_membersite.php on line 528

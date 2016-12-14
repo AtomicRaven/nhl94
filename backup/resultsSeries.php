@@ -269,14 +269,14 @@
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
 					<h1>Results</h1>	
 					<h2>Results for a Specific Series</h2>
-				<div class="half-left">
+
 
 					
 					
 					<table class="standard">
 						<tr class="heading">
 							<td class="c brt"><span class="note">series</span><br /><!-- Rob: series_id --><?= $seriesid ?></td>
-							<td class="" colspan="5"><?= $awayUserAlias ?> vs <?= $homeUserAlias ?></td>
+							<td class="" colspan="5" style="padding-top: .7em"><b class="billboard"><?= $awayUserAlias ?> vs <?= $homeUserAlias ?></b></td>
 						</tr>			
 						<tr class="heading">
 							<td class="c brt" style="padding: 2px 0 0 0;">
@@ -320,12 +320,12 @@
 ?>				
 						<tr class="tight<?php print $stripe[$i & 1]; ?>" >
 
-							<td class="c"><?php print $i; ?></td>
+							<td class="c m"><?php print $i; ?></td>
 							<td class="<?=$homeClass?>"><?= GetTeamABVById($row["HomeTeamID"]) ?><?=$HOT?><div class='logo small <?= GetTeamABVById($row["HomeTeamID"]) ?>'></div></td>
-							<td class="<?=$homeClass?>"><?=$row["HomeScore"]?></td>
+							<td class="<?=$homeClass?> m"><b class="billboard"><?=$row["HomeScore"]?></b></td>
 							<td class="<?=$awayClass?>"><?= GetTeamABVById($row["AwayTeamID"]) ?><?=$AOT?><div class='logo small <?= GetTeamABVById($row["AwayTeamID"]) ?>'></div></td>
-							<td class="<?=$awayClass?>"><?=$row["AwayScore"]?></td>
-							<td class="c"><button type="button" class="square details" onclick="showGameDetails(this, 'detail_<?php print $i; ?>', <?=$gameid?>, <?=$i?>)">+ Details</button></td>
+							<td class="<?=$awayClass?> m"><b class="billboard"><?=$row["AwayScore"]?></b></td>
+							<td class="c m"><button type="button" class="square details" onclick="showGameDetails(this, 'detail_<?php print $i; ?>', <?=$gameid?>, <?=$i?>)">+ Details</button></td>
 						</tr>	
 						<tr class="tight detail_row" id="detail_<?php print $i; ?>" style="display: none" data-game-id="<?=$gameid?>">
 							<td colspan="6" id="fetch_detail_<?php print $i; ?>">
@@ -341,8 +341,7 @@
 						<!-- loop ends -->	
 					</table>
 
-			</div>
-			<div class="half-right">			
+		
 					<!-- rob: start of series stats table -->	
 					<h2>Series Stats</h2>
 					<table class="standard">
@@ -442,7 +441,7 @@
 
 								<tr class="tight<?php print $stripe[$j & 1]; ?>">
 									<td class=""><?php print $j; ?></td>
-									<td class=""><?=$player["First"] . " " . $player["Last"]?></td>
+									<td class="" style="font-size: 80%;"><?=$player["First"] . " " . $player["Last"]?></td>
 									<td class=""><?=GetTeamABVById($row["TeamID"])?></td>
 									<td class=""><?=$row["Pos"]?></td>
 									<td class=""><?=$row["GP"]?></td>
@@ -510,7 +509,6 @@
 
 				</div>			
 
-				</div>	
 		
 		</div><!-- end: #page -->	
 		

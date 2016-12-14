@@ -6,6 +6,7 @@
 
 		$gameid = $_GET["gameId"];
 		$gameNum = $_GET["gameNum"];
+		$leagueid = $_GET["leagueId"];
 
 
 		//Get data from DB
@@ -163,7 +164,7 @@
 					while($row = mysqli_fetch_array($pStats))
 					{
 						$points = $row["G"] + $row["A"];
-						$player = GetPlayerFromID($row["PlayerID"]);
+						$player = GetPlayerFromID($row["PlayerID"], $leagueid);
 
 						if($row["Pos"] != "G"){
 		?>						
@@ -206,7 +207,7 @@
 					while($row = mysqli_fetch_array($goalieStats))
 					{
 						$points = $row["G"] + $row["A"];
-						$player = GetPlayerFromID($row["PlayerID"]);
+						$player = GetPlayerFromID($row["PlayerID"], $leagueid);
 						
 
 						if($row["Pos"] == "G"){

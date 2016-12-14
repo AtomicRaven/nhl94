@@ -208,10 +208,10 @@
 	}
 
 	//resultsSeries Page
-	function showGameDetails(obj, x, gameId, gameNum) {
+	function showGameDetails(obj, x, gameId, gameNum, leagueid) {
 		if ( obj.innerHTML === '+ Details' ) {
 			// fetch game stats
-			$('#fetch_' + x).load('fragment_game_stats_template.php?gameId=' + gameId + "&gameNum=" + gameNum);
+			$('#fetch_' + x).load('fragment_game_stats_template.php?gameId=' + gameId + "&gameNum=" + gameNum + "&leagueId=" + leagueid);
 			// dipslay table row beneath button	
 			$('#' + x).fadeIn();
 			// toggle button	
@@ -229,7 +229,7 @@
 
 	function showAllGames(obj) {
 
-		var gameId;
+		var gameId, leagueId;
 
 		if (obj.innerHTML === '+ All') {
 			obj.innerHTML = '- All';
@@ -239,10 +239,11 @@
 					//
 
 					gameId = $(this).attr("data-game-id");
+					leagueId = $(this).attr("data-league-id");
 
 					console.log('#fetch_detail_' + parseInt(index+1));
 					
-					$('#fetch_detail_' + parseInt(index+1)).load('fragment_game_stats_template.php?gameId=' + gameId + "&gameNum=" + (index+1));
+					$('#fetch_detail_' + parseInt(index+1)).load('fragment_game_stats_template.php?gameId=' + gameId + "&gameNum=" + (index+1) + "&leagueId=" + leagueId);
 					$('#detail_' + parseInt(index+1)).fadeIn();
 			});			
 		}

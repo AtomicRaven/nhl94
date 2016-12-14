@@ -1,0 +1,254 @@
+.logo {
+    display: block;
+    margin: 0 auto;
+}
+
+.logo.large {
+    width: 99px;
+    height: 107px;
+}
+
+/* Large icons */
+.large.ANH {
+    background-position: 0 0;
+    width: 100px;
+}
+
+.large.BOS {
+    background-position: -100px 0;
+    width: 100px;
+}
+
+.large.BUF {
+    background-position: -200px 0;
+    width: 100px;
+}
+
+.large.CGY {
+    background-position: -300px 0;
+}
+
+.large.CHI {
+    background-position: -400px 0;
+}
+
+.large.DAL {
+    background-position: -500px 0;
+}
+
+.large.DET {
+    background-position: -599px 0;
+    width: 100px;
+}
+
+.large.EDM {
+    background-position: -699px 0;
+    width: 100px;
+}
+
+.large.FLA {
+    background-position: -800px 0;
+}
+
+.large.HFD {
+    background-position: -900px 0;
+}
+
+.large.LA {
+    background-position: -1000px 0;
+}
+
+.large.MTL {
+    background-position: -1099px 0;
+    width: 100px;
+}
+
+.large.NJ {
+    background-position: -1199px 0;
+    width: 100px;
+}
+
+.large.NYI {
+    background-position: -1299px 0;
+    width: 100px;
+}
+
+.large.NYR {
+    background-position: -1399px 0;
+}
+
+.large.OTW {
+    background-position: -1499px 0;
+}
+
+.large.PHI {
+    background-position: -1598px 0;
+    width: 100px;
+}
+
+.large.PIT {
+    background-position: -1698px 0;
+}
+
+.large.QUE {
+    background-position: -1798px 0;
+}
+
+.large.SJ {
+    background-position: -1898px 0;
+}
+
+.large.STL {
+    background-position: -1997px 0;
+}
+
+.large.TB {
+    background-position: -2096px 0;
+    width: 100px;
+}
+
+.large.TOR {
+    background-position: -2196px 0;
+}
+
+.large.VAN {
+    background-position: -2296px 0;
+}
+
+.large.WSH {
+    background-position: -2396px 0;
+    width: 100px;
+}
+
+.large.WPG {
+    background-position: -2496px 0;
+}
+
+.large.ASE {
+    background-position: -2597px 0;
+}
+
+.large.ASW {
+    background-position: -2697px 0;
+}
+
+/* Small icons */
+.logo.small {
+    width: 49px;
+    height: 53px;
+}
+
+.small.ANH {
+    background-position: 0 -107px;
+    width: 50px;
+}
+
+.small.BOS {
+    background-position: -51px -107px;
+    width: 50px;
+}
+
+.small.BUF {
+    background-position: -101px -107px;
+    width: 50px;
+}
+
+.small.CGY {
+    background-position: -151px -107px;
+}
+
+.small.CHI {
+    background-position: -201px -107px;
+}
+
+.small.DAL {
+    background-position: -251px -107px;
+}
+
+.small.DET {
+    background-position: -301px -107px;
+}
+
+.small.EDM {
+    background-position: -351px -107px;
+}
+
+.small.FLA {
+    background-position: -401px -107px;
+}
+
+.small.HFD {
+    background-position: -451px -107px;
+}
+
+.small.LA {
+    background-position: -501px -107px;
+}
+
+.small.MTL {
+    background-position: -551px -107px;
+}
+
+.small.NJ {
+    background-position: -601px -107px;
+}
+
+.small.NYI {
+    background-position: -651px -107px;
+}
+
+.small.NYR {
+    background-position: -701px -107px;
+}
+
+.small.OTW {
+    background-position: -751px -107px;
+}
+
+.small.PHI {
+    background-position: -801px -107px;
+}
+
+.small.PIT {
+    background-position: -850px -107px;
+}
+
+.small.QUE {
+    background-position: -900px -107px;
+}
+
+.small.SJ {
+    background-position: -950px -107px;
+}
+
+.small.STL {
+    background-position: -1000px -107px;
+}
+
+.small.TB {
+    background-position: -1049px -107px;
+}
+
+.small.TOR {
+    background-position: -1100px -107px;
+}
+
+.small.VAN {
+    background-position: -1150px -107px;
+}
+
+.small.WSH {
+    background-position: -1200px -107px;
+}
+
+.small.WPG {
+    background-position: -1249px -107px;
+}
+
+.small.ASE {
+    background-position: -1299px -107px;
+}
+
+.small.ASW {
+    background-position: -1349px -107px;
+}
