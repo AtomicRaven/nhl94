@@ -6,8 +6,8 @@
 
    //local
 $servername = "localhost";
-//$username = "root";
-//$password = "";
+$username = "root";
+$password = "";
 $dbname = "nhl94db";
 
 //prod
