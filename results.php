@@ -5,12 +5,14 @@
 		include_once './_INCLUDES/00_SETUP.php';
 		include_once './_INCLUDES/dbconnect.php';
 
-		$allseries = GetSeriesAndGames(false);
+		$allseries = GetSeriesAndGames(false);		
+		
 		$seriesHtml = "";	
 		$i = 0;
 
 		while($row = mysqli_fetch_array($allseries)){
 
+			$leagueName = GetLeagueTableABV($row["LeagueID"]);
 			$gamesCompleteText = "";
 			$lastEntryTime = "";
 			$homeTeamPlayer = GetUserAlias($row["HomeUserID"]);
@@ -64,7 +66,7 @@
 			$seriesHtml .= '<td class="c">'.$row['SeriesID'].'</td>';
 			$seriesHtml .= '<td class="c">'.$awayTeam .'<br/>v<br/>'.$homeTeam.'</td>';
 			$seriesHtml .= '<td class="">'.$gamesCompleteText.'<br />'; 
-			$seriesHtml .= '<span class="note">Best of ' . $bestofNum . '<br/>Updated ' . $formattedEntryDate. '</span></td>';
+			$seriesHtml .= '<span class="note">Best of ' . $bestofNum . '<br/>Updated ' . $formattedEntryDate. '<br/>Bin: ' . $leagueName . '</span></td>';
 			$seriesHtml .= '<td class="c"><button type="button" class="square" onclick="location.href=\'resultsSeries.php?seriesId='. $row['SeriesID'].'\'">Select</button>';
 
 			if($LOGGED_IN == true &&  $_SESSION['userId'] == $row["HomeUserID"] || $_SESSION['userId'] == $row["AwayUserID"])

@@ -4,11 +4,11 @@
 		$ADMIN_PAGE = true;
 		require_once('./_INCLUDES/00_SETUP.php');
         require_once("./_INCLUDES/config.php");
-        require_once("./reg/include/membersite_config.php");
+        //require_once("./reg/include/membersite_config.php");
 
 //echo "Logged in:" . $LOGGED_IN ? 'true' : 'false';;
 
-if ($LOGGED_IN == true && $_SESSION['username']="Atomic") {
+if ($LOGGED_IN == true && ($_SESSION['username']="Atomic" || $_SESSION['username']="Aqua")){
 
 ?><!DOCTYPE HTML>
 <html>
@@ -27,18 +27,20 @@ if ($LOGGED_IN == true && $_SESSION['username']="Atomic") {
 				<div id="main">				
 
 					<h1>Admin</h1>
-                    <ul style="list-style-type:disc">
-					
-						<li>
-                            <a href="duplicateTable.php" target="_blank">Import GDL</a>                        
-						</li>					
-						<li>
-                            <a href="deleteTable.php" target="_blank">Delete GDL Table</a>                        
-						</li>					
-                        <li>
-                            <a href="links.php" target="_blank">Links</a>
-                        </li>                        
-                    </ul>
+					<form method="post" action="duplicateTable.php" enctype="multipart/form-data">
+						<ul style="list-style-type:disc">
+						
+							<li>
+								<input type="file" name="csv">
+								<input type="submit" style="margin-top: 10px;" value="Import Table"/>
+								
+							</li>					
+							
+							<li>
+								<a href="links.php" target="_blank">Links</a>
+							</li>                        
+						</ul>
+					</form>
 				</div>	
 		
 		</div><!-- end: #page -->	

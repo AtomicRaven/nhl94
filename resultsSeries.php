@@ -269,16 +269,14 @@
 				
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
-					<h1>Results</h1>	
+	
 					<h2>Results for a Specific Series</h2>
-
-
-					
+					<h2>Bin: <?=$leagueName?></h2>					
 					
 					<table class="standard">
 						<tr class="heading">
 							<td class="c brt"><span class="note">series</span><br /><!-- Rob: series_id --><?= $seriesid ?></td>
-							<td class="" colspan="5" style="padding-top: .7em"><b class="billboard"><?= $awayUserAlias ?> vs <?= $homeUserAlias ?> (<?=$leagueName?>)</b></td>
+							<td class="" colspan="5" style="padding-top: .7em"><b class="billboard"><?= $awayUserAlias ?> vs <?= $homeUserAlias ?></b></td>
 						</tr>			
 						<tr class="heading">
 							<td class="c brt" style="padding: 2px 0 0 0;">

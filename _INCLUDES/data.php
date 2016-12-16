@@ -17,10 +17,10 @@ function DuplicateRosterTable($newTable){
 	}
 }
 
-function TransferPlayerRoster($newTable){
+function TransferPlayerRoster($newTable, $newCsv){
 	
 	$conn = $GLOBALS['$conn'];
-	$File = 'db/PlabaxRom.csv';
+	$File = $newCsv;
 
 	$arrResult = array();
 	$handle = fopen($File, "r");
@@ -34,31 +34,37 @@ function TransferPlayerRoster($newTable){
 
 	$i = 0;
 
+	//don't want the first two rows they are headers 
+	array_shift($arrResult);
+	array_shift($arrResult);
+
 	foreach($arrResult as $value) {		
 
-		if($value[0] != ""){
+		$playerid = $value[0];
+		$firstname = $value[1];
+		$lastname = $value[2];
+		$teamABV = $value[3];
 
-			$i++;
-			//$name = explode(' ', $value[0]);
-			$firstname = $value[0];
-			$lastname = $value[1];
-			$teamABV = $value[2];
+		if($firstname != "" && $teamABV !="ASB"){
+
+			$i++;		
+
+			//ROM exports different team names for QUE and OTT
+			if($teamABV == "QB")
+				$teamABV = "QUE";
+
+			if($teamABV == "OTT")
+				$teamABV = "OTW";
+
 			$teamid = GetTeamIdByABV($teamABV);						
-
-			//echo "team: ". $teamABV . "<br/>";
 			
 			$sql = "SELECT * FROM roster WHERE (First = '$firstname' AND Last = '$lastname') LIMIT 1";
 			$tmr = mysqli_query($conn, $sql);
 			$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
-			$playerid = $i-1;
-			$pos = $row["Pos"];
-
-			//echo "sql:" . $sql . "<br/>";	
-			//echo "playerId:" . $playerid . "<br/>";					
+			$pos = $row["Pos"];			
 
 			 $sql = "INSERT INTO $newTable (ID, PlayerID, First, Last, Team, TeamID, Pos) 
 			 VALUES ('$i', '$playerid', '$firstname', '$lastname', '$teamABV', '$teamid', '$pos')";
-			// //echo "sql:" . $sql . "<br/>";
 
 			$sqlr = mysqli_query($conn, $sql);
 
@@ -68,10 +74,10 @@ function TransferPlayerRoster($newTable){
 				echo("Error: UpdateRoster2 : " . $sqlr . mysqli_error($conn));
 			}	
 
-			//update PLayerID's
-
 		}
 	}
+
+	AddLeague($newTable);
 }
 
 function DropNewRosterTable($newTable){
@@ -379,7 +385,7 @@ function GetLeagueTypes(){
 
 	$conn = $GLOBALS['$conn'];
 
-	$sql = "SELECT * FROM league ORDER BY LeagueID ASC";
+	$sql = "SELECT * FROM league WHERE Visible = true ORDER BY LeagueID ASC";
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) { 
@@ -388,6 +394,23 @@ function GetLeagueTypes(){
 
 	return $result;
 
+}
+
+function AddLeague($tablename){
+
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "INSERT INTO league (Name, TableName, Visible) 
+			VALUES ('$tablename', '$tablename', 1)";
+		
+	$sqlr = mysqli_query($conn, $sql);	
+
+
+	if ($sqlr) {		
+		logMsg("New League Table created: " . $tablename);
+	} else {
+		echo("Error: AddLeague: " . $sql . "<br>" . mysqli_error($conn));
+	}
 
 }
 
@@ -541,7 +564,7 @@ function GetLeagueTableABV($leagueid){
 	$result = mysqli_query($conn, $sql);
 
 	$row = mysqli_fetch_array($result, MYSQL_ASSOC);	
-	return $row["Name"];
+	return str_replace(".bin","",$row["Name"]);
 
 }
 

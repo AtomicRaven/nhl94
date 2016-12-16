@@ -1,12 +1,13 @@
 <?php
 
    $GLOBALS['$saveFilePath'] = $_SERVER['DOCUMENT_ROOT']. '/nhl94/uploads/';
+   $GLOBALS['$csvUploadPath'] = $_SERVER['DOCUMENT_ROOT']. '/nhl94/db/';
    $GLOBALS['$Name'] = "Bud";
 
    //local
 $servername = "localhost";
-$username = "root";
-$password = "";
+//$username = "root";
+//$password = "";
 $dbname = "nhl94db";
 
 //prod
@@ -14,4 +15,11 @@ $dbname = "nhl94db";
 //$username = "nhl94";
 //$password = "Mysp@ce2174";
 
+// matt
+/*
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "nhl94db";
+*/
 ?>

@@ -38,7 +38,7 @@
 					
 							<table class="tight">
 								<tr>
-									<td><label>league</label></td>
+									<td><label>bin</label></td>
 								</tr>
 								<tr class="normal">
 									<td>

@@ -52,6 +52,8 @@
 
 					$lastEntryTime = "Last Updated " . HumanTiming($row["LastEntryDate"]) . " ago";
 				}
+
+				$lastEntryTime .= "<br/>Bin:" . GetLeagueTableABV($row["LeagueID"]);
 																									
 				$seriesHtml .= '<tr class="">';
 				$seriesHtml .= '<td><button type="button" class="square" onclick="DeleteSeries(\'' .$row['SeriesID'].'\',\'' . $row["Name"] .'\')">X</button></td>';
