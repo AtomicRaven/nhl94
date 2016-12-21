@@ -22,18 +22,19 @@
 
 		$_SESSION['Admin'] = false;
 		
-		if ($user !== FALSE) {
+		if ($user !== FALSE) {			
 				
-				$currentUser = $user["username"];
-				
-				$_SESSION['username'] = $currentUser;
+				//echo $user["username"];
+				$_SESSION['username'] = $user["username"];
 				$_SESSION['email_of_user'] = $user['email'];
 				$_SESSION['loggedin'] = true;								
-				$_SESSION['userId'] = $user['id_user'];
-					header('Location: manage.php');
+				$_SESSION['userId'] = $user['id_user'];				
 
-				if($user['Role'] == 'admin')
+				if($user['Role'] == 'admin'){
 					$_SESSION['Admin'] = true;
+				}
+
+				header('Location: manage.php');
 		}
 		else {
 			//logMsg("Uknown User");

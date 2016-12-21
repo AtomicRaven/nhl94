@@ -1,6 +1,8 @@
 <div id="header">
 <?php
 			if ($LOGGED_IN == true) {
+
+				//echo "UserName:" . $_SESSION['username'];
 ?>	
 <div class="loginInfo"><a href="./logout.php" class="small-button">LOGOUT</a> <span><?php print $_SESSION['username']; ?></span></div>
 <?php
@@ -36,15 +38,23 @@
 		<?php
 
 	//echo "IsLoggedIn:" . $LOGGED_IN;
+	//echo "UserName:" . $_SESSION['username'];
 
-				if ($LOGGED_IN == 1) {
-	?>	
+		if ($LOGGED_IN == 1) {
+			if ($_SESSION['Admin'] == true){
+				?>	
 		<li>
-			<a href="changePassword.php">ADMIN</a>	
+			<a href="admin.php">ADMIN</a>	
 		</li>
-	<?php
-				}
-	?>	
-	</ul>	
+		<?php
+			}else{
+		?>	
+		<li>
+			<a href="changePassword.php">ACCOUNT</a>	
+		</li>
+		<?php
+			}
+		}
+		?>	
 
 </div>	

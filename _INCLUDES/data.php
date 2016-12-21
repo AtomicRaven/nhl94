@@ -294,6 +294,27 @@ function GetGamesByUser($userId){
 
 }
 
+function AddFakeUser($username, $email, $password){
+
+	$conn = $GLOBALS['$conn'];	
+	$password = md5($password);
+
+	$sql = "INSERT INTO users (name, email, username, password, confirmcode, role) 
+			VALUES ('FakeName', '$email', '$username', '$password', 'y', '')";
+		
+	$sqlr = mysqli_query($conn, $sql);	
+
+	if ($sqlr) {		
+		logMsg("Fake User Added: " . $username);
+		return 1;
+	} else {
+		echo("Error: AddFakeUser: " . $sql . "<br>" . mysqli_error($conn));
+		return 0;
+	}
+
+
+}
+
 function GetHeadToHead($userId1, $userId2){
 
 	$conn = $GLOBALS['$conn'];	
@@ -797,7 +818,7 @@ function GetUsers(){
 
 	$conn = $GLOBALS['$conn'];
 
-	$sql = "SELECT * FROM users WHERE confirmcode='y' ORDER BY username DESC";
+	$sql = "SELECT * FROM users WHERE confirmcode='y' ORDER BY username ASC";
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) { 

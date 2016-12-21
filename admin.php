@@ -4,11 +4,10 @@
 		$ADMIN_PAGE = true;
 		require_once('./_INCLUDES/00_SETUP.php');
         require_once("./_INCLUDES/config.php");
-        //require_once("./reg/include/membersite_config.php");
 
 //echo "Logged in:" . $LOGGED_IN ? 'true' : 'false';;
 
-if ($LOGGED_IN == true && ($_SESSION['username']="Atomic" || $_SESSION['username']="Aqua")){
+if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 
 ?><!DOCTYPE HTML>
 <html>
@@ -35,7 +34,9 @@ if ($LOGGED_IN == true && ($_SESSION['username']="Atomic" || $_SESSION['username
 								<input type="submit" style="margin-top: 10px;" value="Import Table"/>
 								
 							</li>					
-							
+							<li>
+								<a href="registerAdmin.php">Register Fake User</a>
+							</li>
 							<li>
 								<a href="links.php" target="_blank">Links</a>
 							</li>                        

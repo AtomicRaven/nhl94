@@ -1,12 +1,11 @@
 <?php
 
-    session_start();
-	$ADMIN_PAGE = true;
-    include_once './_INCLUDES/00_SETUP.php';
-	include_once './_INCLUDES/dbconnect.php';
-    include_once './_INCLUDES/01_HEAD.php';
+		session_start();
+		$ADMIN_PAGE = true;
+		include_once './_INCLUDES/00_SETUP.php';
+		include_once './_INCLUDES/dbconnect.php';
 
-if ($LOGGED_IN == true && ($_SESSION['username']="Atomic" || $_SESSION['username']="Aqua")){
+if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 
             if (isset($_FILES['csv']['name'])) {
 
