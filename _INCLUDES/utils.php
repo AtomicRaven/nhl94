@@ -43,6 +43,7 @@ function NumGamesPerSeries($seriesId){
 
 function CreateSelectBox($selectName, $selectTitle, $data, $id, $value, $onChange, $indexSelected){
 
+    $retVal = "";
     $selectBox = "<select id='" . $selectName . "' name='" . $selectName . "'";
 
     if($onChange != null){
@@ -68,10 +69,18 @@ function CreateSelectBox($selectName, $selectTitle, $data, $id, $value, $onChang
             }
         }
 
-        if($selectName = "leagueType")
-            $row[$value] =  str_replace(".bin","", $row[$value]);
+        $retVal = $row[$value];
 
-        $selectBox .= ">" . $row[$value] . "</option>";
+        if($selectName = "leagueType")
+            $retVal =  str_replace(".bin","", $retVal);
+
+
+        if($selectTitle == "Select Player"){
+            
+            $retVal =  $row["First"]. " ". $row["Last"];
+        }
+
+        $selectBox .= ">" . $retVal . "</option>";
     }	
     
     $selectBox .= "</select>";
@@ -202,6 +211,48 @@ function SortByGFA($x, $y) {
 }
 function SortByGAA($x, $y) {
     return $y['GAA'] > $x['GAA'] ? 1 : -1;
-}                        
+}               
+function SortByOverall($x, $y) {
+    return $y['Overall'] > $x['Overall'] ? 1 : -1;
+}          
+
+function CalculateOverallRanking($p){
+
+    if($p["Pos"] == "F"){
+
+        $total = ($p["Agl"]) + ($p["Spd"] * 1.5) + ($p["OfA"] * 1.5) + ($p["DfA"]) + ($p["ShP"] * 0.5) + 
+                ($p["ChK"]) + ($p["StH"] * 1.5) + ($p["ShA"]) + ($p["End"] * 0.5) + ($p["Pas"] * 0.5);
+    }else{
+        //Its a Goalie
+
+        $total = (($p["Agl"] * 2.25) - (0.25 * ($p["Agl"] % 2))) + 
+          (($p["DfA"] * 2.25)  - (0.25 * ($p["DfA"] % 2)))+ 
+          (($p["ShP"] * 2.25)  - (0.25 * ($p["DfA"] % 2)))+ 
+          ($p["End"] * 0.5) + 
+          ($p["Rgh"] * 0.5) + 
+          ($p["Pas"] * 0.5) + 
+          ($p["Agr"] * 0.5);
+
+    }
+
+    $base = 25;
+    $sum = $total + $base;
+    $def_total = $total - $base;
+
+    if ($def_total  < 0)
+        $bonus = 0;
+    else
+        $bonus = $def_total;
+
+    $x = round($sum + $bonus);
+
+    if ($x > 99)
+        $overall_player = 99;
+    else
+        $overall_player  = $x;    
+
+    return $overall_player;
+
+}
 
 ?>

@@ -35,6 +35,9 @@
 		<li>
 			<a href="./resultsLeader.php">LEADER</a>
 		</li>
+		<li>
+			<a href="./comparePlayer.php">ROSTER</a>
+		</li>
 		<?php
 
 	//echo "IsLoggedIn:" . $LOGGED_IN;

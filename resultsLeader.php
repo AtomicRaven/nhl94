@@ -28,11 +28,11 @@
         
         if($homeuserid==0 || $awayuserid==0){
             
-            $gamesleaders = GetUsers();
+            $gamesleaders = GetUsers(false);
 
         }else if($homeuserid == $awayuserid){
 
-            $gamesleaders = GetUsers();
+            $gamesleaders = GetUsers(false);
             $sBy = "You've selected the same coach.";
 
         }else{
@@ -41,8 +41,8 @@
             $gamesleaders = CompareUsers($homeuserid, $awayuserid);
         }
        
-        $homeUserSelectBox = CreateSelectBox("homeUser", "Select User", GetUsers(), "id_user", "username", null, $homeuserid);
-        $awayUserSelectBox = CreateSelectBox("awayUser", "Select User", GetUsers(), "id_user", "username", null, $awayuserid);
+        $homeUserSelectBox = CreateSelectBox("homeUser", "Select User", GetUsers(true), "id_user", "username", null, $homeuserid);
+        $awayUserSelectBox = CreateSelectBox("awayUser", "Select User", GetUsers(true), "id_user", "username", null, $awayuserid);
 
 
 ?><!DOCTYPE HTML>

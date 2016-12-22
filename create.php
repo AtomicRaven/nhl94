@@ -10,8 +10,8 @@
 
 			// Get Data to populate select boxes from DB
 			
-			$homeUserSelectBox = CreateSelectBox("homeUser", "Select Home User", GetUsers(), "id_user", "username", "UpdateSeriesName()", null);
-			$awayUserSelectBox = CreateSelectBox("awayUser", "Select Away User", GetUsers(), "id_user", "username", "UpdateSeriesName()", null);
+			$homeUserSelectBox = CreateSelectBox("homeUser", "Select Home User", GetUsers(true), "id_user", "username", "UpdateSeriesName()", null);
+			$awayUserSelectBox = CreateSelectBox("awayUser", "Select Away User", GetUsers(true), "id_user", "username", "UpdateSeriesName()", null);
 			$seriesTypeSelectBox = CreateSelectBox("seriesType", null, GetSeriesTypes(), "SeriesID", "Description", null, null);			
 			$leagueTypeSelectBox = CreateSelectBox("leagueType", null, GetLeagueTypes(), "LeagueID", "Name", null, null);
 			

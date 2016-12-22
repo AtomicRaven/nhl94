@@ -499,8 +499,9 @@
 									<td class=""> <?=$savePct?><!-- 17 goals on 72 shots) --></td>
 								</tr>	
 		<?php 
+						$j++;
 						}
-					$j++;
+					
 					}
 		?>						
 						<!-- end of loop -->	

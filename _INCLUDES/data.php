@@ -814,11 +814,15 @@ function GetUserAlias($userid){
 	
 }  // end of function
 
-function GetUsers(){
+function GetUsers($orderAsc){
 
 	$conn = $GLOBALS['$conn'];
 
-	$sql = "SELECT * FROM users WHERE confirmcode='y' ORDER BY username ASC";
+	if($orderAsc)
+		$sql = "SELECT * FROM users WHERE confirmcode='y' ORDER BY username ASC";
+	else
+		$sql = "SELECT * FROM users WHERE confirmcode='y' ORDER BY username DESC";
+	
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) { 
@@ -826,6 +830,39 @@ function GetUsers(){
 	}	
 
 	return $result;
+}
+
+function GetRosters(){
+
+	$conn = $GLOBALS['$conn'];
+	
+	$sql = "SELECT * FROM roster WHERE Team != 'ASW' AND Team != 'ASE' ORDER BY Last ASC";
+	
+	$result = mysqli_query($conn, $sql);
+
+	if ($result) {
+		logMsg("Retrieved PlayerRosters" );
+	} else {
+		echo("Error: GetRosters: " . $sql . "<br>" . mysqli_error($conn));
+	}
+
+	return $result;
+}
+
+function ComparePlayers($player1Id, $player2Id){
+
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "SELECT * FROM roster WHERE PlayerID = '$player1Id' OR PlayerID = '$player2Id'  ORDER BY Last ASC";
+
+	$result = mysqli_query($conn, $sql);
+
+	if($result === FALSE) { 
+		die(mysql_error()); // TODO: better error handling
+	}	
+
+	return $result;
+
 }
 
 function CompareUsers($userid1, $userid2){
