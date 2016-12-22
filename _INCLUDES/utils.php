@@ -54,7 +54,7 @@ function CreateSelectBox($selectName, $selectTitle, $data, $id, $value, $onChang
 
     if($selectTitle != null){        
 
-        $selectBox .= "<option value='0'>" . $selectTitle . "</option>";
+        $selectBox .= "<option value='-1'>" . $selectTitle . "</option>";
     }		
     
     while($row = mysqli_fetch_array($data)){
@@ -77,7 +77,7 @@ function CreateSelectBox($selectName, $selectTitle, $data, $id, $value, $onChang
 
         if($selectTitle == "Select Player"){
             
-            $retVal =  $row["First"]. " ". $row["Last"];
+            $retVal =  $row["Last"] . ", " . $row["First"];
         }
 
         $selectBox .= ">" . $retVal . "</option>";
@@ -213,8 +213,15 @@ function SortByGAA($x, $y) {
     return $y['GAA'] > $x['GAA'] ? 1 : -1;
 }               
 function SortByOverall($x, $y) {
-    return $y['Overall'] > $x['Overall'] ? 1 : -1;
-}          
+    return $y['Overall'] > $x['Overall'];
+}
+function SortBy($x, $y, $field, $sOrder) {
+
+    if($sOrder == "ASC")
+        return $y[$field] < $x[$field];
+    else
+        return $y[$field] > $x[$field];
+}      
 
 function CalculateOverallRanking($p){
 

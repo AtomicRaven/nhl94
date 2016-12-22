@@ -5,8 +5,39 @@
 		include_once './_INCLUDES/00_SETUP.php';
 		include_once './_INCLUDES/dbconnect.php';	
 
-        $player1Id = 0;
-        $player2Id = 0;
+        $player1Id = -1;
+        $player2Id = -1;
+        $sBy = "Sorted By: Overall";  
+        $sOrder = "DESC";
+        $nSortOrder = "DESC";
+
+        if (isset($_GET["sOrder"]) && !empty($_GET["sOrder"])) {
+
+		    $sOrder = $_GET["sOrder"];
+
+            if($sOrder == "DESC")
+                $nSortOrder = "ASC";
+            else 
+                $nSortOrder = "DESC";
+            
+		}else{
+
+            $nSortOrder = "DESC";
+
+        }
+
+         if (isset($_GET["s"]) && !empty($_GET["s"])) {
+
+		    $s =  $_GET["s"];
+            $sBy = "Sorted By: " . $s . " " . $sOrder;  
+            
+		}else{
+
+            $sBy = "Sorted By: Overall". " " . $sOrder;  
+            $s = "";
+        }
+
+        
 
         if (isset($_GET["player1"]) && isset($_GET["player2"])) {
 
@@ -15,7 +46,7 @@
 
         }   
 
-         if($player1Id==0 || $player2Id==0){
+         if($player1Id==-1 || $player2Id==-1){
             
             $rosters = GetRosters();
 
@@ -55,26 +86,32 @@
                     <form name="seriesForm" method="get" action="comparePlayer.php">                    
                         <?=$player1SelectBox?> &nbsp; <?=$player2SelectBox?>
                     
-                        &nbsp; <button id="submitBtn" type="submit" style="margin-top: 10px;">Go</button> 
+                        &nbsp; <button id="submitBtn" type="submit" style="margin-top: 10px;">Go</button>   
 
+                        <input type="checkbox" name="forwards" checked/>Forwards
+                        <input type="checkbox" name="defense" checked/>Defense
+                        <input type="checkbox" name="goalies" checked/>Goalies
+
+                        <div><?=$sBy?></div><br/>
                         <table class="standard smallify leader">
                                 <tr class="heading">
                                     <td class="c"></td>
                                     <td class="c">Name</td>
-                                    <td class="c">Handed</td>
-                                    <td class="c">Overall</td>
-                                    <td class="c">Team</td>                                    
-                                    <td class="c">Pos</td>                                                                                                  
-                                    <td class="c">Weight</td>                                    
-                                    <td class="c">Checking</td>                                    
-                                    <td class="c">Shot Power</td>                                    
-                                    <td class="c">Shot Accuracy</td>                                    
-                                    <td class="c">Speed</td>                                    
-                                    <td class="c">Agility</td>                                    
-                                    <td class="c">Stick Handle</td>                                    
-                                    <td class="c">Passing</td>
-                                    <td class="c">Off Aware</td>
-                                    <td class="c">Def Aware</td>
+                                    <td class="c"><button type="submit" name="s" value="Handed">Handed</button></td>
+                                    <td class="c"><button type="submit" name="s" value="Overall">Overall</button></td>
+                                    <td class="c"><button type="submit" name="s" value="Team">Team</button></td>                                    
+                                    <td class="c"><button type="submit" name="s" value="Pos">Pos</button></td>                                                                                                  
+                                    <td class="c"><button type="submit" name="s" value="Weight">Weight</button></td>
+                                    <td class="c"><button type="submit" name="s" value="Checking">Checking</button></td>                                    
+                                    <td class="c"><button type="submit" name="s" value="ShotP">Shot<br/>Power</button></td>                                    
+                                    <td class="c"><button type="submit" name="s" value="ShotA">Shot<br/>Accuracy</button></td>                                    
+                                    <td class="c"><button type="submit" name="s" value="Speed">Speed</button></td>                                    
+                                    <td class="c"><button type="submit" name="s" value="Agility">Agility</button></td>                                    
+                                    <td class="c"><button type="submit" name="s" value="Stick">Stick<br/>Handle</button></td>                                    
+                                    <td class="c"><button type="submit" name="s" value="Pass">Passing</button></td>
+                                    <td class="c"><button type="submit" name="s" value="Off">Off<br/>Aware</button></td>
+                                    <td class="c"><button type="submit" name="s" value="Def">Def<br/>Aware</button></td>
+                                    <input type="hidden" name="sOrder" value="<?=$nSortOrder?>"/>
                                 </tr>
                                 
                                 <?php
@@ -115,7 +152,17 @@
                                     }
 
                                     //Sort by Overall
-                                    usort($sortedPlayers, 'SortByOverall');
+                                    if($s!=""){
+                                        //usort($sortedPlayers, 'SortBy');
+                                        usort($sortedPlayers, function($a, $b) use ($s, $sOrder) {
+                                            //$myExtraArgument is available in this scope
+                                            //perform sorting, return -1, 0, 1
+                                            return SortBy($a, $b, $s, $sOrder);
+                                        });
+                                    }else{
+                                        usort($sortedPlayers, 'SortByOverall');
+                                    }                                    
+                                    
 
                                    foreach($sortedPlayers as $p){  
                                        $i++;
