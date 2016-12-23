@@ -836,7 +836,7 @@ function GetRosters(){
 
 	$conn = $GLOBALS['$conn'];
 	
-	$sql = "SELECT * FROM roster WHERE Team != 'ASW' AND Team != 'ASE' ORDER BY Last ASC";
+	$sql = "SELECT * FROM roster WHERE Team != 'ASW' AND Team != 'ASE' AND Team!='ANH' AND Team !='FLA' ORDER BY Last ASC";
 	
 	$result = mysqli_query($conn, $sql);
 
@@ -849,11 +849,27 @@ function GetRosters(){
 	return $result;
 }
 
-function ComparePlayers($player1Id, $player2Id){
+function ComparePlayers($playerArray){
 
 	$conn = $GLOBALS['$conn'];
 
-	$sql = "SELECT * FROM roster WHERE PlayerID = '$player1Id' OR PlayerID = '$player2Id'  ORDER BY Last ASC";
+	$sql = "SELECT * FROM roster WHERE ";
+
+	$lastElement = end($playerArray);
+	foreach($playerArray as $key => $value){            
+
+            if (strpos($key, 'player') !== false) {
+				$sql .=  "PlayerID = " . "'$value'";
+
+				if($value != $lastElement){
+					$sql .= " OR ";
+				}
+            }			
+    }
+
+
+	$sql .= " ORDER BY Last ASC";
+	//echo $sql;
 
 	$result = mysqli_query($conn, $sql);
 

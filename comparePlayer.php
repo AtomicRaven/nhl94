@@ -5,66 +5,83 @@
 		include_once './_INCLUDES/00_SETUP.php';
 		include_once './_INCLUDES/dbconnect.php';	
 
-        $player1Id = -1;
-        $player2Id = -1;
         $sBy = "Sorted By: Overall";  
         $sOrder = "DESC";
         $nSortOrder = "DESC";
+        $s = "";
 
+
+        //Need to massivley simplfy this logic
         if (isset($_GET["sOrder"]) && !empty($_GET["sOrder"])) {
-
-		    $sOrder = $_GET["sOrder"];
-
-            if($sOrder == "DESC")
-                $nSortOrder = "ASC";
-            else 
-                $nSortOrder = "DESC";
             
-		}else{
+            if (isset($_GET["s"]) && !empty($_GET["s"])) {
 
-            $nSortOrder = "DESC";
+                $s =  $_GET["s"];
+                $sOrder = $_GET["sOrder"]; 
+
+                //echo "Session: " . $_SESSION['s'] . "<br/>";
+                //echo "SortBy: " . $s . "<br/>";
+
+                if($_SESSION['s']){                
+
+                    if($_SESSION['s'] == $s){                                       
+
+                        if($sOrder == "DESC"){
+                            $nSortOrder = "ASC";
+                            $sOrder = "ASC";
+                        }else{
+                            $nSortOrder = "DESC";               
+                            $sOrder = "DESC";
+                        }
+
+                        //echo "Session equals s so flipping" . "<br/>";    
+
+                    }else{
+
+                        //echo "Session did not equal s" . "<br/>";
+                        //Do Nothing with sortOrder
+                        $nSortOrder = $sOrder;
+                        
+                    }
+                }
+
+                $_SESSION['s'] = $s;
+            }
 
         }
 
-         if (isset($_GET["s"]) && !empty($_GET["s"])) {
+        if (isset($_GET["s"]) && !empty($_GET["s"])) {
 
-		    $s =  $_GET["s"];
-            $sBy = "Sorted By: " . $s . " " . $sOrder;  
-            
-		}else{
+            $s =  $_GET["s"];
+            $sBy = "Sorted By: " . $s . " " . $sOrder;              
+        
+        }else{
 
             $sBy = "Sorted By: Overall". " " . $sOrder;  
-            $s = "";
-        }
+        }            
 
-        
+        //Get all the player comparisons
+        $str = $_SERVER['QUERY_STRING'];
+        $compare = false;
+        parse_str($str, $playerArray);
 
-        if (isset($_GET["player1"]) && isset($_GET["player2"])) {
+        foreach($playerArray as $key => $value){            
 
-		    $player1Id = $_GET['player1'];
-		    $player2Id = $_GET['player2'];           
+            if (strpos($key, 'player') !== false) {
+                $compare = true;
+            }else{
+                unset($playerArray[$key]);
+            }            
+        }       
 
-        }   
-
-         if($player1Id==-1 || $player2Id==-1){
+         if(!$compare){
             
             $rosters = GetRosters();
 
-        }else if($player1Id == $player2Id){
-
-            $rosters = GetRosters();
-            $sBy = "You've selected the same coach.";
-
         }else{
-            //Head to head
-            $recordStyle = "h2h";
-            $rosters = ComparePlayers($player1Id, $player2Id);
+
+            $rosters = ComparePlayers($playerArray);
         }
-
-        $player1SelectBox = CreateSelectBox("player1", "Select Player", GetRosters(), "PlayerID", "Last", null, $player1Id);
-        $player2SelectBox = CreateSelectBox("player2", "Select Player", GetRosters(), "PlayerID", "Last", null, $player2Id);
-
-        
 
 ?><!DOCTYPE HTML>
 <html>
@@ -83,39 +100,39 @@
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
 					<h1>Compare Player</h1>					
                     
-                    <form name="seriesForm" method="get" action="comparePlayer.php">                    
-                        <?=$player1SelectBox?> &nbsp; <?=$player2SelectBox?>
-                    
-                        &nbsp; <button id="submitBtn" type="submit" style="margin-top: 10px;">Go</button>   
+                    <form name="seriesForm" method="get" action="comparePlayer.php">
 
-                        <input type="checkbox" name="forwards" checked/>Forwards
+                        &nbsp; <button id="clearBtn" type="button" onclick="javascript:location.href='comparePlayer.php'" style="margin-top: 10px;">Clear</button>                       
+                        &nbsp; <button id="submitBtn" type="submit" style="margin-top: 10px;">Compare</button>   
+
+                        <!--<input type="checkbox" name="forwards" checked/>Forwards
                         <input type="checkbox" name="defense" checked/>Defense
-                        <input type="checkbox" name="goalies" checked/>Goalies
+                        <input type="checkbox" name="goalies" checked/>Goalies-->
 
-                        <div><?=$sBy?></div><br/>
+                        <div style="margin-top: 10px;"><?=$sBy?></div><br/>
                         <table class="standard smallify leader">
                                 <tr class="heading">
                                     <td class="c"></td>
-                                    <td class="c">Name</td>
-                                    <td class="c"><button type="submit" name="s" value="Handed">Handed</button></td>
-                                    <td class="c"><button type="submit" name="s" value="Overall">Overall</button></td>
-                                    <td class="c"><button type="submit" name="s" value="Team">Team</button></td>                                    
+                                    <td class="c">Rnk</td>
+                                    <td class="c">Nm</td>
+                                    <td class="c"><button type="submit" name="s" value="Handed">Hnd</button></td>
+                                    <td class="c"><button type="submit" name="s" value="Overall">Ovrll</button></td>
+                                    <td class="c"><button type="submit" name="s" value="Team">Tm</button></td>                                    
                                     <td class="c"><button type="submit" name="s" value="Pos">Pos</button></td>                                                                                                  
-                                    <td class="c"><button type="submit" name="s" value="Weight">Weight</button></td>
-                                    <td class="c"><button type="submit" name="s" value="Checking">Checking</button></td>                                    
-                                    <td class="c"><button type="submit" name="s" value="ShotP">Shot<br/>Power</button></td>                                    
-                                    <td class="c"><button type="submit" name="s" value="ShotA">Shot<br/>Accuracy</button></td>                                    
-                                    <td class="c"><button type="submit" name="s" value="Speed">Speed</button></td>                                    
-                                    <td class="c"><button type="submit" name="s" value="Agility">Agility</button></td>                                    
-                                    <td class="c"><button type="submit" name="s" value="Stick">Stick<br/>Handle</button></td>                                    
-                                    <td class="c"><button type="submit" name="s" value="Pass">Passing</button></td>
-                                    <td class="c"><button type="submit" name="s" value="Off">Off<br/>Aware</button></td>
-                                    <td class="c"><button type="submit" name="s" value="Def">Def<br/>Aware</button></td>
+                                    <td class="c"><button type="submit" name="s" value="Weight">Wgt</button></td>
+                                    <td class="c"><button type="submit" name="s" value="Checking">Chk</button></td>                                    
+                                    <td class="c"><button type="submit" name="s" value="ShotP">ShP</button></td>                                    
+                                    <td class="c"><button type="submit" name="s" value="ShotA">ShA</button></td>                                    
+                                    <td class="c"><button type="submit" name="s" value="Speed">Spd</button></td>                                    
+                                    <td class="c"><button type="submit" name="s" value="Agility">Agl</button></td>                                    
+                                    <td class="c"><button type="submit" name="s" value="Stick">Stk</button></td>                                    
+                                    <td class="c"><button type="submit" name="s" value="Pass">Pass</button></td>
+                                    <td class="c"><button type="submit" name="s" value="Off">OffA</button></td>
+                                    <td class="c"><button type="submit" name="s" value="Def">DefA</button></td>
                                     <input type="hidden" name="sOrder" value="<?=$nSortOrder?>"/>
                                 </tr>
                                 
-                                <?php
-                                    $i = 0;
+                                <?php                                    
                                     $sortedPlayers = array();
 
                                     while($row = mysqli_fetch_array($rosters)){                                          
@@ -123,9 +140,9 @@
                                         $hField = $row["H/F"];
 
                                         if ($hField & 1) {
-                                            $handed = 'Righty';
+                                            $handed = 'R';
                                         } else { 
-                                            $handed = 'Lefty';
+                                            $handed = 'L';
                                         }
 
                                          //$handed .= " " . $hField;
@@ -133,6 +150,7 @@
                                         $overall = CalculateOverallRanking($row);
 
                                         $sortedPlayers[] = array(
+                                                        "ID"=>$row["PlayerID"],
                                                         "Name"=>$row["First"] . " " . $row["Last"],
                                                         "Handed"=>$handed,
                                                         "Overall"=>$overall,
@@ -161,15 +179,25 @@
                                         });
                                     }else{
                                         usort($sortedPlayers, 'SortByOverall');
-                                    }                                    
+                                    }                                                                       
                                     
+                                   $i = 0;
+                                   $array = array_values($playerArray);
+                                   foreach($sortedPlayers as $p){                                         
 
-                                   foreach($sortedPlayers as $p){  
+                                       $checked = "";
+
+                                       if($compare){                                            
+                                            $checked = "checked";                                                 
+                                            
+                                        }
+
                                        $i++;
                                 ?>
                         
                                  <tr class="<?php print $stripe[$i & 1]; ?>">
                                     
+                                    <td class="c"><input type="checkbox" name="player<?=$i?>" value="<?=$p["ID"]?>" <?=$checked?>/></td>
                                     <td class="c"><?=$i?></td>                                    
                                     <td class="c"><?=$p["Name"]?></td>
                                     <td class="c"><?=$p["Handed"]?></td>
@@ -192,6 +220,9 @@
                                     }
                                 ?>
                         </table>
+
+                        &nbsp; <button id="clearBtn" type="button" onclick="javascript:location.href='comparePlayer.php'" style="margin-top: 10px;">Clear</button>                       
+                        &nbsp; <button id="submitBtn" type="submit" style="margin-top: 10px;">Compare</button> 
                     </form>
                 </div><!-- end: #page -->	
 		
