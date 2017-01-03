@@ -832,12 +832,25 @@ function GetUsers($orderAsc){
 	return $result;
 }
 
-function GetRosters(){
+function GetRosters($pFilter){
 
 	$conn = $GLOBALS['$conn'];
 	
-	$sql = "SELECT * FROM roster WHERE Team != 'ASW' AND Team != 'ASE' AND Team!='ANH' AND Team !='FLA' ORDER BY Last ASC";
+	$sql = "SELECT * FROM roster WHERE Team != 'ASW' AND Team != 'ASE' AND Team!='ANH' AND Team !='FLA'";
 	
+	if($pFilter['forwards'] != "checked")
+		$sql .= " AND Pos!='F'";
+	
+	if($pFilter['defense'] !== "checked")
+		$sql .= " AND Pos!='D'";
+	
+	if($pFilter['goalies'] != "checked")
+		$sql .= " AND Pos!='G'";
+
+	$sql .=" ORDER BY Last ASC";
+	
+	//echo "sql: " . $sql;
+
 	$result = mysqli_query($conn, $sql);
 
 	if ($result) {

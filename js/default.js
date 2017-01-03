@@ -1,3 +1,35 @@
+//OnLoad
+
+
+	function RosterSubmit(){
+
+		if(s!="" && s!='Off'){
+
+			var theForm = document.forms['rosterForm'];
+			var sOrder = document.getElementById("sOrder");
+
+			if(sOrder.value == 'DESC'){
+
+				sOrder.value = 'ASC';
+
+			}else{
+				
+				sOrder.value = 'DESC';
+			}
+			addHidden(theForm, 's', s);
+		}
+
+		document.rosterForm.submit();
+	}
+
+	function addHidden(theForm, key, value) {
+		// Create a hidden input element, and append it to the form:
+		var input = document.createElement('input');
+		input.type = 'hidden';
+		input.name = key;'name-as-seen-at-the-server';
+		input.value = value;
+		theForm.appendChild(input);
+	}
 
 /// Create.js functions
 	function UpdateSeriesName(){

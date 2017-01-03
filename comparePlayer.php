@@ -10,9 +10,34 @@
         $nSortOrder = "DESC";
         $s = "";
 
+        $pFilter = array(
+            'forwards' => "checked",
+            'defense' => "checked",
+            'goalies' => "checked"
+        );       
 
         //Need to massivley simplfy this logic
         if (isset($_GET["sOrder"]) && !empty($_GET["sOrder"])) {
+            
+            if (isset($_GET["forwards"])){
+                $pFilter['forwards'] = 'checked';                
+            }else{
+                $pFilter['forwards'] = '';
+            }
+
+            if (isset($_GET["defense"])){
+                $pFilter['defense'] = 'checked';                
+            }else{
+                $pFilter['defense'] = '';
+            }
+
+            if (isset($_GET["goalies"])){
+                $pFilter['goalies'] = 'checked';                
+            }else{
+                $pFilter['goalies'] = '';
+            }
+
+            //print_r($pFilter);            
             
             if (isset($_GET["s"]) && !empty($_GET["s"])) {
 
@@ -76,18 +101,28 @@
 
          if(!$compare){
             
-            $rosters = GetRosters();
+            $rosters = GetRosters($pFilter);
+            $vis = "show";
 
         }else{
 
             $rosters = ComparePlayers($playerArray);
+            $vis = "hidden";
         }
 
 ?><!DOCTYPE HTML>
 <html>
 <head>
 <title>Compare Player</title>
-<?php include_once './_INCLUDES/01_HEAD.php'; ?>
+<?php include_once './_INCLUDES/01_HEAD.php';
+
+    if($s != ""){
+        print_r("<script>var s='" . $s . "';</script>");
+    }else{
+        print_r("<script>var s='';</script>");
+    }
+ ?>
+
 </head>
 
 <body>
@@ -100,14 +135,16 @@
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
 					<h1>Compare Player</h1>					
                     
-                    <form name="seriesForm" method="get" action="comparePlayer.php">
+                    <form name="rosterForm" method="get" action="comparePlayer.php">
 
                         &nbsp; <button id="clearBtn" type="button" onclick="javascript:location.href='comparePlayer.php'" style="margin-top: 10px;">Clear</button>                       
                         &nbsp; <button id="submitBtn" type="submit" style="margin-top: 10px;">Compare</button>   
 
-                        <!--<input type="checkbox" name="forwards" checked/>Forwards
-                        <input type="checkbox" name="defense" checked/>Defense
-                        <input type="checkbox" name="goalies" checked/>Goalies-->
+                        <div style="display:inline;visibility: <?=$vis?>;">
+                            <input type="checkbox" value="true" name="forwards" onclick="RosterSubmit()" <?=$pFilter['forwards']?>/>Forwards
+                            <input type="checkbox" value="true" name="defense" onclick="RosterSubmit()" <?=$pFilter['defense']?>/>Defense
+                            <input type="checkbox" value="true" name="goalies" onclick="RosterSubmit()" <?=$pFilter['goalies']?>/>Goalies
+                        </div>
 
                         <div style="margin-top: 10px;"><?=$sBy?></div><br/>
                         <table class="standard smallify leader">
@@ -129,7 +166,7 @@
                                     <td class="c"><button type="submit" name="s" value="Pass">Pass</button></td>
                                     <td class="c"><button type="submit" name="s" value="Off">OffA</button></td>
                                     <td class="c"><button type="submit" name="s" value="Def">DefA</button></td>
-                                    <input type="hidden" name="sOrder" value="<?=$nSortOrder?>"/>
+                                    <input id="sOrder" type="hidden" name="sOrder" value="<?=$nSortOrder?>"/>
                                 </tr>
                                 
                                 <?php                                    
@@ -223,6 +260,7 @@
 
                         &nbsp; <button id="clearBtn" type="button" onclick="javascript:location.href='comparePlayer.php'" style="margin-top: 10px;">Clear</button>                       
                         &nbsp; <button id="submitBtn" type="submit" style="margin-top: 10px;">Compare</button> 
+                        
                     </form>
                 </div><!-- end: #page -->	
 		
