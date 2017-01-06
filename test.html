@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Compare Player</title>
+</head>
+<body>
+                <div ng-app="myApp">
+
+                    <div ng-controller="PostsCtrl">
+
+                        <div>
+                            <ul ui-sortable ng:model="list" >
+                                <li ng-repeat="players in list | limitTo:10" >
+                                    {{players.name}}
+                                </li>
+                            </ul>
+                        </div>
+                </div>
+                </div>
+
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>        
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>	
+    <script src="./js/sortable.js"></script>    
+
+    <script>
+    var app = angular.module('myApp',['ui.sortable']);
+
+    app.controller("PostsCtrl", function($scope, $http) {
+
+
+        $scope.GetPlayers = function(params){
+
+        var uri = "./getPlayersJson.php";
+
+        if(params == undefined){
+            params = "";
+        }
+
+        $http({
+            method: 'GET',
+            url: uri + params
+            }).then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available        
+                $scope.posts = response.data;
+               
+               $scope.list = [];
+
+
+                for (var key in $scope.posts[0]) {
+                    
+                    $scope.list.push({
+                        name: key
+                    });
+
+                }
+
+                $scope.loading = false;
+
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                $scope.loading = false;
+        });
+        
+    }
+
+    
+        $scope.GetPlayers();
+
+    });
+    </script>
+</body>
+</html>

@@ -28,7 +28,9 @@ if (true) {
 
 					<h1>Links</h1>
                     <ul style="list-style-type:disc">
-					
+						<li>
+							<a href="comparePlayer2.php" target="_blank">Compare Players</a>
+						</li>   
 						<li>
                             <a href="http://forum.nhl94.com/index.php/topic/17846-plabax-league-official-draft-rom-base/page-3#entry164473" target="_blank">Plabax Draft Forum</a>                        
 						</li>					
