@@ -294,6 +294,24 @@ function GetGamesByUser($userId){
 
 }
 
+function GetSeriesByUser($userId){
+
+	$conn = $GLOBALS['$conn'];	
+	$sql = "SELECT * FROM `series` WHERE (HomeUserID = '$userId' OR AwayUserID = '$userId') AND SeriesWonBy >0";
+		
+	$result = mysqli_query($conn, $sql);
+
+	if ($result) {
+		logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
+		//echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
+	} else {
+		echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
+	}		
+	
+	return $result;
+
+}
+
 function AddFakeUser($username, $email, $password){
 
 	$conn = $GLOBALS['$conn'];	
@@ -327,6 +345,24 @@ function GetHeadToHead($userId1, $userId2){
 		//echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
 	} else {
 		echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
+	}		
+	
+	return $result;
+
+}
+
+function GetHeadToHeadSeries($userId1, $userId2){
+
+	$conn = $GLOBALS['$conn'];	
+	$sql = "SELECT * FROM `series` WHERE (HomeUserID = '$userId1' OR AwayUserID = '$userId1') AND (HomeUserID = '$userId2' OR AwayUserID = '$userId2')  AND SeriesWonBy >0";
+		
+	$result = mysqli_query($conn, $sql);
+
+	if ($result) {
+		logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
+		//echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
+	} else {
+		echo("Error:  GetHeadToHeadSeries: " . $sql . "<br>" . mysqli_error($conn));
 	}		
 	
 	return $result;

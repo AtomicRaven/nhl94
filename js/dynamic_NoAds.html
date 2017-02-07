@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/> 
+    <title>App Dev Test Video Player</title>
+       <!--#include file="ad-head.inc" --> 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<style>
+	#playerContainerDiv{
+		width: <cwi:value type="query" name="width" default="800" />px;
+	}
+</style>
+</head>
+
+<body>
+
+<div id="playerContainerDiv" style="float:left;">
+	
+	<div id="myplayer" itemprop="video" itemscope itemtype="http://schema.org/VideoObject" ></div>
+
+	        <script type="text/javascript">
+
+            (function () {
+
+                var params = {
+                    videoId: '<cwi:value type="query" name="videoId" />',                    
+                    targetId: 'myplayer',  
+					playerId:'<cwi:value type="query" name="playerId" />',
+					referenceId: '<cwi:value type="query" name="referenceId" />',                
+					playlistId: '<cwi:value type="query" name="playlistId" />',
+					pubId: '<cwi:value type="query" name="pubId" />',
+					autoplay: '<cwi:value type="query" name="autoplayit" />',
+					shareUrl: '<cwi:value type="query" name="shareUrl" />',
+					deferLoad: '<cwi:value type="query" name="deferLoad" />',
+					lazyLoad: '<cwi:value type="query" name="lazyLoad" />',
+					useCss: '<cwi:value type="query" name="useCss" />',
+					cssURL: '<cwi:value type="query" name="cssURL" />',
+					showplaylist: '<cwi:value type="query" name="showplaylist" />',
+					preroll: '<cwi:value type="query" name="preroll" />'
+                };
+				
+                url = "http://<cwi:value type="query" name="server" />.canada.com/Video/video.svc/loader/?";
+                   for (var key in params) {
+					if (params[key] != '' && params[key] != 'undefined' && typeof params[key] != undefined ) {
+						url += key + '=' + escape(params[key]) + '&';
+					}
+				}
+                var pv = document.createElement('script'); pv.type = 'text/javascript'; pv.async = true; pv.src = url.slice(0, -1);
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(pv, s);
+
+            })();
+
+        </script>
+                
+	
+</div>	
+
+
+</body>
+</html>

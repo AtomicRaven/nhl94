@@ -29,14 +29,14 @@ if (true) {
 					<h1>Links</h1>
                     <ul style="list-style-type:disc">
 						<li>
-							<a href="comparePlayer2.php" target="_blank">Compare Players</a>
-						</li>   
+							<a href="resultsLeaderSeries.php" target="_blank">Series Leader Board</a>
+						</li>						
 						<li>
-                            <a href="http://forum.nhl94.com/index.php/topic/17846-plabax-league-official-draft-rom-base/page-3#entry164473" target="_blank">Plabax Draft Forum</a>                        
+                            <a href="http://forum.nhl94.com/index.php?/topic/17917-et-tu-brute-league-new-league-sign-up/" target="_blank">Et tu, Brute?</a>                        
 						</li>					
-						<li>
+						<!--<li>
                             <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSLxPyvFZ36UAO9uMSSQpR9AUZZDw6vp60fOFoJCdKVFi5ornyfajlfPUlWmDN8Cs9Mgrvo4DnkLOaQ/pubhtml#" target="_blank">Plabax Draft Sheet</a>                        
-						</li>					
+						</li>					-->
                         <li>
                             <a href="https://docs.google.com/spreadsheets/d/1h7B96W0vYYefgAlfhUTQz2x5LgVfYX-KgBQ0_8sxoEo/edit#gid=0" target="_blank">GDL 16 Draft Sheet</a>
                         </li>

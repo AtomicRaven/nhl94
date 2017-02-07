@@ -52,23 +52,23 @@
         $overall = CalculateOverallRanking($row);
 
         $sortedPlayers[] = array(
-                        "ID" =>$row["PlayerID"],
+                        "ID"=>$row["PlayerID"],
                         "Name"=>$row["First"] . " " . $row["Last"],
                         "Handed"=>$handed,
-                        "Overall"=> $overall,
-                        "Team"=> $row["Team"],                        
+                        "Overall"=>$overall,
+                        "Team"=>$row["Team"],
                         "Pos"=>$row["Pos"],
-                        "Weight"=>$row["Wgt"],                        
-                        "Checking"=> $row["ChK"],                                 
-                        "ShotP"=>$row["ShP"],                                      
-                        "ShotA"=>$row["ShA"],                        
-                        "Speed"=>$row["Spd"],                        
-                        "Agility"=>$row["Agl"],                        
-                        "Stick"=> $row["StH"],                        
-                        "Pass"=> $row["Pas"],                        
-                        "Off"=> $row["OfA"],                       
-                        "Def"=> $row["DfA"]                        
-            );
+                        "Weight"=>$row["Wgt"],
+                        "Checking"=>$row["ChK"],
+                        "ShotP"=>$row["ShP"],
+                        "ShotA"=>$row["ShA"],
+                        "Speed"=>$row["Spd"],
+                        "Agility"=>$row["Agl"],
+                        "Stick"=>$row["StH"],
+                        "Pass"=>$row["Pas"],
+                        "Off"=>$row["OfA"],
+                        "Def"=>$row["DfA"]
+        );
     }
 
     //Sort by Overall

@@ -1,8 +1,9 @@
 <?php
 
-require_once("config.php");
-require_once("utils.php");
-require_once("data.php");
+include_once './_INCLUDES/./config.php';
+include_once './_INCLUDES/./utils.php';
+include_once './_INCLUDES/./data.php';
+
 
 // Create connection
 $GLOBALS['$conn'] = mysqli_connect($servername, $username, $password, $dbname);

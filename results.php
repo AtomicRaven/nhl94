@@ -36,8 +36,16 @@
 
 				$totalGames = $gamesNeededToWin + $row["LoserNumGames"];
 				$lastEntryTime = "Series Completed " . $row["DateCompleted"];
+
+				if($row["SeriesWonBy"] == $row["HomeUserID"]){
+					$loser = GetUserAlias($row["AwayUserID"]);
+				}else{
+					$loser = GetUserAlias($row["HomeUserID"]);
+				}
+				
 				// ***
-				$gamesCompleteText = GetUserAlias($row["SeriesWonBy"]) . " wins in ".$totalGames." " ;
+				$gamesCompleteText = GetUserAlias($row["SeriesWonBy"]) . " wins in ".$totalGames." vs " . $loser;
+				//$gamesCompleteText .= '<br /><span class="note">(' . $homeTeamPlayer . ' v ' . $awayTeamPlayer . ')</span>';
 				$stanleyClass = "stanley";
 
 			}else if($row["TotalGames"] == 0){
@@ -47,8 +55,8 @@
 			}else{
 				$homeTeam = " " . GetTeamABVById($row["HomeTeamID"]);
 				$awayTeam = " " . GetTeamABVById($row["AwayTeamID"]);
-				$gamesCompleteText .= "In progress (" .$row["TotalGames"]. " gms)";	
-				$gamesCompleteText .= '<br /><span class="note">(' . $homeTeamPlayer . ' v ' . $awayTeamPlayer . ')</span>';
+				$gamesCompleteText .= $homeTeamPlayer . ' vs ' . $awayTeamPlayer;
+				$gamesCompleteText .= "&nbsp;In progress (" .$row["TotalGames"]. " gms)";					
 				$lastEntryTime = "Last Updated " . HumanTiming($row["LastEntryDate"]) . " ago";
 			}
 
@@ -59,9 +67,8 @@
 			}
 
 			//Format the Date 
-			$lastEntryDate = new DateTime($row["LastEntryDate"]);
-			$formattedEntryDate = date_format($lastEntryDate, 'M d, Y @ h:i A');
-
+			$formattedEntryDate = GetDateFromSQL($row["LastEntryDate"]);
+			
 			$seriesHtml .= '>';
 			$seriesHtml .= '<td class="c">'.$row['SeriesID'].'</td>';
 			$seriesHtml .= '<td class="c">'.$awayTeam .'<br/>v<br/>'.$homeTeam.'</td>';

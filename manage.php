@@ -36,7 +36,7 @@
 
 				if($row["SeriesWonBy"] != 0){
 
-					$lastEntryTime = "Series Completed " . $row["DateCompleted"];
+					$lastEntryTime = "Series Completed " .  GetDateFromSQL($row["DateCompleted"]);
 					$gamesCompleteText = "Series won by " . GetUserAlias($row["SeriesWonBy"]) . " " . $gamesNeededToWin ." games to " . $row["LoserNumGames"];
 
 				}else if($row["TotalGames"] == 0){

@@ -38,7 +38,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 								<a href="registerAdmin.php">Register Fake User</a>
 							</li>
 							<li>
-								<a href="links.php" target="_blank">Links</a>
+								<a href="links.php">Links</a>
 							</li>                        
 						</ul>
 					</form>

@@ -1,10 +1,11 @@
 <?php
-		
 		session_start();
-		$ADMIN_PAGE = true;
+		$ADMIN_PAGE = false;
 		include_once './_INCLUDES/00_SETUP.php';
-		include_once './_INCLUDES/config.php';			
+		include_once './_INCLUDES/config.php';		
+		
 
+		
 		if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 			
 			$msg = "";

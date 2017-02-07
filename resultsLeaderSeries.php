@@ -5,13 +5,50 @@
 		include_once './_INCLUDES/00_SETUP.php';
 		include_once './_INCLUDES/dbconnect.php';	
 
-        $gamesleaders = GetGamesLeaders();
+        if (isset($_GET["s"]) && !empty($_GET["s"])) {
+
+		    $s =  $_GET["s"];
+            
+		}else{
+
+            $s = "";
+        }
+
+        $numGames = 0;
+        $homeuserid = 0;
+        $awayuserid = 0;
+        $recordStyle = "all";
+
+        if (isset($_GET["homeUser"]) && isset($_GET["awayUser"])) {
+
+		    $homeuserid = $_GET['homeUser'];
+		    $awayuserid = $_GET['awayUser'];           
+
+        }        
+        
+        if($homeuserid==0 || $awayuserid==0){
+            
+            $gamesleaders = GetUsers(false);
+
+        }else if($homeuserid == $awayuserid){
+
+            $gamesleaders = GetUsers(false);
+            $sBy = "You've selected the same coach.";
+
+        }else{
+            //Head to head
+            $recordStyle = "h2h";
+            $gamesleaders = CompareUsers($homeuserid, $awayuserid);
+        }
+       
+        $homeUserSelectBox = CreateSelectBox("homeUser", "Select User", GetUsers(true), "id_user", "username", null, $homeuserid);
+        $awayUserSelectBox = CreateSelectBox("awayUser", "Select User", GetUsers(true), "id_user", "username", null, $awayuserid);
 
 
 ?><!DOCTYPE HTML>
 <html>
 <head>
-<title>Leaderboard</title>
+<title>Series Leaderboard</title>
 <?php include_once './_INCLUDES/01_HEAD.php'; ?>
 </head>
 
@@ -23,47 +60,155 @@
 				
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
-					<h1>Leaderboard</h1>					
+					<h1>Series Leaderboard</h1>					
 					
-					<table class="standard">
-						<tr class="heading">
-							<td class="c">Team</td>
-                            <td class="c">Series Wins</td>
-                            <td class="c">GP</td>							
-							<td class="c">W</td>
-							<td class="c">L</td>
-                            <td class="c">PCT</td>
-                            <td class="c">GF</td>
-                            <td class="c">GA</td>
-                            <td class="c">GFA</td>
-                            <td class="c">GAA</td>
-						</tr>
+                    <div id="msg" style="color:red;"></div>
+
+                    <form name="seriesForm" method="get" action="resultsLeaderSeries.php">                    
+                    <?=$homeUserSelectBox?> &nbsp; <?=$awayUserSelectBox?>
+                    
+                    &nbsp; <button id="submitBtn" type="submit" style="margin-top: 10px;">Go</button>                    
+					
                         <?php 
                             $j = 1;
-                            while($row = mysqli_fetch_array($gamesleaders)){
+                            $sortedLeaders = array();
+
+                            while($row = mysqli_fetch_array($gamesleaders)){  
                                 
-                                $seriesWins = GetSeriesLeadersByUserID($row["HomeUserID"]);
+                                if ($recordStyle == "h2h") {
+
+                                    $games = GetHeadToHeadSeries($homeuserid, $awayuserid);
+
+                                }else{
+
+                                    $games = GetSeriesByUser($row["id_user"]);
+                                    
+                                }
+                                
+                                $GP = 0;
+                                $Wins = 0;   
+                                $Losses = 0;
+                                $gFor = 0;
+                                $gAgainst = 0;
+                                $gTotal = 0;
+
+                                $numGames = mysqli_num_rows($games);
+
+                                if($numGames > 0){
+                                    while($game = mysqli_fetch_array($games)){
+
+                                        if($game["SeriesWonBy"] == $row["id_user"]){
+
+                                            $Wins++;
+                                            //$gFor = $game[""];
+                                        }
+
+                                        if($game["HomeUserID"] == $row["id_user"] ){
+                                            
+                                            $gFor += $game["HomeScore"];
+                                            $gAgainst += $game["AwayScore"];
+                                        }
+
+                                        if($game["AwayUserID"] == $row["id_user"] ){
+                                            
+                                            $gFor += $game["AwayScore"];
+                                            $gAgainst += $game["HomeScore"];
+                                        }
+
+
+                                        $GP++;                                   
+
+                                    }
+                                
+                                    $Losses = $GP - $Wins;
+                                    $gTotal = $gFor + $gAgainst;  
+
+                                    
+                                    $sortedLeaders[] = array(
+                                                        "UserName"=>GetUserAlias($row["id_user"]),
+                                                        "Wins"=>$Wins,
+                                                        "Losses"=>$Losses,
+                                                        "gFor"=>$gFor,
+                                                        "gAgainst"=>$gAgainst,
+                                                        "gTotal"=>$gTotal,
+                                                        "GP"=>$GP,
+                                                        "PCT"=>GetAvg($Wins, $GP),
+                                                        "GFA"=>GetAvg($gFor, $GP),
+                                                        "GAA"=>GetAvg($gAgainst, $GP)
+                                    );
+                                }
+                            }
+
+                            $sBy = "Wins";
+
+                            switch ($s) {
+
+                                case 'gp':                                    
+                                    usort($sortedLeaders, 'SortByGP');
+                                    $sBy = "Series Played";
+                                    break;
+                                case 'w':   
+                                default:                                 
+                                    usort($sortedLeaders, 'SortByWins');
+                                    $sBy = "Series Wins";
+                                    break;
+                                case 'l':                                    
+                                    usort($sortedLeaders, 'SortByLosses');
+                                    $sBy = "Series Losses";
+                                    break;
+                                 case 'pct':                                 					
+                                    usort($sortedLeaders, 'SortByPercent');
+                                    $sBy = "Series Percent";                                                
+                                    break;    
+                               
+                            }
+                             
+                             if( $numGames >0 ){
+
+                                 $sBy = "Sorted By: " . $sBy;                                 
+                                 
+                             }else{
+
+                                $sBy = "These two coaches have never played each other.";
+
+                             }
+
+                        ?>
+                        <div><?=$sBy?></div><br/>
+                        <?php
+                             if( $numGames >0 ){
+                        ?>
+                        
+                        <table class="standard smallify leader">
+						<tr class="heading">
+							<td class="c">Team</td>
+                            <td class="c">SP</td>							
+							<td class="c"><button type="submit" name="s" value="w">SW</button></td>
+							<td class="c"><button type="submit" name="s" value="l">SL</button></td>
+                            <td class="c"><button type="submit" name="s" value="pct">%</button></td>    
+						</tr>
+
+                        <?php
+                             }
+                             foreach($sortedLeaders as $user){  
                         ?>
 
                                 <tr class="<?php print $stripe[$j & 1]; ?>">
-                                    <td class="c"><?=GetUserAlias($row["HomeUserID"])?></td>
-                                    <td class="c"><?=$seriesWins["sWins"]?></td>
-                                    <td class="c"><?=$row["GP"]?></td>
-                                    <td class="c"><?=$row["Wins"]?></td>
-                                    <td class="c"><?=$row["Losses"]?></td>
-                                    <td class="c"><?=GetAvg($row["Wins"], $row["GP"])?></td>
-                                    <td class="c"><?=$row["gFor"]?></td>
-                                    <td class="c"><?=$row["gAgainst"]?></td>
-                                    <td class="c"><?=GetAvg($row["gFor"], $row["gTotal"])?></td>
-                                    <td class="c"><?=GetAvg($row["gAgainst"], $row["gTotal"])?></td>
-                                </tr>							
+                                    <td class="c"><?=$user["UserName"]?></td>
+                                    <td class="c"><?=$user["GP"]?></td>
+                                    <td class="c"><?=$user["Wins"]?></td>
+                                    <td class="c"><?=$user["Losses"]?></td>
+                                    <td class="c"><?=$user["PCT"]?></td>
+                                </tr>					
                             
                         <?php
                             $j++;
-                            }
+                            }  
+                            
                         ?>									
 					</table>	
 					
+                    </form>
 				</div>	
 		
 		</div><!-- end: #page -->	

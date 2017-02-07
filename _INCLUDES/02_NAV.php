@@ -35,9 +35,24 @@
 		<li>
 			<a href="./resultsLeader.php">LEADER</a>
 		</li>
+		<?php		
+
+				if ($LOGGED_IN == 1 && $_SESSION['Admin'] == true) {					
+		?>		
+		<li>
+			<a href="./comparePlayer2.php">ROSTER</a>
+		</li>
+		<?php
+					
+				}
+				else {
+		?>		
 		<li>
 			<a href="./comparePlayer.php">ROSTER</a>
 		</li>
+		<?php
+				}
+		?>	
 		<?php
 
 	//echo "IsLoggedIn:" . $LOGGED_IN;

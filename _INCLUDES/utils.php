@@ -89,6 +89,16 @@ function CreateSelectBox($selectName, $selectTitle, $data, $id, $value, $onChang
 
 }	
 
+function GetDateFromSQL($time){
+
+    $lastEntryDate = new DateTime($time);
+    $lastEntryDate->add(new DateInterval('PT3H'));
+    $formattedEntryDate = date_format($lastEntryDate, 'M d, Y @ h:i A');
+
+    return $formattedEntryDate;
+
+}
+
 function HumanTiming ($time)
 {
 	
