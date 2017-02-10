@@ -2,3 +2,5 @@
 [08-Aug-2016 15:00:35 America/Fort_Wayne] PHP Fatal error:  Call to undefined function HumanTiming() in /home/robclarkson/public_html/manage.php on line 27
 [16-Aug-2016 18:43:56 America/Toronto] PHP Fatal error:  Cannot access empty property in /home/robclarkson/public_html/reg/include/fg_membersite.php on line 642
 [24-Nov-2016 12:17:10 America/Toronto] PHP Fatal error:  Call to undefined function GetHeadToHead() in /home/robclarkson/public_html/resultsLeader.php on line 80
+[30-Jan-2017 17:24:21 UTC] PHP Fatal error:  Call to undefined function Now() in /home/robclarkson/public_html/timezone.php on line 3
+[01-Feb-2017 14:00:31 America/Toronto] PHP Fatal error:  Call to undefined function GetSeriesByUser() in /home/robclarkson/public_html/resultsLeaderSeries.php on line 84

@@ -189,13 +189,13 @@
 			submit = false;
 		} */
 
-		if(homeUserSelect.options[homeUserSelect.selectedIndex].value == 0){
+		if(homeUserSelect.options[homeUserSelect.selectedIndex].value == -1){
 			
 			msgHtml += "Home User, ";
 			submit = false;
 		}
 
-		if(awayUserSelect.options[awayUserSelect.selectedIndex].value == 0){
+		if(awayUserSelect.options[awayUserSelect.selectedIndex].value == -1){
 			
 			msgHtml += "Away User, ";
 			submit = false;
@@ -225,18 +225,16 @@
 
 	}
 
-	function DeleteGame(gameId, seriesId){
+	function DeleteGame(gameId, seriesId, page, tId){
 
 
 		var deleteGame = confirm("Are you sure you want to delete game #" + gameId + "??");
 
 		if (deleteGame == true) {
-			location.href="processGameDelete.php?gameId=" + gameId + "&seriesId=" + seriesId;
+			location.href="processGameDelete.php?gameId=" + gameId + "&seriesId=" + seriesId + "&redirect=" + page + "&tId=" + tId;
 		} else {
 			//txt = "You pressed Cancel!";
-		}
-
-		
+		}		
 	}
 
 	//resultsSeries Page
@@ -284,6 +282,23 @@
 			$('button.details').html('+ Details')
 			$('.detail_row').css('display','none')
 		}
+	}
+
+	function UploadFile(scheduleNum, chk){
+
+		var fileInput = "Choose file: <input type='file' name='uploadfile' />";
+
+		if(chk)
+			fileInput += "<input type='button' onclick='SubmitForm()' value='Upload' />";			
+		else
+			fileInput += "<input type='submit' name='submit' value='Upload' />";			
+
+		var fileInputBox = fileInput + "<input type='hidden' name='scheduleid' value='" + scheduleNum + "' />";
+		var fileInputDiv = $("#fileInput" + scheduleNum);
+
+		fileInputDiv.html(fileInputBox);
+		fileInputDiv.show();					
+
 	}
 
 /// End of Create.js functions

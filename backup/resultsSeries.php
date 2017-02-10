@@ -8,9 +8,11 @@
 		$seriesid = $_GET["seriesId"];
 		$series = GetSeriesById($seriesid);
 		$gamesplayed = GetGamesBySeriesId($seriesid);
+		$leagueid= $series["LeagueID"];		
+		$leagueName = GetLeagueTableABV($leagueid);
 
-		$sPlayerStats = GetPlayerStatsBySeriesId($seriesid, 'P');
-		$sGoalieStats = GetPlayerStatsBySeriesId($seriesid, 'G');
+		$sPlayerStats = GetPlayerStatsBySeriesId($seriesid, 'P', $leagueid);
+		$sGoalieStats = GetPlayerStatsBySeriesId($seriesid, 'G', $leagueid);
 
 		$homeUserAlias = GetUserAlias($series["HomeUserID"]);
 		$awayUserAlias = GetUserAlias($series["AwayUserID"]);
@@ -267,11 +269,9 @@
 				
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
-					<h1>Results</h1>	
+	
 					<h2>Results for a Specific Series</h2>
-
-
-					
+					<h2>Bin: <?=$leagueName?></h2>					
 					
 					<table class="standard">
 						<tr class="heading">
@@ -325,9 +325,9 @@
 							<td class="<?=$homeClass?> m"><b class="billboard"><?=$row["HomeScore"]?></b></td>
 							<td class="<?=$awayClass?>"><?= GetTeamABVById($row["AwayTeamID"]) ?><?=$AOT?><div class='logo small <?= GetTeamABVById($row["AwayTeamID"]) ?>'></div></td>
 							<td class="<?=$awayClass?> m"><b class="billboard"><?=$row["AwayScore"]?></b></td>
-							<td class="c m"><button type="button" class="square details" onclick="showGameDetails(this, 'detail_<?php print $i; ?>', <?=$gameid?>, <?=$i?>)">+ Details</button></td>
+							<td class="c m"><button type="button" class="square details" onclick="showGameDetails(this, 'detail_<?php print $i; ?>', <?=$gameid?>, <?=$i?>, <?=$leagueid?>)">+ Details</button></td>
 						</tr>	
-						<tr class="tight detail_row" id="detail_<?php print $i; ?>" style="display: none" data-game-id="<?=$gameid?>">
+						<tr class="tight detail_row" id="detail_<?php print $i; ?>" style="display: none" data-game-id="<?=$gameid?>" data-league-id="<?=$leagueid?>">
 							<td colspan="6" id="fetch_detail_<?php print $i; ?>">
 
 							</td>
@@ -427,7 +427,7 @@
 					$j = 1;
 					while(($row = mysqli_fetch_array($sPlayerStats)))
 					{						
-						$player = GetPlayerFromID($row["PlayerID"]);
+						$player = GetPlayerFromID($row["PlayerID"], $leagueid);						
 						$pen = $row["tPIM"];
 						
 						$timePerGame = round($row["tTOI"]/ $row["GP"]);
@@ -480,7 +480,7 @@
 					$j = 1;
 					while($row = mysqli_fetch_array($sGoalieStats))
 					{
-						$player = GetPlayerFromID($row["PlayerID"]);					
+						$player = GetPlayerFromID($row["PlayerID"], $leagueid);															
 
 						if($row["Pos"] == "G"){
 
@@ -499,8 +499,9 @@
 									<td class=""> <?=$savePct?><!-- 17 goals on 72 shots) --></td>
 								</tr>	
 		<?php 
+						$j++;
 						}
-					$j++;
+					
 					}
 		?>						
 						<!-- end of loop -->	

@@ -3,19 +3,29 @@
 
 require_once("dbconnect.php");
 
-function ErrorCheck($seriesid, $scheduleid){	
+function ErrorCheck($seriesid, $scheduleid, $tourneyid){	
 	
-	$filePath = $GLOBALS['$saveFilePath'] . $seriesid;
+	$filePath = $GLOBALS['$saveFilePath'];
 
-	if (!file_exists($filePath)) {
+	if($tourneyid >0){
+		$tourney = GetTourneyById($tourneyid);		
+		$leaguenm = $tourney["ABV"];
+		$filePath = $filePath . $leaguenm;
+	}else{
+		$filePath .= $seriesid;
+	}	
+
+	if (!file_exists($filePath)) {		
+
 		mkdir($filePath, 0777, true);
 	}
 
 	$filename = $_FILES['uploadfile']['name']; // Get the name of the file (including file extension).
 	//echo "fileName:" . $filename;
 	$ext = substr($filename, strpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
+
 	$upload_path = $filePath . "/" . "Series-" . $seriesid. '-game-'. $scheduleid . '.sv';
-  
+	//echo "uploadPath:" . $upload_path;
 	//Check to make sure game being uploaded is correct
 	$row = GetScheduleByID($scheduleid);
 

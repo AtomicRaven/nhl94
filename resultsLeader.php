@@ -18,13 +18,19 @@
         $homeuserid = 0;
         $awayuserid = 0;
         $recordStyle = "all";
+        $leagueType = -1;
 
         if (isset($_GET["homeUser"]) && isset($_GET["awayUser"])) {
 
 		    $homeuserid = $_GET['homeUser'];
 		    $awayuserid = $_GET['awayUser'];           
 
-        }        
+        }  
+
+        if (isset($_GET["leagueType"])){
+
+            $leagueType = $_GET["leagueType"];
+        }      
         
         if($homeuserid==0 || $awayuserid==0){
             
@@ -43,12 +49,13 @@
        
         $homeUserSelectBox = CreateSelectBox("homeUser", "Select User", GetUsers(true), "id_user", "username", null, $homeuserid);
         $awayUserSelectBox = CreateSelectBox("awayUser", "Select User", GetUsers(true), "id_user", "username", null, $awayuserid);
+        $leagueTypeSelectBox = CreateSelectBox("leagueType", "Select League", GetLeagueTypes(), "LeagueID", "Name", null, $leagueType);
 
 
 ?><!DOCTYPE HTML>
 <html>
 <head>
-<title>Leaderboard</title>
+<title>Leaderboard Games</title>
 <?php include_once './_INCLUDES/01_HEAD.php'; ?>
 </head>
 
@@ -60,12 +67,13 @@
 				
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
-					<h1>Leaderboard</h1>					
+					<h1>Leaderboard Games</h1>	
+                    <span class="note"><a href="resultsLeaderSeries.php">Leaderboard Series</a></span>				
 					
                     <div id="msg" style="color:red;"></div>
 
                     <form name="seriesForm" method="get" action="resultsLeader.php">                    
-                    <?=$homeUserSelectBox?> &nbsp; <?=$awayUserSelectBox?>
+                    <?=$homeUserSelectBox?> &nbsp; <?=$awayUserSelectBox?> &nbsp; <?=$leagueTypeSelectBox?>
                     
                     &nbsp; <button id="submitBtn" type="submit" style="margin-top: 10px;">Go</button>                    
 					
@@ -77,11 +85,11 @@
                                 
                                 if ($recordStyle == "h2h") {
 
-                                    $games = GetHeadToHead($homeuserid, $awayuserid);
+                                    $games = GetHeadToHead($homeuserid, $awayuserid, $leagueType);
 
                                 }else{
 
-                                    $games = GetGamesByUser($row["id_user"]);
+                                    $games = GetGamesByUser($row["id_user"], $leagueType);
                                     
                                 }
                                 

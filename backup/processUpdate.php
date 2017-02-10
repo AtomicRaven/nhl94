@@ -4,7 +4,7 @@
 require_once("./_INCLUDES/dbconnect.php");
 require_once("./_INCLUDES/errorchk.php");
 
-	function AddGame($seriesid, $scheduleid, $homeuserid, $awayuserid){	// add game to database
+	function AddGame($seriesid, $scheduleid, $homeuserid, $awayuserid, $leagueid){	// add game to database
 	
 		$conn = $GLOBALS['$conn'];
 		$nextGameId = GetNextGameId();
@@ -290,7 +290,7 @@ require_once("./_INCLUDES/errorchk.php");
 
 		 $sql = "INSERT INTO gamestats (LeagueID, SeriesID, Crowd
 				$goalf $shotf $pmf $bcf $ppshf $baf $otf $psf $foakf $pasf)
-				VALUES (1, '$seriesid', '$PeakMeter' $goalv $shotv $pmv $bcv $ppshv $bav $otv $psv $foakv $pasv)";
+				VALUES ($leagueid, '$seriesid', '$PeakMeter' $goalv $shotv $pmv $bcv $ppshv $bav $otv $psv $foakv $pasv)";
 		
 		$sqlr = mysqli_query($conn, $sql);
 		
@@ -316,7 +316,7 @@ require_once("./_INCLUDES/errorchk.php");
 		}
 	
 
-		$schupq = "UPDATE schedule SET HomeScore= '$HomeScore', AwayScore= '$AwayScore', HomeUserID='$homeuserid', AwayUserID='$awayuserid', HomeTeamID='$homeid', AwayTeamID='$awayid', OT= '$OT', ConfirmTime= NOW(), GameID='$gameid', WinnerUserID='$WinnerUserID'
+		$schupq = "UPDATE schedule SET LeagueID='$leagueid', HomeScore= '$HomeScore', AwayScore= '$AwayScore', HomeUserID='$homeuserid', AwayUserID='$awayuserid', HomeTeamID='$homeid', AwayTeamID='$awayid', OT= '$OT', ConfirmTime= NOW(), GameID='$gameid', WinnerUserID='$WinnerUserID'
 			WHERE ID= '$scheduleid' LIMIT 1";
 
 		//$schupq = "INSERT INTO Schedule (HomeScore, AwayScore, OT, ConfirmTime, GameID, WinnerTeamID)
@@ -343,9 +343,13 @@ require_once("./_INCLUDES/errorchk.php");
 	
 	$i = 1;
 	
-	// Get Home Team 
+	// Get Home Team
 
-	$plq = "SELECT PlayerID, TeamID, Last, Pos FROM roster WHERE TeamID='$homeid' ORDER BY PlayerID ASC";
+	//Get League Table
+
+	$lgTable = GetLeagueTableName($leagueid); 
+	
+	$plq = "SELECT PlayerID, TeamID, Last, Pos FROM $lgTable WHERE TeamID='$homeid' ORDER BY PlayerID ASC";	
 	
 	$plr = @mysqli_query($conn, $plq) or die("Could not retrieve Home Player List.  Please contact administrator.");
 	//echo $plq;
@@ -369,8 +373,6 @@ require_once("./_INCLUDES/errorchk.php");
 		fseek ($fr,60461 + $i);
 		$SOG = hexdec(bin2hex(fread($fr, 1)));
 
-		
-		
 		fseek ($fr,60487 + $i);		
 		$PIM = hexdec(bin2hex(fread($fr, 1)));
 
@@ -411,9 +413,9 @@ require_once("./_INCLUDES/errorchk.php");
 		logMsg("Goals:" . $Goals . "<br/>");
 			}
 			
-			$psq = "INSERT INTO playerstats (GameID, TeamID, PlayerID, Pos, G, A, SOG, PIM, Chks, TOI, ChksA, PlusMinus)
+			$psq = "INSERT INTO playerstats (GameID, TeamID, PlayerID, Pos, G, A, SOG, PIM, Chks, TOI, ChksA, PlusMinus, LeagueID)
 						VALUES ('$gameid', '$homeid', '$pid', '$pos', '$Goals', '$Assists', '$SOG', '$PIM',
-						'$Chksfor', '$TOIString', '$ChksA', '$PlusMinus')";
+						'$Chksfor', '$TOIString', '$ChksA', '$PlusMinus', '$leagueid')";
 						
 
 			$psr = mysqli_query($conn, $psq);			
@@ -434,7 +436,7 @@ require_once("./_INCLUDES/errorchk.php");
 	
 	$i = 1;
 	
-	$plq = "SELECT PlayerID, TeamID,Last, Pos FROM roster WHERE TeamID='$awayid' ORDER BY PlayerID ASC";
+	$plq = "SELECT PlayerID, TeamID,Last, Pos FROM $lgTable WHERE TeamID='$awayid' ORDER BY PlayerID ASC";
 	$plr = @mysqli_query($conn, $plq) or die("Could not retrieve Away Player List.  Please contact administrator.");
 	
 	logMsg("Away Player Stats<br/>");
@@ -500,8 +502,8 @@ require_once("./_INCLUDES/errorchk.php");
 
 			logMsg("ChksA:" . $ChksA . "<br/>");
 			
-			$psq = "INSERT INTO playerstats (GameID, TeamID, PlayerID, Pos, G, A, SOG, PIM, Chks, TOI, ChksA, PlusMinus)
-						VALUES ('$gameid', '$awayid', '$pid', '$pos', '$Goals', '$Assists', '$SOG', '$PIM', '$Chksfor', '$TOIString', '$ChksA', '$PlusMinus')";
+			$psq = "INSERT INTO playerstats (GameID, TeamID, PlayerID, Pos, G, A, SOG, PIM, Chks, TOI, ChksA, PlusMinus, LeagueID)
+						VALUES ('$gameid', '$awayid', '$pid', '$pos', '$Goals', '$Assists', '$SOG', '$PIM', '$Chksfor', '$TOIString', '$ChksA', '$PlusMinus', '$leagueid')";
 			
 			$psr = mysqli_query($conn, $psq);			
 			
@@ -603,20 +605,20 @@ require_once("./_INCLUDES/errorchk.php");
 		// Player that scored
 			fseek ($fr,$tmpExtract + 4);
  			$GoalPlayer = (hexdec(bin2hex(fread($fr, 1))));			
-			$goalid = getPlayerID($team, $GoalPlayer);
+			$goalid = getPlayerID($team, $GoalPlayer, $leagueid);
 			
 			// Assisters on Goal
 			fseek ($fr,$tmpExtract + 5);
  			$GoalAst1 = (hexdec(bin2hex(fread($fr, 1))));
 			if($GoalAst1 != 255)  // Assist occurred
-				$a1id = getPlayerID($team, $GoalAst1);
+				$a1id = getPlayerID($team, $GoalAst1, $leagueid);
 			else
 				$a1id = 0;
 			
 			fseek ($fr,$tmpExtract + 6);
  			$GoalAst2 = (hexdec(bin2hex(fread($fr, 1))));
 			if($GoalAst2 != 255)  // Assist occurred
-				$a2id = getPlayerID($team, $GoalAst2);
+				$a2id = getPlayerID($team, $GoalAst2, $leagueid);
 			else
 				$a2id = 0;
 
@@ -695,7 +697,7 @@ require_once("./_INCLUDES/errorchk.php");
 			
 			fseek ($fr,$tmpExtract2 + 4);
 	 		$PenPlayer = (hexdec(bin2hex(fread($fr, 1))));
-			$penid = getPlayerID($team, $PenPlayer);
+			$penid = getPlayerID($team, $PenPlayer, $leagueid);
 						
 			
 			// Add to database
@@ -777,8 +779,8 @@ require_once("./_INCLUDES/errorchk.php");
 				break;
 			}
 			
-			if($pm == 1){  // Plus/Minus will be applied
-				
+			//if($pm == 1){  // Plus/Minus will be applied
+			if(false){
 				$hmonice = $tmpExtract + 3;
 				$awonice = $tmpExtract + 9;
 				
@@ -834,6 +836,7 @@ require_once("./_INCLUDES/errorchk.php");
 	// retrieve variables	
 
 	$seriesid = $_POST['seriesid'];
+	$leagueid = $_POST['leagueid'];
 	$filename = $_FILES['uploadfile']['name'];
 	$scheduleid = $_POST['scheduleid'];
 
@@ -846,11 +849,12 @@ require_once("./_INCLUDES/errorchk.php");
 
 	logMsg("ScheduleID:" . $scheduleid);
 	logMsg("HomeUser:" . $homeuserid);
+	logMsg("AwayUser:" . $awayuserid);
 	
 	$chk = ErrorCheck($seriesid, $scheduleid);
 	
 	if(!$chk)
-		$chk = AddGame($seriesid, $scheduleid, $homeuserid, $awayuserid);
+		$chk = AddGame($seriesid, $scheduleid, $homeuserid, $awayuserid, $leagueid);
 	else
 		$error = $chk;	
 

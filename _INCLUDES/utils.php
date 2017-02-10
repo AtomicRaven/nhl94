@@ -2,7 +2,7 @@
 
 function logMsg($msg){
 
-	//echo $msg . "</br>";
+	echo $msg . "</br>";
 
 }
 
@@ -92,7 +92,7 @@ function CreateSelectBox($selectName, $selectTitle, $data, $id, $value, $onChang
 function GetDateFromSQL($time){
 
     $lastEntryDate = new DateTime($time);
-    $lastEntryDate->add(new DateInterval('PT3H'));
+    $lastEntryDate->add(new DateInterval('PT2H'));
     $formattedEntryDate = date_format($lastEntryDate, 'M d, Y @ h:i A');
 
     return $formattedEntryDate;
@@ -179,7 +179,11 @@ function GetPercent($val1, $val2){
 
 function GetAvg($val1, $val2){
 
-    return ltrim(number_format((float)$val1 / $val2, 3, '.', ''), "0");
+    if($val1 != 0 && $val2 !=0)
+        return ltrim(number_format((float)$val1 / $val2, 3, '.', ''), "0");
+    else
+        return ".000";
+
 }
 
 function FormatZoneTime($time){
@@ -270,6 +274,41 @@ function CalculateOverallRanking($p){
 
     return $overall_player;
 
+}
+
+function GetUploadMsg($state){
+
+    $msg = "";
+    
+    switch ($state){
+        
+        case 0:
+            $msg = "Game has been uploaded and submitted.";
+        break;
+        case 1:
+            $msg = "Teams in the save state file do not match the game on the schedule.  Please try a different file.";
+        break;
+        case 2:
+            $msg = "Password is incorrect.  Please try again.";
+        break;
+        case 3:
+            $msg = "File is not valid.  Please choose a file that ends in .gs (Genesis)"; // or .zs (SNES).";
+        break; 
+        case 4:
+            $msg = "Error submitting game.  Please contact the administrator.";
+        break;			
+        case 5:
+            $msg = "Game could not be uploaded.  Please contact the administrator.";
+        break;
+        case 6:
+            $msg = "Game has been Deleted.";
+        break;
+        default:
+            $msg = "";
+        break;
+    }
+
+    return $msg;
 }
 
 ?>

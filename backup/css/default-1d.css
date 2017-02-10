@@ -488,10 +488,22 @@ table.leader button{
 
 td.m { vertical-align: middle; }
 
+.link { cursor: pointer; }
 
 
 
+table.lg_standings ol  {
+	position: relative;
+	top: -5px;
+}
 
+table.lg_standings ol li {
+	padding: 2px;
+}
+
+tr.show_game_histories {
+	display: none;
+}
 
 
 

@@ -24,7 +24,7 @@
 
 
 			// User wants to update an existing series so gab all the series games and show in drop down box
-			$allseries = GetSeriesAndGames(true);
+			$allseries = GetSeriesAndGames(true,0);
 			$numSeries = mysqli_num_rows($allseries);
 			$seriesHtml = '<table class="hidden lined">';
 

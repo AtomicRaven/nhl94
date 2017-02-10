@@ -1,6 +1,95 @@
 <?php
 
 
+//Duplaicate Ro
+function DuplicateRosterTable($newTable){
+
+	$conn = $GLOBALS['$conn'];
+
+	//Duplicate Table structure
+	$sql = "CREATE TABLE $newTable LIKE roster";
+	$tmr = mysqli_query($conn, $sql);
+
+	if ($tmr) {
+		logMsg("Table Roster Duplicated into: " .$newTable);
+	} else {
+		echo("Error: DuplicateRosterTable: Duplicate " . $sql . "<br>" . mysqli_error($conn));
+	}
+}
+
+function TransferPlayerRoster($newTable, $newCsv){
+	
+	$conn = $GLOBALS['$conn'];
+	$File = $newCsv;
+
+	$arrResult = array();
+	$handle = fopen($File, "r");
+
+	if(empty($handle) === false) {
+		while(($data = fgetcsv($handle, 1000, ",")) !== FALSE){
+			$arrResult[] = $data;
+		}
+		fclose($handle);
+	}
+
+	$i = 0;
+
+	//don't want the first two rows they are headers 
+	array_shift($arrResult);
+	array_shift($arrResult);
+
+	foreach($arrResult as $value) {		
+
+		$playerid = $value[0];
+		$firstname = $value[1];
+		$lastname = $value[2];
+		$teamABV = $value[3];
+
+		if($firstname != "" && $teamABV !="ASB"){
+
+			$i++;		
+
+			//ROM exports different team names for QUE and OTT
+			if($teamABV == "QB")
+				$teamABV = "QUE";
+
+			if($teamABV == "OTT")
+				$teamABV = "OTW";
+
+			$teamid = GetTeamIdByABV($teamABV);						
+			
+			$sql = "SELECT * FROM roster WHERE (First = '$firstname' AND Last = '$lastname') LIMIT 1";
+			$tmr = mysqli_query($conn, $sql);
+			$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+			$pos = $row["Pos"];			
+
+			 $sql = "INSERT INTO $newTable (ID, PlayerID, First, Last, Team, TeamID, Pos) 
+			 VALUES ('$i', '$playerid', '$firstname', '$lastname', '$teamABV', '$teamid', '$pos')";
+
+			$sqlr = mysqli_query($conn, $sql);
+
+			if ($sqlr) {
+				echo($i . " Player: " . $firstname . " " . $lastname . " moved to team name: " . $teamABV . " teamId: " .$teamid . "<br/>");
+			} else {
+				echo("Error: UpdateRoster2 : " . $sqlr . mysqli_error($conn));
+			}	
+
+		}
+	}
+
+	AddLeague($newTable);
+}
+
+function DropNewRosterTable($newTable){
+
+	$conn = $GLOBALS['$conn'];
+
+	//Duplicate Table structure
+	$sql = "DROP TABLE $newTable";
+	$tmr = mysqli_query($conn, $sql);
+	
+}
+
 // Games Functions
 function GetNextGameId(){	
 
@@ -139,7 +228,7 @@ function GetPlayerStatsBySeriesId($seriesid, $pos){
 		sum(TIME_TO_SEC(p.TOI)) as 'tTOI',		
 		COUNT(p.GameID) as 'GP'
 		FROM schedule s INNER JOIN playerstats p 
-		ON s.GameID = p.GameID WHERE s.SeriesID = '$seriesid' 
+		ON s.GameID = p.GameID WHERE (s.SeriesID = '$seriesid') 
 		GROUP BY p.PlayerID ";
 
 		if($pos == 'G')
@@ -187,10 +276,14 @@ function GetGamesLeaders(){
 
 
 
-function GetGamesByUser($userId){
+function GetGamesByUser($userId, $lg){
 
 	$conn = $GLOBALS['$conn'];	
 	$sql = "SELECT * FROM `schedule` WHERE (HomeUserID = '$userId' OR AwayUserID = '$userId') AND WinnerUserID >0";
+
+	if($lg != -1){
+		$sql .= " AND LeagueID='$lg'";
+	}
 		
 	$result = mysqli_query($conn, $sql);
 
@@ -205,11 +298,15 @@ function GetGamesByUser($userId){
 
 }
 
-function GetHeadToHead($userId1, $userId2){
+function GetSeriesByUser($userId, $lg){
 
 	$conn = $GLOBALS['$conn'];	
-	$sql = "SELECT * FROM `schedule` WHERE (HomeUserID = '$userId1' OR AwayUserID = '$userId1') AND (HomeUserID = '$userId2' OR AwayUserID = '$userId2')  AND WinnerUserID >0";
-		
+	$sql = "SELECT * FROM `series` WHERE (HomeUserID = '$userId' OR AwayUserID = '$userId') AND SeriesWonBy >0";
+	
+	if($lg != -1){
+		$sql .= " AND LeagueID='$lg'";
+	}
+
 	$result = mysqli_query($conn, $sql);
 
 	if ($result) {
@@ -217,6 +314,71 @@ function GetHeadToHead($userId1, $userId2){
 		//echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
 	} else {
 		echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
+	}		
+	
+	return $result;
+
+}
+
+function AddFakeUser($username, $email, $password){
+
+	$conn = $GLOBALS['$conn'];	
+	$password = md5($password);
+
+	$sql = "INSERT INTO users (name, email, username, password, confirmcode, role) 
+			VALUES ('FakeName', '$email', '$username', '$password', 'y', '')";
+		
+	$sqlr = mysqli_query($conn, $sql);	
+
+	if ($sqlr) {		
+		logMsg("Fake User Added: " . $username);
+		return 1;
+	} else {
+		echo("Error: AddFakeUser: " . $sql . "<br>" . mysqli_error($conn));
+		return 0;
+	}
+
+
+}
+
+function GetHeadToHead($userId1, $userId2, $lg){
+
+	$conn = $GLOBALS['$conn'];	
+	$sql = "SELECT * FROM `schedule` WHERE (HomeUserID = '$userId1' OR AwayUserID = '$userId1') AND (HomeUserID = '$userId2' OR AwayUserID = '$userId2')  AND WinnerUserID >0";
+	
+	if($lg != -1){
+		$sql .= " AND LeagueID='$lg'";
+	}
+
+	$result = mysqli_query($conn, $sql);
+
+	if ($result) {
+		logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
+		//echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
+	} else {
+		echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
+	}		
+	
+	return $result;
+
+}
+
+function GetHeadToHeadSeries($userId1, $userId2, $lg){
+
+	$conn = $GLOBALS['$conn'];	
+	$sql = "SELECT * FROM `series` WHERE (HomeUserID = '$userId1' OR AwayUserID = '$userId1') AND (HomeUserID = '$userId2' OR AwayUserID = '$userId2')  AND SeriesWonBy >0";
+	
+	if($lg != -1){
+		$sql .= " AND LeagueID='$lg'";
+	}
+
+	$result = mysqli_query($conn, $sql);
+
+	if ($result) {
+		logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
+		//echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
+	} else {
+		echo("Error:  GetHeadToHeadSeries: " . $sql . "<br>" . mysqli_error($conn));
 	}		
 	
 	return $result;
@@ -292,6 +454,39 @@ function GetSeriesTypes(){
 
 }
 
+function GetLeagueTypes(){
+
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "SELECT * FROM bin WHERE Visible = true ORDER BY LeagueID ASC";
+	$result = mysqli_query($conn, $sql);
+
+	if($result === FALSE) { 
+		die(mysql_error()); // TODO: better error handling
+	}	
+
+	return $result;
+
+}
+
+function AddLeague($tablename){
+
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "INSERT INTO bin (Name, TableName, Visible) 
+			VALUES ('$tablename', '$tablename', 1)";
+		
+	$sqlr = mysqli_query($conn, $sql);	
+
+
+	if ($sqlr) {		
+		logMsg("New League Table created: " . $tablename);
+	} else {
+		echo("Error: AddLeague: " . $sql . "<br>" . mysqli_error($conn));
+	}
+
+}
+
 function MarkSeriesAsWon($seriesid, $winneruserid, $losernumgames){
 
 	$conn = $GLOBALS['$conn'];
@@ -338,25 +533,18 @@ function ResetScheduleByGameID($gameid){
 	WHERE GameID= '$gameid' LIMIT 1";
 	
 	$tmr = mysqli_query($conn, $sql);
-	//$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
-	
-	//if ($row) {
-	//	logMsg("Updated Schedule");		
-	//} else {
-		//echo("Error: ResetScheduleByGameID: " . $sql . "<br>" . mysqli_error($conn));
-	//}
+
 }
 
 //Series Functions
 //function AddNewSeries($seriesname, $hometeamid, $awayteamid, $homeuserid, $awayuserid, $seriestype){
 
-function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGames){
-	
-	$conn = $GLOBALS['$conn'];
-		
+function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGames, $leagueid){
 
-	$sql = "INSERT INTO series (Name, HomeUserId, AwayUserId, DateCreated, Active) 
-			VALUES ('$seriesname', '$homeuserid', '$awayuserid', NOW(), 1)";
+	$conn = $GLOBALS['$conn'];		
+
+	$sql = "INSERT INTO series (Name, HomeUserId, AwayUserId, DateCreated, Active, LeagueID) 
+			VALUES ('$seriesname', '$homeuserid', '$awayuserid', NOW(), 1, $leagueid)";
 		
 	$sqlr = mysqli_query($conn, $sql);
 	
@@ -412,8 +600,8 @@ function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGa
 			//$sql = "INSERT INTO schedule (HomeTeamId, AwayTeamId, HomeUserId, AwayUserID, SeriesID) 
 			//		VALUES ('$team1', '$team2', '$user1', '$user2', '$seriesid')";
 			
-			$sql = "INSERT INTO schedule (HomeUserId, AwayUserID, SeriesID) 
-					VALUES ('$user1', '$user2', '$seriesid')";
+			$sql = "INSERT INTO schedule (HomeUserId, AwayUserID, SeriesID, LeagueID) 
+					VALUES ('$user1', '$user2', '$seriesid', '$leagueid')";
 
 			$sqlr = mysqli_query($conn, $sql);
 
@@ -428,6 +616,28 @@ function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGa
 	} 
 	
 	return $seriesid;
+
+}
+
+function GetLeagueTableName($leagueid){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT TableName FROM bin WHERE LeagueID='$leagueid' Limit 1";
+	$result = mysqli_query($conn, $sql);
+
+	$row = mysqli_fetch_array($result, MYSQL_ASSOC);	
+	return $row["TableName"];
+
+}
+
+function GetLeagueTableABV($leagueid){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT Name FROM bin WHERE LeagueID='$leagueid' Limit 1";
+	$result = mysqli_query($conn, $sql);
+
+	$row = mysqli_fetch_array($result, MYSQL_ASSOC);	
+	return str_replace(".bin","",$row["Name"]);
 
 }
 
@@ -493,15 +703,18 @@ function UpdateRoster(){
 		
 }
 
-function GetPlayerID($teamid, $offset){
+function GetPlayerID($teamid, $offset, $leagueid){
 
 	$conn = $GLOBALS['$conn'];
-	// Retrieve PlayerID	
-	$sql = "SELECT PlayerID, Last FROM roster WHERE TeamID = '$teamid'";	
+	// Retrieve PlayerID
+
+	$tblName = GetLeagueTableName($leagueid);
+
+	$sql = "SELECT PlayerID, Last FROM $tblName WHERE TeamID = '$teamid'";	
 	$tmr = mysqli_query($conn, $sql);
 	$index = 0;
 
-	//logMsg("Offset:" . $offset);
+	logMsg("Offset:" . $offset);
 	while($row = mysqli_fetch_array($tmr, MYSQL_ASSOC)) {
 
 		if($index == $offset){
@@ -514,10 +727,13 @@ function GetPlayerID($teamid, $offset){
 	
 }  // end of function
 
-function GetPlayerFromID($playerid){
+function GetPlayerFromID($playerid, $leagueid){
 
 	$conn = $GLOBALS['$conn'];
-	$sql = "SELECT * FROM roster WHERE PlayerID = '$playerid' LIMIT 1";
+	
+	$tblName = GetLeagueTableName($leagueid);
+
+	$sql = "SELECT * FROM $tblName WHERE PlayerID = '$playerid' LIMIT 1";
 	
 	$tmr = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
@@ -607,6 +823,25 @@ function GetTeamABVById($teamid){
 
 }  // end of function
 
+function GetTeamIdByABV($abv){
+	
+	$conn = $GLOBALS['$conn'];
+	//$teamid = $teamid + 1;	
+	
+	$sql = "SELECT * FROM nhlteam WHERE ABV='$abv' LIMIT 1";	
+	$tmr = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	
+	if ($row) {
+		//logMsg("Retrieved GetTeamABVById:" .$row["TeamID"]);
+	} else {
+		echo("Error: GetTeamABVById: " . $sql . "<br>" . mysqli_error($conn));
+	}
+	
+	return $row["TeamID"];
+
+}  // end of function
+
 function GetUserName($userid){
 	
 	$conn = $GLOBALS['$conn'];
@@ -631,11 +866,15 @@ function GetUserAlias($userid){
 	
 }  // end of function
 
-function GetUsers(){
+function GetUsers($orderAsc){
 
 	$conn = $GLOBALS['$conn'];
 
-	$sql = "SELECT * FROM users WHERE confirmcode='y' ORDER BY username DESC";
+	if($orderAsc)
+		$sql = "SELECT * FROM users WHERE confirmcode='y' ORDER BY username ASC";
+	else
+		$sql = "SELECT * FROM users WHERE confirmcode='y' ORDER BY username DESC";
+	
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) { 
@@ -643,6 +882,68 @@ function GetUsers(){
 	}	
 
 	return $result;
+}
+
+function GetRosters($pFilter){
+
+	$conn = $GLOBALS['$conn'];
+	
+	$sql = "SELECT * FROM roster WHERE Team != 'ASW' AND Team != 'ASE' AND Team!='ANH' AND Team !='FLA'";
+	
+	if($pFilter['forwards'] != "checked")
+		$sql .= " AND Pos!='F'";
+	
+	if($pFilter['defense'] !== "checked")
+		$sql .= " AND Pos!='D'";
+	
+	if($pFilter['goalies'] != "checked")
+		$sql .= " AND Pos!='G'";
+
+	$sql .=" ORDER BY Last ASC";
+	
+	//echo "sql: " . $sql;
+
+	$result = mysqli_query($conn, $sql);
+
+	if ($result) {
+		logMsg("Retrieved PlayerRosters" );
+	} else {
+		echo("Error: GetRosters: " . $sql . "<br>" . mysqli_error($conn));
+	}
+
+	return $result;
+}
+
+function ComparePlayers($playerArray){
+
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "SELECT * FROM roster WHERE ";
+
+	$lastElement = end($playerArray);
+	foreach($playerArray as $key => $value){            
+
+            if (strpos($key, 'player') !== false) {
+				$sql .=  "PlayerID = " . "'$value'";
+
+				if($value != $lastElement){
+					$sql .= " OR ";
+				}
+            }			
+    }
+
+
+	$sql .= " ORDER BY Last ASC";
+	//echo $sql;
+
+	$result = mysqli_query($conn, $sql);
+
+	if($result === FALSE) { 
+		die(mysql_error()); // TODO: better error handling
+	}	
+
+	return $result;
+
 }
 
 function CompareUsers($userid1, $userid2){

@@ -184,7 +184,6 @@ function GetScheduleByID($scheduleid){
 	}
 	
 	return $row;
-
 }
 
 function  GetScheduleByGameId($gameid){
@@ -202,6 +201,42 @@ function  GetScheduleByGameId($gameid){
 	}
 	
 	return $row;
+
+}
+
+function GetScheduleBySeriesID($seriesid){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT * FROM schedule WHERE SeriesID = '$seriesid' LIMIT 1";
+	
+	$tmr = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	
+	if ($row) {
+		logMsg("Retrieved GameById");		
+	} else {
+		echo("Error: GetGameById: " . $sql . "<br>" . mysqli_error($conn));
+	}
+	
+	return $row["ID"];
+
+}
+
+function GetTournamentIDFromSeriesID($seriesid){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT * FROM series WHERE SeriesID = '$seriesid' LIMIT 1";
+	
+	$tmr = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	
+	if ($row) {
+		logMsg("Retrieved GameById");		
+	} else {
+		echo("Error: GetGameById: " . $sql . "<br>" . mysqli_error($conn));
+	}
+	
+	return $row["TourneyID"];
 
 }
 
@@ -276,10 +311,14 @@ function GetGamesLeaders(){
 
 
 
-function GetGamesByUser($userId){
+function GetGamesByUser($userId, $lg){
 
 	$conn = $GLOBALS['$conn'];	
 	$sql = "SELECT * FROM `schedule` WHERE (HomeUserID = '$userId' OR AwayUserID = '$userId') AND WinnerUserID >0";
+
+	if($lg != -1){
+		$sql .= " AND LeagueID='$lg'";
+	}
 		
 	$result = mysqli_query($conn, $sql);
 
@@ -294,11 +333,15 @@ function GetGamesByUser($userId){
 
 }
 
-function GetSeriesByUser($userId){
+function GetSeriesByUser($userId, $lg){
 
 	$conn = $GLOBALS['$conn'];	
 	$sql = "SELECT * FROM `series` WHERE (HomeUserID = '$userId' OR AwayUserID = '$userId') AND SeriesWonBy >0";
-		
+	
+	if($lg != -1){
+		$sql .= " AND LeagueID='$lg'";
+	}
+
 	$result = mysqli_query($conn, $sql);
 
 	if ($result) {
@@ -333,11 +376,15 @@ function AddFakeUser($username, $email, $password){
 
 }
 
-function GetHeadToHead($userId1, $userId2){
+function GetHeadToHead($userId1, $userId2, $lg){
 
 	$conn = $GLOBALS['$conn'];	
 	$sql = "SELECT * FROM `schedule` WHERE (HomeUserID = '$userId1' OR AwayUserID = '$userId1') AND (HomeUserID = '$userId2' OR AwayUserID = '$userId2')  AND WinnerUserID >0";
-		
+	
+	if($lg != -1){
+		$sql .= " AND LeagueID='$lg'";
+	}
+
 	$result = mysqli_query($conn, $sql);
 
 	if ($result) {
@@ -351,11 +398,15 @@ function GetHeadToHead($userId1, $userId2){
 
 }
 
-function GetHeadToHeadSeries($userId1, $userId2){
+function GetHeadToHeadSeries($userId1, $userId2, $lg){
 
 	$conn = $GLOBALS['$conn'];	
 	$sql = "SELECT * FROM `series` WHERE (HomeUserID = '$userId1' OR AwayUserID = '$userId1') AND (HomeUserID = '$userId2' OR AwayUserID = '$userId2')  AND SeriesWonBy >0";
-		
+	
+	if($lg != -1){
+		$sql .= " AND LeagueID='$lg'";
+	}
+
 	$result = mysqli_query($conn, $sql);
 
 	if ($result) {
@@ -388,7 +439,7 @@ function GetSeriesLeadersByUserID($userid){
 	return $row;
 }
 
-function GetSeriesAndGames($useronly){
+function GetSeriesAndGames($useronly, $tourneyid){
 
 	$conn = $GLOBALS['$conn'];
 	//$sql = "SELECT * FROM schedule INNER JOIN series ON schedule.SeriesID = series.ID ORDER BY series.ID ASC";
@@ -402,7 +453,7 @@ function GetSeriesAndGames($useronly){
 	$sql = "SELECT a.*, b.*, MAX(b.ConfirmTime) as LastEntryDate,
 		COUNT(CASE WHEN b.GameID >= 0 then 1 ELSE NULL END) AS TotalGames
 		FROM series a INNER JOIN schedule b		
-		ON a.ID = b.SeriesID WHERE a.Active != 0";
+		ON a.ID = b.SeriesID WHERE a.Active != 0 AND a.TourneyID= '$tourneyid'";
 		
 		if($useronly){
 			$sql .= " and (b.HomeUserID ='$userid' or b.AwayUserID = '$userid')";
@@ -523,12 +574,12 @@ function ResetScheduleByGameID($gameid){
 //Series Functions
 //function AddNewSeries($seriesname, $hometeamid, $awayteamid, $homeuserid, $awayuserid, $seriestype){
 
-function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGames, $leagueid){
+function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGames, $leagueid, $tourneyid){
 
 	$conn = $GLOBALS['$conn'];		
 
-	$sql = "INSERT INTO series (Name, HomeUserId, AwayUserId, DateCreated, Active, LeagueID) 
-			VALUES ('$seriesname', '$homeuserid', '$awayuserid', NOW(), 1, $leagueid)";
+	$sql = "INSERT INTO series (Name, HomeUserId, AwayUserId, DateCreated, Active, LeagueID, TourneyID) 
+			VALUES ('$seriesname', '$homeuserid', '$awayuserid', NOW(), 1, $leagueid, $tourneyid)";
 		
 	$sqlr = mysqli_query($conn, $sql);
 	
@@ -584,8 +635,8 @@ function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGa
 			//$sql = "INSERT INTO schedule (HomeTeamId, AwayTeamId, HomeUserId, AwayUserID, SeriesID) 
 			//		VALUES ('$team1', '$team2', '$user1', '$user2', '$seriesid')";
 			
-			$sql = "INSERT INTO schedule (HomeUserId, AwayUserID, SeriesID, LeagueID) 
-					VALUES ('$user1', '$user2', '$seriesid', '$leagueid')";
+			$sql = "INSERT INTO schedule (HomeUserId, AwayUserID, SeriesID, LeagueID, TourneyID) 
+					VALUES ('$user1', '$user2', '$seriesid', '$leagueid', '$tourneyid')";
 
 			$sqlr = mysqli_query($conn, $sql);
 
@@ -635,6 +686,17 @@ function GetSeriesById($seriesid){
 	
 	return $row;
 
+}
+
+function GetTourneyById($tourneyid){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT * FROM tourney Where ID='$tourneyid'";
+	
+	$tmr = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);	
+	
+	return $row;
 }
 
 function GetSeries(){	
@@ -866,6 +928,54 @@ function GetUsers($orderAsc){
 	}	
 
 	return $result;
+}
+
+function GetTourneyUsers($tId, $tmSort){
+
+	$conn = $GLOBALS['$conn'];
+	
+	$sql = "SELECT t.*, u.id_user, u.username, n.Name, n.TeamID, n.ABV FROM tourneyusers t INNER JOIN users u ON t.UserID = u.id_user
+			INNER JOIN nhlteam n ON t.TeamID = n.TeamID WHERE t.tourneyid='$tId'";
+
+	if($tmSort)
+		$sql .= " ORDER BY n.ABV DESC";
+	else
+		$sql .= " ORDER BY u.username ASC";		
+
+	$result = mysqli_query($conn, $sql);
+
+	if ($result) {
+		logMsg("Retrieved GetTourneyUsers" );
+	} else {
+		echo("Error:GetTourneyUsers: " . $sql . "<br>" . mysqli_error($conn));
+	}
+
+	return $result;
+}
+
+function GetTourneyGames($tId, $userid){
+
+	$conn = $GLOBALS['$conn'];
+	
+	$sql = "SELECT s.* FROM schedule s WHERE s.TourneyID = '$tId' AND (HomeUserID='$userid' OR AwayUserID='$userid') AND GameID >0 ORDER BY s.ID ASC";
+
+//	if($tmSort)
+		//$sql .= " ORDER BY t.Wins DESC, n.ABV";
+//	else
+//		$sql .= " ORDER BY u.username ASC";		
+
+	$result = mysqli_query($conn, $sql);
+
+	//echo $sql;
+
+	if ($result) {
+		logMsg("Retrieved GetTourneyUsers Games Grabbed.  NumGames: " . mysqli_num_rows($result));
+	} else {
+		echo("Error:GetTourneyUsers: " . $sql . "<br>" . mysqli_error($conn));
+	}
+
+	return $result;
+
 }
 
 function GetRosters($pFilter){

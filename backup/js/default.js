@@ -1,3 +1,35 @@
+//OnLoad
+
+
+	function RosterSubmit(){
+
+		if(s!="" && s!='Off'){
+
+			var theForm = document.forms['rosterForm'];
+			var sOrder = document.getElementById("sOrder");
+
+			if(sOrder.value == 'DESC'){
+
+				sOrder.value = 'ASC';
+
+			}else{
+				
+				sOrder.value = 'DESC';
+			}
+			addHidden(theForm, 's', s);
+		}
+
+		document.rosterForm.submit();
+	}
+
+	function addHidden(theForm, key, value) {
+		// Create a hidden input element, and append it to the form:
+		var input = document.createElement('input');
+		input.type = 'hidden';
+		input.name = key;'name-as-seen-at-the-server';
+		input.value = value;
+		theForm.appendChild(input);
+	}
 
 /// Create.js functions
 	function UpdateSeriesName(){
@@ -157,13 +189,13 @@
 			submit = false;
 		} */
 
-		if(homeUserSelect.options[homeUserSelect.selectedIndex].value == 0){
+		if(homeUserSelect.options[homeUserSelect.selectedIndex].value == -1){
 			
 			msgHtml += "Home User, ";
 			submit = false;
 		}
 
-		if(awayUserSelect.options[awayUserSelect.selectedIndex].value == 0){
+		if(awayUserSelect.options[awayUserSelect.selectedIndex].value == -1){
 			
 			msgHtml += "Away User, ";
 			submit = false;
@@ -208,10 +240,10 @@
 	}
 
 	//resultsSeries Page
-	function showGameDetails(obj, x, gameId, gameNum) {
+	function showGameDetails(obj, x, gameId, gameNum, leagueid) {
 		if ( obj.innerHTML === '+ Details' ) {
 			// fetch game stats
-			$('#fetch_' + x).load('fragment_game_stats_template.php?gameId=' + gameId + "&gameNum=" + gameNum);
+			$('#fetch_' + x).load('fragment_game_stats_template.php?gameId=' + gameId + "&gameNum=" + gameNum + "&leagueId=" + leagueid);
 			// dipslay table row beneath button	
 			$('#' + x).fadeIn();
 			// toggle button	
@@ -229,7 +261,7 @@
 
 	function showAllGames(obj) {
 
-		var gameId;
+		var gameId, leagueId;
 
 		if (obj.innerHTML === '+ All') {
 			obj.innerHTML = '- All';
@@ -239,10 +271,11 @@
 					//
 
 					gameId = $(this).attr("data-game-id");
+					leagueId = $(this).attr("data-league-id");
 
 					console.log('#fetch_detail_' + parseInt(index+1));
 					
-					$('#fetch_detail_' + parseInt(index+1)).load('fragment_game_stats_template.php?gameId=' + gameId + "&gameNum=" + (index+1));
+					$('#fetch_detail_' + parseInt(index+1)).load('fragment_game_stats_template.php?gameId=' + gameId + "&gameNum=" + (index+1) + "&leagueId=" + leagueId);
 					$('#detail_' + parseInt(index+1)).fadeIn();
 			});			
 		}
@@ -251,6 +284,23 @@
 			$('button.details').html('+ Details')
 			$('.detail_row').css('display','none')
 		}
+	}
+
+	function UploadFile(scheduleNum, chk){
+
+		var fileInput = "Choose file: <input type='file' name='uploadfile' />";
+
+		if(chk)
+			fileInput += "<input type='submit' name='submit' value='Upload' />";
+		else
+			fileInput += "<input type='submit' name='submit' value='Upload' />";
+
+		var fileInputBox = fileInput + "<input type='hidden' name='scheduleid' value='" + scheduleNum + "' />";
+		var fileInputDiv = $("#fileInput" + scheduleNum);
+
+		fileInputDiv.html(fileInputBox);
+		fileInputDiv.show();					
+
 	}
 
 /// End of Create.js functions

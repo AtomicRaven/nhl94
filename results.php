@@ -5,7 +5,7 @@
 		include_once './_INCLUDES/00_SETUP.php';
 		include_once './_INCLUDES/dbconnect.php';
 
-		$allseries = GetSeriesAndGames(false);		
+		$allseries = GetSeriesAndGames(false, 0);		
 		
 		$seriesHtml = "";	
 		$i = 0;

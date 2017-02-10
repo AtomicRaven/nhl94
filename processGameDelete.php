@@ -7,9 +7,14 @@
 
         $seriesid = $_GET['seriesId'];
         $gameid = $_GET['gameId'];
+        $redirect = $_GET['redirect'];
+        $tId = 0;
+
+        if(isset($_GET['tId']))
+            $tId = $_GET['tId'];
 
         DeleteGameDataById($gameid, $seriesid);
 
-        header("Location: update.php?seriesId=" . $seriesid . "&err=6" );
+        header("Location: " . $redirect . ".php?seriesId=" . $seriesid . "&err=6&tId=" . $tId );
 
 ?>

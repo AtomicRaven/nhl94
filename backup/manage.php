@@ -36,7 +36,7 @@
 
 				if($row["SeriesWonBy"] != 0){
 
-					$lastEntryTime = "Series Completed " . $row["DateCompleted"];
+					$lastEntryTime = "Series Completed " .  GetDateFromSQL($row["DateCompleted"]);
 					$gamesCompleteText = "Series won by " . GetUserAlias($row["SeriesWonBy"]) . " " . $gamesNeededToWin ." games to " . $row["LoserNumGames"];
 
 				}else if($row["TotalGames"] == 0){
@@ -52,6 +52,8 @@
 
 					$lastEntryTime = "Last Updated " . HumanTiming($row["LastEntryDate"]) . " ago";
 				}
+
+				$lastEntryTime .= "<br/>Bin:" . GetLeagueTableABV($row["LeagueID"]);
 																									
 				$seriesHtml .= '<tr class="">';
 				$seriesHtml .= '<td><button type="button" class="square" onclick="DeleteSeries(\'' .$row['SeriesID'].'\',\'' . $row["Name"] .'\')">X</button></td>';

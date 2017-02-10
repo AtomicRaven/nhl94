@@ -40,8 +40,8 @@
 
 							<input type='hidden' name='submitted' id='submitted' value='1'/>
 							<input type='hidden' class='spmhidip' name='<?php echo $fgmembersite->GetSpamTrapInputName(); ?>' />
-							<label>name</label><br>
-							<input type="text" id="name" name="name" maxlength="50" value=""><br>
+							<!--<label>name</label><br>-->
+							<input type="hidden" id="name" name="name" maxlength="50" value="FakeName"><br>
 							<label>username</label><br>
 							<input type="text" id="username" name="username" maxlength="15" value=""><br>
 							<label>email</label><br>

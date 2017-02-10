@@ -22,7 +22,7 @@
 		//$seriesid = AddNewSeries($seriesname, $hometeam, $awayteam, $homeuserid, $awayuserid, $seriestype);
 
 		//No more teams all open ended
-		$seriesid = AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGames, $leaguetype);
+		$seriesid = AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGames, $leaguetype, 0);
 
 
 		//Logs for debugging

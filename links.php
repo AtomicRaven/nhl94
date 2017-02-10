@@ -27,10 +27,7 @@ if (true) {
 				<div id="main">				
 
 					<h1>Links</h1>
-                    <ul style="list-style-type:disc">
-						<li>
-							<a href="resultsLeaderSeries.php" target="_blank">Series Leader Board</a>
-						</li>						
+                    <ul style="list-style-type:disc">						
 						<li>
                             <a href="http://forum.nhl94.com/index.php?/topic/17917-et-tu-brute-league-new-league-sign-up/" target="_blank">Et tu, Brute?</a>                        
 						</li>					
