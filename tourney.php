@@ -3,9 +3,7 @@
 		session_start();
 		$ADMIN_PAGE = true;
 		include_once './_INCLUDES/00_SETUP.php';
-		include_once './_INCLUDES/dbconnect.php';
-
-		if ($LOGGED_IN == true) {
+		include_once './_INCLUDES/dbconnect.php';		
 
 		$tourneyid = -1;
 		$msg = 'Select Home and Away and upload a game:';
@@ -27,13 +25,15 @@
 		$homeUserSelectBox = CreateSelectBox("homeUser", "Home", GetTourneyUsers($tourneyid, false), "id_user", "username", "", null);
 		$awayUserSelectBox = CreateSelectBox("awayUser", "Away", GetTourneyUsers($tourneyid, false), "id_user", "username", "", null);
 
-		$hiddenInputs ="<input type='hidden' name='MAX_FILE_SIZE' value='400000' />";
-		$hiddenInputs .="<input type='hidden' name='userid' value='" . $_SESSION['userId'] . "' />"; 
-		$hiddenInputs .="<input type='hidden' id='seriesName' name='seriesName' value='". $tourney["ABV"] ."' />";
-		$hiddenInputs .="<input type='hidden' id='seriesType' name='seriesType' value='1'/>";
-		$hiddenInputs .="<input type='hidden' id='leagueType' name='leagueType' value='". $leagueid ."'/>";
-		$hiddenInputs .="<input type='hidden' id='numGames' name='numGames' value='1'/>";
-		$hiddenInputs .="<input type='hidden' id='tId' name='tId' value='".$tourneyid ."'/>";
+		if ($LOGGED_IN == true) {
+			$hiddenInputs ="<input type='hidden' name='MAX_FILE_SIZE' value='400000' />";
+			$hiddenInputs .="<input type='hidden' name='userid' value='" . $_SESSION['userId'] . "' />"; 
+			$hiddenInputs .="<input type='hidden' id='seriesName' name='seriesName' value='". $tourney["ABV"] ."' />";
+			$hiddenInputs .="<input type='hidden' id='seriesType' name='seriesType' value='1'/>";
+			$hiddenInputs .="<input type='hidden' id='leagueType' name='leagueType' value='". $leagueid ."'/>";
+			$hiddenInputs .="<input type='hidden' id='numGames' name='numGames' value='1'/>";
+			$hiddenInputs .="<input type='hidden' id='tId' name='tId' value='".$tourneyid ."'/>";
+		}
 		
 ?><!DOCTYPE HTML>
 <html>
@@ -53,6 +53,10 @@
 				
 					<h1><?=$tourney["Name"]?></h1><br />
 
+					<?php
+						if ($LOGGED_IN == true) {
+					?>
+
 					<h2>A. Upload a League Game</h2>
 
 					<div style=""><?= $msg ?></div><br/>
@@ -63,20 +67,24 @@
 						<table class="">
 							<tr class="">
 								<td class="">
-										<?= $homeUserSelectBox?> 
+										 <?= $awayUserSelectBox?> 
 								</td>
-								<td class="">vs</td>
+								<td class="">@</td>
 								<td class="">
-										<?= $awayUserSelectBox?> 
+										<?= $homeUserSelectBox?>
 								</td>					
 								<td>
-									<button type="button" class='square' id='submit1' onclick="UploadFile('1', true)">Upload File</button><br/>														
+									<!--<button type="button" class='square' id='submit1' onclick="UploadFile('1', true)">Upload File</button><br/>-->
+									Choose file: <input type="file" name="uploadfile"><input type="button" onclick="SubmitForm()" value="Upload"><input type="hidden" name="scheduleid" value="1">
 								</td>										
 							</tr>							
 						</table>
 						<div colspan="4" id="fileInput1" style="display:none;"></div>	
 					</form>
 
+					<?php
+						}
+					?>
 
 
 					<p><br /></p>  	
@@ -84,12 +92,13 @@
 					
 					<table class="lg_standings">
 						<tr class="">
-							<td class="">Rank</td>
-							<td class="">Team</td>
+							<td class="c"><br /></td>
+							<td class="">#</td>
+							<td class="">Tm</td>
 							<td class="">Coach</td>
 							<td class="">GP</td>
-							<td class="">Wins</td>
-							<td class="">Losses</td>
+							<td class="">W</td>
+							<td class="">L</td>
 							<td class="c">%</td>
 						</tr>
 						<?php
@@ -136,7 +145,8 @@
 							foreach($sortedLeaders as $user){
 								$j++;
 						?>
-						<tr class="">
+						<tr class="tight">
+							<td class="c"><button type="button" class='square detailsButton' style='width: 22px; text-align: center;'>+</button></td>
 							<td class="c"><?=$j?></td>
 							<td class=""><?=$user["ABV"]?></td>
 							<!--<td class=""><a href="javascript:location='./leagueStats.php';">(<?=$user["UserName"]?>)</a></td>-->
@@ -147,13 +157,14 @@
 							<td class="c"><?=$user["PCT"]?></td>
 						</tr>												
 
-						<tr class="show_game_histories" id="tempHandler"><td><br/></td><td colspan="4">
+						<tr class="show_game_histories"><td><br/></td><td colspan="7">
 							<ol>
 							<?php
 
 								$i=0;
-
-								foreach($user["Games"] as $row2){
+								$wins = '';
+								
+								foreach($user["Games"] as $row2) {
 
 									$i++;								
 
@@ -167,13 +178,18 @@
 									$awayScore = $row2["AwayScore"];
 
 									$score = $i . ". ";									
-										
-									$score .= $homeTeam;
-									//$score .= "(" . $homeUser . ") @ ";
-									$score .= " @ ";
 									$score .= $awayTeam;
+									//$score .= "(" . $homeUser . ") @ ";
+									if( $awayScore < $homeScore ) {
+										$wins = ' loses';
+									}
+									else {
+										$wins = ' wins';
+									}
+									$score .= $wins . " @ ";
+									$score .= $homeTeam;
 									//$score .=  "(" . $awayUser . ")";
-									$score .= " [ " .$homeScore . " to " . $awayScore . " ]";
+									$score .= " [ " . $awayScore . " to " . $homeScore . " ]";
 
 									
 
@@ -191,43 +207,51 @@
 										}
 									?>
 									<?=$score?>&nbsp;
-									<button type="button" class="square" onclick="location.href='resultsSeries.php?seriesId=<?=$row2['SeriesID']?>'">Go</button>
+									<button type="button" class="square gameResultsButton" data-game-results=<?php print $row2['SeriesID']; ?>>Details</button>
 								</li>
 							<?php
 								}
-							?>
+								if ($i == 0 ) {
+								?>
+								 <li>No games yet...</li>
+								<?php 
+								}
+								?>
 							</ol>	
 						</td></tr>					
 						<?php
 							}
 						?>						
-					  	<tr>
-							<td></br /></td>
-						  <td colspan="4" style="padding-top: 20px;">
-								<button type="button" class="square" id="" onclick="javascript:showGameHistories();">Show Game Histories</button>
-							</td>
-						</tr>
 					</table>			
-
-<script>
-
-	function showGameHistories() {
-			$('.show_game_histories').show();
-	}
-
-</script>					
 					
 		
 		</div><!-- end: #page -->	
 		
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
 <script src="./js/default.js"></script>
+<script>
 
+		$( ".detailsButton" ).click(function() {
+				var symbol = $(this).text();
+				if (symbol == '+') {
+					$(this).text('-');
+					$(this).parents(1).next().addClass('showme');
+				}
+				else {
+					$(this).text('+');
+					$(this).parents(1).next().removeClass('showme');
+				}
+		});		
+
+		$( ".gameResultsButton" ).click(function() {
+				var rId = $(this).attr('data-game-results'),
+							win = window.open( './resultsSeries.php?seriesId=' + rId, '_blank');
+				win.focus();								
+				return;
+		});		
+
+		
+		
+</script>
 </body>
 </html>
-<?php
-		}
-		else {
-				header('Location: index.php');
-		}	
-?>	

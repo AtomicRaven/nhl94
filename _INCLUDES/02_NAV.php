@@ -30,6 +30,10 @@
 				}
 	?>		
 		<li>
+			<a href="./tourney.php?tId=1">LEAGUE</a>
+		</li>			
+	
+		<li>
 			<a href="./results.php">RESULTS</a>
 		</li>
 		<li>
