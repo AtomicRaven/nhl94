@@ -168,8 +168,8 @@
 
 									$i++;								
 
-									$homeTeam = GetTeamABVById($row2["HomeTeamID"]);
-									$awayTeam = GetTeamABVById($row2["AwayTeamID"]);
+									$homeTeam = GetTeamABVById($row2["HomeTeamID"], $leagueid);
+									$awayTeam = GetTeamABVById($row2["AwayTeamID"], $leagueid);
 
 									$homeUser = GetUserAlias($row2["HomeUserID"]);
 									$awayUser = GetUserAlias($row2["AwayUserID"]);

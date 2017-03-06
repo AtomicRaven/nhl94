@@ -15,8 +15,8 @@
 		$pStats = GetPlayerStatsByGameId($gameid, 'DESC');
 		$goalieStats = GetPlayerStatsByGameId($gameid, 'ASC');
 
-		$homeTeamAbv = GetTeamABVById($schedule["HomeTeamID"]);
-		$awayTeamAbv = GetTeamABVById($schedule["AwayTeamID"]);
+		$homeTeamAbv = GetTeamABVById($schedule["HomeTeamID"], $leagueid);
+		$awayTeamAbv = GetTeamABVById($schedule["AwayTeamID"], $leagueid);
 
 		$homeTeamName = GetTeamNameById($schedule["HomeTeamID"]);
 		$awayTeamName = GetTeamNameById($schedule["AwayTeamID"]);
@@ -172,7 +172,7 @@
 								<tr class="tight<?php print $stripe[$j & 1]; ?>">
 									<td class=""><?php print $j; ?></td>
 									<td class=""><?=$player["First"] . " " . $player["Last"]?></td>
-									<td class=""><?=GetTeamABVById($row["TeamID"])?></td>
+									<td class=""><?=GetTeamABVById($row["TeamID"], $leagueid)?></td>
 									<td class=""><?=$points?></td>
 									<td class=""><?=$row["G"]?></td>
 									<td class=""><?=$row["A"]?></td>
@@ -221,7 +221,7 @@
 								<tr class="tight<?php print $stripe[$j & 1]; ?>">
 									<td class=""><?php print $j; ?></td>
 									<td class=""><?=$player["First"] . " " . $player["Last"]?></td>
-									<td class=""><?=GetTeamABVById($row["TeamID"])?></td>
+									<td class=""><?=GetTeamABVById($row["TeamID"], $leagueid)?></td>
 									<td class=""> <?=$savePct?><!-- 17 goals on 72 shots) --></td>
 								</tr>	
 		<?php 

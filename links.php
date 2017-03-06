@@ -29,11 +29,11 @@ if (true) {
 					<h1>Links</h1>
                     <ul style="list-style-type:disc">						
 						<li>
-                            <a href="http://forum.nhl94.com/index.php?/topic/17917-et-tu-brute-league-new-league-sign-up/" target="_blank">Et tu, Brute?</a>                        
+                            <a href="http://forum.nhl94.com/index.php?/topic/17950-draft-thread/#comment-166284" target="_blank">Et tu, Brute? Draft Forum</a>                        
 						</li>					
-						<!--<li>
-                            <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSLxPyvFZ36UAO9uMSSQpR9AUZZDw6vp60fOFoJCdKVFi5ornyfajlfPUlWmDN8Cs9Mgrvo4DnkLOaQ/pubhtml#" target="_blank">Plabax Draft Sheet</a>                        
-						</li>					-->
+						<li>
+                            <a href="https://docs.google.com/spreadsheets/d/1agkB8JJX74P_umcYpvWYAVzgAunG0cQIWQDv__3ood8/pubhtml" target="_blank">Et tu, Brute? Draft Sheet</a>                        
+						</li>
                         <li>
                             <a href="https://docs.google.com/spreadsheets/d/1h7B96W0vYYefgAlfhUTQz2x5LgVfYX-KgBQ0_8sxoEo/edit#gid=0" target="_blank">GDL 16 Draft Sheet</a>
                         </li>

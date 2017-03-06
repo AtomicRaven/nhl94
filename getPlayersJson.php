@@ -8,6 +8,7 @@
 
         $str = $_SERVER['QUERY_STRING'];
         $compare = false;
+        $leagueid = 1;
         parse_str($str, $playerArray);
 
         $pFilter = array(
@@ -15,6 +16,10 @@
             'defense' => "checked",
             'goalies' => "checked"
         );   
+
+        if (isset($_GET["binId"])){
+            $leagueid = $_GET["binId"];
+        }
 
         foreach($playerArray as $key => $value){            
 
@@ -26,7 +31,7 @@
         }       
 
          if(!$compare){            
-            $rosters = GetRosters($pFilter);
+            $rosters = GetRosters($pFilter, $leagueid);
 
         }else{            
             $rosters = ComparePlayers($playerArray);
@@ -50,6 +55,7 @@
             //$handed .= " " . $hField;
 
         $overall = CalculateOverallRanking($row);
+        $ChkAbl = round((6 * $row["Wgt"] + (10 * $row["ChK"]) -13) /8, 1);
 
         $sortedPlayers[] = array(
                         "ID"=>$row["PlayerID"],
@@ -60,6 +66,7 @@
                         "Pos"=>$row["Pos"],
                         "Weight"=>$row["Wgt"],
                         "Checking"=>$row["ChK"],
+                        "ChkAbl"=>$ChkAbl,
                         "ShotP"=>$row["ShP"],
                         "ShotA"=>$row["ShA"],
                         "Speed"=>$row["Spd"],

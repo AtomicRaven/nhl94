@@ -225,6 +225,32 @@
 
 	}
 
+	function DeleteTable(){
+
+		var tblSelect = document.getElementById("leagueType");
+
+		var tableId = tblSelect.options[tblSelect.selectedIndex].value;
+		var tableName = tblSelect.options[tblSelect.selectedIndex].innerHTML;
+
+		if(tableId != -1){
+
+			var deleteSeries = confirm("Are you sure you want to delete table #" + tableId  + " | " + tableName + "??");
+
+			if (deleteSeries == true) {
+
+				var deleteSeries2 = confirm("Are you really really sure you want to delete table #" + tableId  + " | " + tableName + "??");
+
+				if (deleteSeries2 == true) {
+					window.location.href="deleteTable.php?leagueType=" + tableId;	
+				}
+				
+			} else {
+				//txt = "You pressed Cancel!";
+			}
+		}
+
+	}
+
 	function DeleteGame(gameId, seriesId, page, tId){
 
 

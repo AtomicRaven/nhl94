@@ -8,6 +8,7 @@
             $nextGameId = GetNextGameId();
             $filePath = $GLOBALS['$saveFilePath'];
             $leagueName = GetLeagueTableABV($leagueid);
+            $blitz = blitzChk($leagueid);
 
             if($tourneyid >0){
                 $tourney = GetTourneyById($tourneyid);		
@@ -381,14 +382,28 @@
             fseek ($fr,60461 + $i);
             $SOG = hexdec(bin2hex(fread($fr, 1)));
 
-            fseek ($fr,60487 + $i);		
-            $PIM = hexdec(bin2hex(fread($fr, 1)));
+            if($blitz == 1){  // Blitz League
+				
+				fseek ($fr,60487 + $i);		// In Blitz, this is Chks For
+   				$Chksfor = hexdec(bin2hex(fread($fr, 1)));
+			
+				fseek ($fr,60513 + $i);		// In Blitz, this is Chks Against
+   				$ChksA = hexdec(bin2hex(fread($fr, 1)));
+				
+				$PIM = 0;  // will be calculated later
+				$PlusMinus = 0;
+			
+			}	
+            else{
+                fseek ($fr,60487 + $i);		
+                $PIM = hexdec(bin2hex(fread($fr, 1)));
 
-            fseek ($fr,60513 + $i);		
-            $Chksfor = hexdec(bin2hex(fread($fr, 1)));
+                fseek ($fr,60513 + $i);		
+                $Chksfor = hexdec(bin2hex(fread($fr, 1)));
 
                 $ChksA = 0;
                 $PlusMinus = 0;
+            }
         
             // Home TOI
             fseek ($fr,(60538 + ($i * 2)));
@@ -466,16 +481,32 @@
             fseek ($fr,61329 + $i);
             $SOG = hexdec(bin2hex(fread($fr, 1)));
 
-            
+            if($blitz == 1){  // Blitz League
+				
+				fseek ($fr,61355 + $i);		// In Blitz, this is Chks For
+   				$Chksfor = hexdec(bin2hex(fread($fr, 1)));
+			
+				fseek ($fr,61381 + $i);		// In Blitz, this is Chks Against
+   				$ChksA = hexdec(bin2hex(fread($fr, 1)));
+				
+				$PIM = 0;  // will be calculated later
+				$PlusMinus = 0;
+			
+			}		
+			else {
 
-                fseek ($fr,61355 + $i);
-                $PIM = hexdec(bin2hex(fread($fr, 1)));
+				fseek ($fr,61355 + $i);
+   				$PIM = hexdec(bin2hex(fread($fr, 1)));
 
-                fseek ($fr,61381 + $i);
-                $Chksfor = hexdec(bin2hex(fread($fr, 1)));	
+				fseek ($fr,61381 + $i);
+   				$Chksfor = hexdec(bin2hex(fread($fr, 1)));
+			
+				$ChksA = 0;
+				$PlusMinus = 0;
 
-                $ChksA = 0;
-                $PlusMinus = 0;
+			}
+
+               
 
             // Away TOI
             fseek ($fr,(61406 + ($i * 2)));
@@ -717,6 +748,24 @@
                         VALUES ('$gameid', '$team', '$penid', '$PenPer', '$pentime', '$type')";
                 $psr = @mysqli_query($conn, $psq) or die("Error: PenaltySummary " . $psq . "<br>" . mysqli_error($conn));		
                 
+                if($blitz == 1){  // Blitz League
+			
+                    $pq = "UPDATE playerstats SET PIM=PIM+2 WHERE PlayerID='$penid' AND GameID='$gameid' LIMIT 1";    
+                    //echo $pq . "<br/>";  
+                    
+                    $psr = mysqli_query($conn, $pq);			
+
+                    //echo mysqli_affected_rows($conn);
+                
+                    if ($psr) {
+                        //logMsg("Updated Home Player Stats");
+                    } else {
+                        die("Error: COuld not add Blitz Penalties" . $pq . "<br>" . mysqli_error($conn));
+                    }	
+
+                    
+                }
+
                 $tmpExtract2 = ($tmpExtract2 + 4);
             }
         

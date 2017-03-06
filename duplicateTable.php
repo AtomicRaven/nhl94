@@ -10,25 +10,33 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
             if (isset($_FILES['csv']['name'])) {
 
                 $filename = $_FILES['csv']['name'];
+                $isblitz = $_POST["blitz"];                
                 $upload_path = $GLOBALS['$csvUploadPath'] . $filename;
 
                 //echo "CSV Path:" . $upload_path. $filename;
+                echo "isBlitz:" . $isblitz . "<br/>";
 
+                $ext = substr($filename, strpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
+                
                 if(move_uploaded_file($_FILES['csv']['tmp_name'], $upload_path)){
 
-                    $newCsv = $upload_path;
-                    $newTable = str_replace(".csv","",$filename);                
-                    $newTable = str_replace("_","",$newTable);
+                    if($ext == ".csv"){
 
-                    echo "newTable:" . $newTable . "<br/>";
+                        $newCsv = $upload_path;
+                        $newTable = str_replace(".csv","",$filename);                
+                        $newTable = str_replace("_","",$newTable);
 
-                    echo ("Duplicating Roster Table<br/>");
-                    DuplicateRosterTable($newTable);
+                        echo "newTable:" . $newTable . "<br/>";
 
-                    //Replace All TeamId data with new Team ID'sin
+                        echo ("Duplicating Roster Table<br/>");
+                        DuplicateRosterTable($newTable);
 
-                    TransferPlayerRoster($newTable, $newCsv);
+                        //Replace All TeamId data with new Team ID'sin
 
+                        TransferPlayerRoster($newTable, $newCsv, $isblitz);
+                    }else{
+                        echo "<br/>Wrong file type!";    
+                    }
                 }else{
                     echo "<br/>didn't work";
                 }

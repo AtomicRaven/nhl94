@@ -11,8 +11,8 @@
 		$leagueid= $series["LeagueID"];		
 		$leagueName = GetLeagueTableABV($leagueid);
 
-		$sPlayerStats = GetPlayerStatsBySeriesId($seriesid, 'P', $leagueid);
-		$sGoalieStats = GetPlayerStatsBySeriesId($seriesid, 'G', $leagueid);
+		$sPlayerStats = GetPlayerStatsBySeriesId($seriesid, 'P');
+		$sGoalieStats = GetPlayerStatsBySeriesId($seriesid, 'G');
 
 		$homeUserAlias = GetUserAlias($series["HomeUserID"]);
 		$awayUserAlias = GetUserAlias($series["AwayUserID"]);
@@ -244,8 +244,10 @@
 		$saZoneP =  FormatZoneTime(date("Y-m-d H:i:s", $saZone));
 
 		//Divide Penaltie minutes by 2
-		$PPH = ($PPH /2) + $PSA;
-		$PPA = ($PPA /2) + $PSH;
+		if(!BlitzChk($leagueid)){
+			$PPH = ($PPH /2) + $PSA;
+			$PPA = ($PPA /2) + $PSH;
+		}
 
 		mysqli_data_seek($gamesplayed, 0);
 
@@ -321,9 +323,9 @@
 						<tr class="tight<?php print $stripe[$i & 1]; ?>" >
 
 							<td class="c m"><?php print $i; ?></td>
-							<td class="<?=$homeClass?>"><?= GetTeamABVById($row["HomeTeamID"]) ?><?=$HOT?><div class='logo small <?= GetTeamABVById($row["HomeTeamID"]) ?>'></div></td>
+							<td class="<?=$homeClass?>"><?= GetTeamABVById($row["HomeTeamID"], $leagueid) ?><?=$HOT?><div class='logo small <?= GetTeamABVById($row["HomeTeamID"], $leagueid) ?>'></div></td>
 							<td class="<?=$homeClass?> m"><b class="billboard"><?=$row["HomeScore"]?></b></td>
-							<td class="<?=$awayClass?>"><?= GetTeamABVById($row["AwayTeamID"]) ?><?=$AOT?><div class='logo small <?= GetTeamABVById($row["AwayTeamID"]) ?>'></div></td>
+							<td class="<?=$awayClass?>"><?= GetTeamABVById($row["AwayTeamID"], $leagueid) ?><?=$AOT?><div class='logo small <?= GetTeamABVById($row["AwayTeamID"], $leagueid) ?>'></div></td>
 							<td class="<?=$awayClass?> m"><b class="billboard"><?=$row["AwayScore"]?></b></td>
 							<td class="c m"><button type="button" class="square details" onclick="showGameDetails(this, 'detail_<?php print $i; ?>', <?=$gameid?>, <?=$i?>, <?=$leagueid?>)">+ Details</button></td>
 						</tr>	
@@ -442,7 +444,7 @@
 								<tr class="tight<?php print $stripe[$j & 1]; ?>">
 									<td class=""><?php print $j; ?></td>
 									<td class="" style="font-size: 80%;"><?=$player["First"] . " " . $player["Last"]?></td>
-									<td class=""><?=GetTeamABVById($row["TeamID"])?></td>
+									<td class=""><?=GetTeamABVById($row["TeamID"], $leagueid)?></td>
 									<td class=""><?=$row["Pos"]?></td>
 									<td class=""><?=$row["GP"]?></td>
 									<td class=""><?=$row["tPoints"]?></td>
@@ -495,7 +497,7 @@
 								<tr class="tight<?php print $stripe[$j & 1]; ?>">
 									<td class=""><?php print $j; ?></td>
 									<td class=""><?=$player["First"] . " " . $player["Last"]?></td>
-									<td class=""><?=GetTeamABVById($row["TeamID"])?></td>
+									<td class=""><?=GetTeamABVById($row["TeamID"], $leagueid)?></td>
 									<td class=""> <?=$savePct?><!-- 17 goals on 72 shots) --></td>
 								</tr>	
 		<?php 

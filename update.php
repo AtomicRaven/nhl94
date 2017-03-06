@@ -25,6 +25,7 @@
 			$gamesplayed = GetGamesBySeriesId($seriesid);
 			$numGames = mysqli_num_rows($gamesplayed);
 			$gamesNeededToWin = NeededWins($seriesid);
+			$leagueid= $series["LeagueID"];	
 
 			//echo ("TotalGames: " . $numGames . "<br/> Winner must have " . $gamesNeededToWin . " to win series.");
 
@@ -106,7 +107,7 @@
 						?>
 						<tr>
 							<td><button type="button" class="square" onclick="DeleteGame('<?=$row['GameID']?>','<?=$seriesid?>', 'update')">X</button></td>
-							<td>Gm <?=$i?>. <?= GetTeamABVById($row["AwayTeamID"]) ?> (<?= GetUserAlias($row["AwayUserID"])?>) <?=$row["AwayScore"]?> | <?= GetTeamABVById($row["HomeTeamID"])?> (<?= GetUserAlias($row["HomeUserID"]) ?>) <?=$row["HomeScore"]?></td>
+							<td>Gm <?=$i?>. <?= GetTeamABVById($row["AwayTeamID"], $leagueid) ?> (<?= GetUserAlias($row["AwayUserID"])?>) <?=$row["AwayScore"]?> | <?= GetTeamABVById($row["HomeTeamID"], $leagueid)?> (<?= GetUserAlias($row["HomeUserID"]) ?>) <?=$row["HomeScore"]?></td>
 							<td><button type="button" class="square" onclick="location.href='resultsSeries.php?seriesId=<?= $seriesid?>'">Game Stats</button></td>
 						</tr>
 						<?php

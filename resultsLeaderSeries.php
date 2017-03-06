@@ -49,7 +49,7 @@
        
         $homeUserSelectBox = CreateSelectBox("homeUser", "Select User", GetUsers(true), "id_user", "username", null, $homeuserid);
         $awayUserSelectBox = CreateSelectBox("awayUser", "Select User", GetUsers(true), "id_user", "username", null, $awayuserid);
-        $leagueTypeSelectBox = CreateSelectBox("leagueType", "Select League", GetLeagueTypes(), "LeagueID", "Name", null, $leagueType);
+        $leagueTypeSelectBox = CreateSelectBox("leagueType", "Select Bin", GetLeagueTypes(), "LeagueID", "Name", null, $leagueType);
 
 
 ?><!DOCTYPE HTML>

@@ -9,12 +9,19 @@
         $sOrder = "DESC";
         $nSortOrder = "DESC";
         $s = "";
+        $leagueid = 1;
 
         $pFilter = array(
             'forwards' => "checked",
             'defense' => "checked",
             'goalies' => "checked"
         );       
+
+        if (isset($_GET["binId"])){
+            $leagueid = $_GET["binId"];
+        }
+
+        $leagueTypeSelectBox = CreateSelectBox("binId", "Select Bin", GetLeagueTypes(), "LeagueID", "Name", "this.form.submit()", $leagueid);
 
         //Need to massivley simplfy this logic
         if (isset($_GET["sOrder"]) && !empty($_GET["sOrder"])) {
@@ -101,7 +108,7 @@
 
          if(!$compare){
             
-            $rosters = GetRosters($pFilter);
+            $rosters = GetRosters($pFilter, $leagueid);
             $vis = "show";
 
         }else{
@@ -144,6 +151,12 @@
                             <input type="checkbox" value="true" name="forwards" onclick="RosterSubmit()" <?=$pFilter['forwards']?>/>Forwards
                             <input type="checkbox" value="true" name="defense" onclick="RosterSubmit()" <?=$pFilter['defense']?>/>Defense
                             <input type="checkbox" value="true" name="goalies" onclick="RosterSubmit()" <?=$pFilter['goalies']?>/>Goalies
+
+                            <?php
+                                //if ($LOGGED_IN == true && $_SESSION['Admin'] == true){                                    
+                                    echo $leagueTypeSelectBox;
+                                //}
+                            ?>
                         </div>
 
                         <div style="margin-top: 10px;"><?=$sBy?></div><br/>

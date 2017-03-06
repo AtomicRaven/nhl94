@@ -6,6 +6,7 @@
 		include_once './_INCLUDES/dbconnect.php';	
 
 if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
+    
 ?>
 
 
@@ -45,6 +46,10 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
                             <input type="checkbox" ng-model="Filter.forwards" ng-true-value="'F'" data-ng-false-value="''"/> Forwards
                             <input type="checkbox" ng-model="Filter.defense" ng-true-value="'D'" data-ng-false-value="''"/> Defense
                             <input type="checkbox" ng-model="Filter.goalies" ng-true-value="'G'" data-ng-false-value="''"/> Goalies
+
+                            <select ng-model="selectedLeagues" ng-options="item as item.Name for item in leagues track by item.LeagueID" ng-change="ChangeLeague(selectedLeagues)">
+                                <option value="">Select Account</option>
+                            </select>
                         </div>
 
                         <div style="margin-left:10px;">
@@ -64,7 +69,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 
                         <table class="standard smallify leader">
                                 <tr class="heading">
-                                    <td class="c"></td>
+                                    <td class="c"><input type="checkbox" ng-click="toggleAll()" ng-model="isAllSelected"></td>
                                     <td class="c">Rnk</td>
                                     <td class="c">Nm</td>
                                     <td class="c">
@@ -103,6 +108,12 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
                                             <span ng-show="sortType == 'Checking' && !sortReverse" class="fa fa-caret-up"></span>                                  
                                         </div>
                                     </td>                                    
+                                    <td class="c">
+                                        <div class='link' ng-click="sortType = 'ChkAbl'; ReverseSort()">ChkAbl
+                                            <span ng-show="sortType == 'ChkAbl' && sortReverse" class="fa fa-caret-down"></span>
+                                            <span ng-show="sortType == 'ChkAbl' && !sortReverse" class="fa fa-caret-up"></span>                                  
+                                        </div>
+                                    </td> 
                                     <td class="c">
                                         <div class='link' ng-click="sortType = 'ShotP'; ReverseSort()">ShP
                                             <span ng-show="sortType == 'ShotP' && sortReverse" class="fa fa-caret-down"></span>
@@ -152,6 +163,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
                                     <td class="c">{{post.Pos}}</td>
                                     <td class="c">{{post.Weight}}</td>
                                     <td class="c">{{post.Checking}}</td>
+                                    <td class="c">{{post.ChkAbl}}</td>
                                     <td class="c">{{post.ShotP}}</td>
                                     <td class="c">{{post.ShotA}}</td>
                                     <td class="c">{{post.Speed}}</td>

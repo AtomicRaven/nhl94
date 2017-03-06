@@ -17,7 +17,7 @@ function DuplicateRosterTable($newTable){
 	}
 }
 
-function TransferPlayerRoster($newTable, $newCsv){
+function TransferPlayerRoster($newTable, $newCsv, $isblitz){
 	
 	$conn = $GLOBALS['$conn'];
 	$File = $newCsv;
@@ -33,6 +33,8 @@ function TransferPlayerRoster($newTable, $newCsv){
 	}
 
 	$i = 0;
+	$teamid = 0;
+	$tableTeamAbv = "";
 
 	//don't want the first two rows they are headers 
 	array_shift($arrResult);
@@ -44,27 +46,51 @@ function TransferPlayerRoster($newTable, $newCsv){
 		$firstname = $value[1];
 		$lastname = $value[2];
 		$teamABV = $value[3];
+		$pos = $value[4];
+		$jNo = $value[5];
+		$wgt = $value[6];
+		$agl = $value[7];
+		$spd = $value[8];
+		$ofA = $value[9];
+		$dfA = $value[10];
+		$shP = $value[11];
+		$chk = $value[12];
+		$hf = $value[13];
+		$sth = $value[14];
+		$sha = $value[15];
+		$end = $value[16];
+		$rgh = $value[17];
+		$pass = $value[18];
+		$agr = $value[19];
+
 
 		if($firstname != "" && $teamABV !="ASB"){
 
 			$i++;		
 
 			//ROM exports different team names for QUE and OTT
-			if($teamABV == "QB")
-				$teamABV = "QUE";
+			//if($teamABV == "QB")
+			//	$teamABV = "QUE";
 
-			if($teamABV == "OTT")
-				$teamABV = "OTW";
-
-			$teamid = GetTeamIdByABV($teamABV);						
+			//if($teamABV == "OTT")
+			//	$teamABV = "OTW";
 			
-			$sql = "SELECT * FROM roster WHERE (First = '$firstname' AND Last = '$lastname') LIMIT 1";
-			$tmr = mysqli_query($conn, $sql);
-			$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
-			$pos = $row["Pos"];			
+			if($tableTeamAbv != $teamABV){
+				$tableTeamAbv = $teamABV;
+				$teamid++;
+			}
+			//$teamid = GetTeamIdByABV($teamABV);										
+			
+			//$sql = "SELECT * FROM roster WHERE (First = '$firstname' AND Last = '$lastname') LIMIT 1";
+			//$tmr = mysqli_query($conn, $sql);
+			//$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+			//$pos = $row["Pos"];			
 
-			 $sql = "INSERT INTO $newTable (ID, PlayerID, First, Last, Team, TeamID, Pos) 
-			 VALUES ('$i', '$playerid', '$firstname', '$lastname', '$teamABV', '$teamid', '$pos')";
+			 $sql = "INSERT INTO $newTable (ID, PlayerID, First, Last, Team, Pos, JNo, 
+			 					Wgt, Agl, Spd, OfA, DfA, ShP, ChK, `H/F`, StH, ShA, End, Rgh, Pas, Agr, TeamID ) 
+			 VALUES ('$i', '$playerid', '$firstname', '$lastname', '$teamABV', '$pos', '$jNo',
+			 					'$wgt', '$agl', '$spd', '$ofA', '$dfA', '$shP', '$chk', '$hf', '$sth', '$sha', '$end', '$rgh',
+								 '$pass', '$agr', '$teamid')";
 
 			$sqlr = mysqli_query($conn, $sql);
 
@@ -77,16 +103,33 @@ function TransferPlayerRoster($newTable, $newCsv){
 		}
 	}
 
-	AddLeague($newTable);
+	AddLeague($newTable, $isblitz);
 }
 
 function DropNewRosterTable($newTable){
 
 	$conn = $GLOBALS['$conn'];
 
-	//Duplicate Table structure
+	$sql = "DELETE FROM league WHERE TableName='$newTable'";
+	//echo $sql + "<br/>";
+	$tmr = mysqli_query($conn, $sql);
+
+	if ($tmr) {
+		logMsg("Delete Table From League: " .$newTable);
+	} else {
+		echo("Error: Delete Table From League " . $sql . "<br>" . mysqli_error($conn));
+	}
+	
 	$sql = "DROP TABLE $newTable";
 	$tmr = mysqli_query($conn, $sql);
+
+	if ($tmr) {
+		logMsg("Dropped Table From League: " .$newTable);
+	} else {
+		echo("Error: Dropping table " . $newTable . ": " . $sql . "<br>" . mysqli_error($conn));
+	}
+
+
 	
 }
 
@@ -254,7 +297,7 @@ function GetPlayerStatsBySeriesId($seriesid, $pos){
 
 	$conn = $GLOBALS['$conn'];
 
-	$sql = "SELECT s.*, p.*, 
+	$sql = "SELECT s.SeriesID, p.*, 
 		SUM(p.G) as 'tG', 
 		SUM(p.A) as 'tA', 
 		SUM(p.SOG) as 'tSOG', 
@@ -272,6 +315,48 @@ function GetPlayerStatsBySeriesId($seriesid, $pos){
 			$sql .= "ORDER BY tPoints DESC";
 	
 	$result = mysqli_query($conn, $sql);
+
+	//echo "sql:" . $sql . "<br/>";
+
+	if ($result) {
+		//logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
+	} else {
+		echo("Error:  GetPlayerStatsBySeriesId: " . $sql . "<br>" . mysqli_error($conn));
+	}		
+	
+	return $result;
+}
+
+function GetPlayerStats($pos, $leagueid){	
+	
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "SELECT p.*, 
+		SUM(p.G) as 'tG', 
+		SUM(p.A) as 'tA', 
+		SUM(p.SOG) as 'tSOG', 
+		SUM(p.PIM) as 'tPIM', 
+		SUM(p.Chks) as 'tChks', 
+		SUM(p.G + p.A) as 'tPoints',
+		sum(TIME_TO_SEC(p.TOI)) as 'tTOI',		
+		COUNT(p.GameID) as 'GP'
+		FROM playerstats p";
+
+		if($leagueid != -1){
+			$sql .= " WHERE LeagueID = '$leagueid'";
+		}
+
+		$sql .= " GROUP BY p.PlayerID ";
+
+		if($pos == 'G')
+			$sql .= "ORDER BY ROUND(SUM(p.G)/SUM(p.SOG)*100) ASC";
+		if($pos == 'P')
+			$sql .= "ORDER BY tG DESC";
+			//$sql .= "ORDER BY tPoints DESC";
+	
+	$result = mysqli_query($conn, $sql);
+
+	//echo "sql:" . $sql . "<br/>";
 
 	if ($result) {
 		//logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
@@ -439,7 +524,7 @@ function GetSeriesLeadersByUserID($userid){
 	return $row;
 }
 
-function GetSeriesAndGames($useronly, $tourneyid){
+function GetSeriesAndGames($useronly, $tourneyid, $topN){
 
 	$conn = $GLOBALS['$conn'];
 	//$sql = "SELECT * FROM schedule INNER JOIN series ON schedule.SeriesID = series.ID ORDER BY series.ID ASC";
@@ -457,10 +542,13 @@ function GetSeriesAndGames($useronly, $tourneyid){
 		
 		if($useronly){
 			$sql .= " and (b.HomeUserID ='$userid' or b.AwayUserID = '$userid')";
-		}
+		}		
 
 	$sql .= " GROUP BY a.ID
 			ORDER BY (CASE WHEN MAX(b.ConfirmTime) > MAX(a.DateCreated) THEN MAX(b.ConfirmTime) ELSE MAX(a.DateCreated) END) DESC";
+
+	if($topN)
+			$sql .= " LIMIT " . $topN;
 			
 	$result = mysqli_query($conn, $sql);
 
@@ -504,12 +592,12 @@ function GetLeagueTypes(){
 
 }
 
-function AddLeague($tablename){
+function AddLeague($tablename, $isblitz){
 
 	$conn = $GLOBALS['$conn'];
 
-	$sql = "INSERT INTO league (Name, TableName, Visible) 
-			VALUES ('$tablename', '$tablename', 1)";
+	$sql = "INSERT INTO league (Name, TableName, Visible, Blitz) 
+			VALUES ('$tablename', '$tablename', 1, '$isblitz')";
 		
 	$sqlr = mysqli_query($conn, $sql);	
 
@@ -519,6 +607,22 @@ function AddLeague($tablename){
 	} else {
 		echo("Error: AddLeague: " . $sql . "<br>" . mysqli_error($conn));
 	}
+
+}
+
+function BlitzChk($leagueid){
+
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "SELECT * FROM league WHERE LeagueID = '$leagueid' LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+
+	if($result === FALSE) { 
+		die(mysql_error()); // TODO: better error handling
+	}	
+
+	$row = mysqli_fetch_array($result, MYSQL_ASSOC);	
+	return $row["Blitz"];	
 
 }
 
@@ -850,29 +954,43 @@ function GetTeamNameById($teamid){
 
 }  // end of function
 
-function GetTeamABVById($teamid){
+function GetTeamABVById($teamid, $leagueid){
 	
 	$conn = $GLOBALS['$conn'];
 	//$teamid = $teamid + 1;	
+
+	//this is becuase the table name for original is not the same as bin name
+	if($leagueid == '1'){
+		$leagueName = "nhlteam";
+	}else{		
+		$leagueName = GetLeagueTableABV($leagueid);
+	}
+
 	
-	$sql = "SELECT * FROM nhlteam WHERE TeamID='$teamid' LIMIT 1";	
+
+	$sql = "SELECT * FROM $leagueName WHERE TeamID='$teamid' LIMIT 1";	
 	$tmr = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
 	
 	if ($row) {
 		logMsg("Retrieved GetTeamABVById");
 	} else {
-		echo("Error: GetTeamABVById: " . $sql . "<br>" . mysqli_error($conn));
+		echo("Error: GetTeamABVById: " . $sql . "<br>" . mysqli_error($conn) . "<br/>");
 	}
 	
-	return $row["ABV"];
+	if($leagueid == '1'){
+		return $row["ABV"];
+	}else{		
+		return $row["Team"];
+	}
+	
 
 }  // end of function
 
 function GetTeamIdByABV($abv){
 	
 	$conn = $GLOBALS['$conn'];
-	//$teamid = $teamid + 1;	
+	//$teamid = $teamid + 1;		
 	
 	$sql = "SELECT * FROM nhlteam WHERE ABV='$abv' LIMIT 1";	
 	$tmr = mysqli_query($conn, $sql);
@@ -978,11 +1096,13 @@ function GetTourneyGames($tId, $userid){
 
 }
 
-function GetRosters($pFilter){
+function GetRosters($pFilter, $leagueid){
 
 	$conn = $GLOBALS['$conn'];
+
+	$tblName = GetLeagueTableName($leagueid);
 	
-	$sql = "SELECT * FROM roster WHERE Team != 'ASW' AND Team != 'ASE' AND Team!='ANH' AND Team !='FLA'";
+	$sql = "SELECT * FROM $tblName WHERE Team != 'ASW' AND Team != 'ASE' AND Team!='ANH' AND Team !='FLA'";
 	
 	if($pFilter['forwards'] != "checked")
 		$sql .= " AND Pos!='F'";
