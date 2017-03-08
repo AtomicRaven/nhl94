@@ -251,6 +251,37 @@
 
 	}
 
+	function ActivateTable(){
+
+		var tblSelect = document.getElementById("leagueType2");
+		var tblActivate = document.getElementById("activate");
+
+		var tableId = tblSelect.options[tblSelect.selectedIndex].value;
+		var tableName = tblSelect.options[tblSelect.selectedIndex].innerHTML;
+
+		var activateId = tblActivate.options[tblActivate.selectedIndex].value;
+
+		if(tableId != -1){
+
+			if(activateId == 1){
+				var changeActive = confirm("Are you sure you want to activate table #" + tableId  + " | " + tableName + "??");
+			}
+
+			if(activateId == 0){
+				var changeActive = confirm("Are you sure you want to Deactivate table #" + tableId  + " | " + tableName + "??");
+			}
+
+			if (changeActive == true) {								
+
+				window.location.href="activateTable.php?leagueType=" + tableId + "&activate=" + activateId;	
+								
+			} else {
+				//txt = "You pressed Cancel!";
+			}
+		}
+
+	}
+
 	function DeleteGame(gameId, seriesId, page, tId){
 
 

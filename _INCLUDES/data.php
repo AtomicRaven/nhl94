@@ -592,6 +592,21 @@ function GetLeagueTypes(){
 
 }
 
+function GetAllLeagueTypes(){
+
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "SELECT * FROM league ORDER BY LeagueID ASC";
+	$result = mysqli_query($conn, $sql);
+
+	if($result === FALSE) { 
+		die(mysql_error()); // TODO: better error handling
+	}	
+
+	return $result;
+
+}
+
 function AddLeague($tablename, $isblitz){
 
 	$conn = $GLOBALS['$conn'];
@@ -640,6 +655,15 @@ function MarkSeriesAsWon($seriesid, $winneruserid, $losernumgames){
 	//} else {
 	//	echo("Error: MarkSeriesAsWon: " . $sql . "<br>" . mysqli_error($conn));
 	//}
+
+}
+
+function ActivateTable($leagueType, $activate){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "UPDATE league SET Visible= $activate WHERE LeagueID= '$leagueType' LIMIT 1";
+
+	$tmr = mysqli_query($conn, $sql);
 
 }
 

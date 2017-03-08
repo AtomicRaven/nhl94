@@ -11,6 +11,7 @@
 if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 
 	$leagueTypeSelectBox = CreateSelectBox("leagueType", "Select Bin", GetLeagueTypes(), "LeagueID", "Name", null, null);
+	$leagueTypeSelectBox2 = CreateSelectBox("leagueType2", "Select Bin", GetAllLeagueTypes(), "LeagueID", "Name", null, null);
 
 	$msg = "";
 	if (isset($_GET["msg"])){
@@ -35,28 +36,44 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 
 					<h1>Admin</h1>
 					<div style="color:red;"><?=$msg?></div>
-					<form method="post" action="duplicateTable.php" enctype="multipart/form-data">
-						<ul style="list-style-type:disc">
-						
-							<li>
-								<input type="file" name="csv">
-								<input type="submit" style="margin-top: 10px;" value="Import Table"/>
-								<select name="blitz">
-									<option value="0">Normal</option>
-									<option value="1">Blitz</option>
-								</select>
-								
-							</li>								
-							<li>
-								<a href="registerAdmin.php">Register Fake User</a>
-							</li>
-							<li>
-								<a href="links.php">Links</a>
-							</li>                        
-						</ul>
-					</form>
-					
-					Delete League Table: <?=$leagueTypeSelectBox?> <button id="submitBtn" onclick="DeleteTable(this)" style="margin-top: 10px;">Go</button> 						
+
+					<div style="padding:40px; margin:20px;">
+						<form method="post" action="duplicateTable.php" enctype="multipart/form-data">
+
+							<div style="padding:20px;border:1px solid black;margin-bottom:10px;">
+								<h2>Import Bin</h2>							
+
+									<select name="blitz">
+										<option value="0">Normal</option>
+										<option value="1">Blitz</option>
+									</select>
+
+									<input type="file" name="csv">
+									<input type="submit" style="margin-top: 10px;" value="Import"/>									
+																	
+							</div>
+							
+						</form>
+						<div style="padding:20px;border:1px solid black;margin-bottom:10px;">
+							<h2> Tables</h2>
+							Delete Table: <?=$leagueTypeSelectBox?> 
+							<button id="submitBtn" onclick="DeleteTable(this)" style="margin-top: 10px;">Go</button><br/>
+							Activate Table: <?=$leagueTypeSelectBox2?> <select id="activate" name="activate"><option value="1">Active</option><option value="0">Deactivate</option></select>
+							<button id="submitBtn2" onclick="ActivateTable(this)" style="margin-top: 10px;">Go</button> 						
+						</div>
+						<div style="padding:20px;border:1px solid black;margin-bottom:10px;">
+							<h2>Links</h2>
+							<ul>
+								<li>
+									<a href="registerAdmin.php">Register Fake User</a>
+								</li>
+								<li>
+									<a href="links.php">Links</a>
+								</li>                        
+							</ul>
+						</div>
+
+					</div>
 					
 				</div>	
 		
