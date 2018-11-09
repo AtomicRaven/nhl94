@@ -1,6 +1,7 @@
 <?php
 
 		session_start();
+    // error_reporting( E_ALL );
 		$ADMIN_PAGE = false;
 		include_once './_INCLUDES/00_SETUP.php';
 		include_once './_INCLUDES/dbconnect.php';
@@ -11,8 +12,8 @@
 		$leagueid= $series["LeagueID"];		
 		$leagueName = GetLeagueTableABV($leagueid);
 
-		$sPlayerStats = GetPlayerStatsBySeriesId($seriesid, 'P');
-		$sGoalieStats = GetPlayerStatsBySeriesId($seriesid, 'G');
+		$sPlayerStats = GetPlayerStatsBySeriesId($seriesid, 'P', $leagueid);
+		$sGoalieStats = GetPlayerStatsBySeriesId($seriesid, 'G', $leagueid);
 
 		$homeUserAlias = GetUserAlias($series["HomeUserID"]);
 		$awayUserAlias = GetUserAlias($series["AwayUserID"]);
@@ -90,6 +91,8 @@
 		//Checks
 		$BCH = 0;
 		$BCA = 0;
+    
+    $ShootPer = '';
 
 		while($row = mysqli_fetch_array($gamesplayed)){
 				
@@ -147,7 +150,7 @@
 
 						//Penalites
 						$PPH += $gStats["PIMH"];
-						$PPA += $gStats["PIMA"];						
+						$PPA += $gStats["PIMA"];			
 
 						//Breakaways
 						$BAH += $gStats["BAH"];
@@ -244,10 +247,10 @@
 		$saZoneP =  FormatZoneTime(date("Y-m-d H:i:s", $saZone));
 
 		//Divide Penaltie minutes by 2
-		if(!BlitzChk($leagueid)){
-			$PPH = ($PPH /2) + $PSA;
-			$PPA = ($PPA /2) + $PSH;
-		}
+		//if(!BlitzChk($leagueid)){
+			//$PPH = ($PPH /2) + $PSA;
+			//$PPA = ($PPA /2) + $PSH;
+		//}
 
 		mysqli_data_seek($gamesplayed, 0);
 
@@ -420,9 +423,10 @@
 							<td class="heading">PPG</td>							
 							<td class="heading">G</td>
 							<td class="heading">A</td>
+              <td class="heading c" style="font-size: 72%;">S<br/>h<br/>%</td>
 							<td class="heading c" style="font-size: 72%;">S<br/>O<br/>G</td>
 							<!-- <td class="heading">TOI/G</td> -->
-							<td class="heading c" style="font-size: 72%;">P<br/>e<br/>n</td>
+							<td class="heading c" style="font-size: 72%;">C<br/>h<br/>k</td>
 						</tr>	
 						<!-- start loop for all players with points -->
 		<?php 
@@ -437,8 +441,16 @@
 						$avgPts = number_format($row["tPoints"] / $row["GP"], 2);
 
 						if($pen > 0 )
-							$pen = $pen / 2;						
+							$pen = $pen / 2;			
 
+            $ShootPer = '-';
+            $ShootPerRaw = 0;
+            if ( $row["tSOG"] > 0 ) {
+              $ShootPerRaw = ( $row["tG"] / $row["tSOG"]) * 100;  
+              $ShootPer = number_format($ShootPerRaw, 0, '.', '');
+              $ShootPer .= '%';
+            }
+            
 						if($row["Pos"] != "G"){		?>							
 
 								<tr class="tight<?php print $stripe[$j & 1]; ?>">
@@ -446,14 +458,15 @@
 									<td class="" style="font-size: 80%;"><?=$player["First"] . " " . $player["Last"]?></td>
 									<td class=""><?=GetTeamABVById($row["TeamID"], $leagueid)?></td>
 									<td class=""><?=$row["Pos"]?></td>
-									<td class=""><?=$row["GP"]?></td>
-									<td class=""><?=$row["tPoints"]?></td>
+									<td class="c"><?=$row["GP"]?></td>
+									<td class="c"><?=$row["tPoints"]?></td>
 									<td class=""><?=$avgPts?></td>
 									<td class=""><?=$row["tG"]?></td>
 									<td class=""><?=$row["tA"]?></td>
-									<td class=""><?=$row["tSOG"]?></td>
+                  <td class="c"><?= $ShootPer ?></td>
+									<td class="c"><?=$row["tSOG"]?></td>
 									<!-- <td class=""><?=$TOIG?></td>		-->							
-									<td class=""><?=$pen?></td>
+									<td class="c"><?= $pen*2 ?></td>
 								</tr>	
 		<?php 
 					$j++;

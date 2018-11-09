@@ -3,7 +3,7 @@
     //Note TourneyId is only used in tournaments, else it is set to 0
 
     function AddGame($seriesid, $scheduleid, $homeuserid, $awayuserid, $leagueid, $tourneyid){	// add game to database
-        
+
             $conn = $GLOBALS['$conn'];
             $nextGameId = GetNextGameId();
             $filePath = $GLOBALS['$saveFilePath'];
@@ -11,92 +11,92 @@
             $blitz = blitzChk($leagueid);
 
             if($tourneyid >0){
-                $tourney = GetTourneyById($tourneyid);		
+                $tourney = GetTourneyById($tourneyid);
                 $leaguenm = $tourney["ABV"];
                 $filePath = $filePath . $leaguenm;
             }else{
                 $filePath .= $seriesid;
-            }	
-            $file = $filePath . "/" . "Series-" . $seriesid. '-game-'. $scheduleid . '.sv';	
-            
+            }
+            $file = $filePath . "/" . "Series-" . $seriesid. '-game-'. $scheduleid . '.sv';
+
             //ParseFile
-            $fr = fopen("$file", 'rb');	// reads file	
-        
-        
+            $fr = fopen("$file", 'rb');	// reads file
+
+
             // Away Team
-            fseek ($fr,59307);	
-            
+            fseek ($fr,59307);
+
             $awayid = hexdec(bin2hex(fread($fr, 1))) + 1;
-            
+
             // Home Team
             fseek ($fr,59305);
-            
+
             $homeid = hexdec(bin2hex(fread($fr, 1))) + 1;
-            
-            
+
+
             // Crowd Meter
             fseek ($fr,59277);
             $PeakMeter = hexdec(bin2hex(fread($fr, 1)));
-            
+
             logMsg ("Crowd:" . $PeakMeter);
-            
+
             // AWAY TEAM STATS
-            
+
             // Away Goals
             fseek ($fr,61111);
             $AwayScore = hexdec(bin2hex(fread($fr, 1)));
-            
+
             // Away Power Play Goals/Opportunities
             fseek ($fr,61101);
             $AwayPPG = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61103);
             $AwayPP = hexdec(bin2hex(fread($fr, 1)));
-            
+
             // Away SHG
             fseek ($fr,61953);
             $AwaySHG = hexdec(bin2hex(fread($fr, 1)));
 
             // Away SHGA
             fseek ($fr,61085);
-            $AwaySHGA = hexdec(bin2hex(fread($fr, 1))); 
-        
-            // Away Breakaway Goals/Opportunities 
+            $AwaySHGA = hexdec(bin2hex(fread($fr, 1)));
+
+            // Away Breakaway Goals/Opportunities
             fseek ($fr,61957);
             $AwayBKG = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61955);
             $AwayBKO = hexdec(bin2hex(fread($fr, 1)));
-        
+
             // Away One Timer Goals:Attempts
             fseek ($fr,61961);
             $Away1TG = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61959);
             $Away1TA = hexdec(bin2hex(fread($fr, 1)));
-        
+
             // Away Penalty Shot Goals:Attempts
             fseek ($fr,61965);
             $AwayPSG = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61963);
             $AwayPSA = hexdec(bin2hex(fread($fr, 1)));
 
             // Away Faceoffs Won
             fseek ($fr,61113);
             $AwayFOW = hexdec(bin2hex(fread($fr, 1)));
-        
+
             // Away Body Checks
             fseek ($fr,61115);
             $AwayByCks = hexdec(bin2hex(fread($fr, 1)));
-        
+
             // Away Team Penalties / Minutes
             fseek ($fr,61105);
             $AwayPen = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61107);
             $AwayPenM = hexdec(bin2hex(fread($fr, 1)));
-        
+
             // Away Attack Zone
             fseek ($fr,61108);
             $AwayAZMinutes = hexdec(bin2hex(fread($fr, 1))) *256;
@@ -105,71 +105,71 @@
             $AwayAZ = ($AwayAZMinutes + $AwayAZSeconds);
             $AwayAZDisplayM = Round((Floor($AwayAZ/60)),0);
             $AwayAZDisplayS = ($AwayAZ % 60);
-        
+
             // Away Passing Stats
             fseek ($fr,61119);
             $AwayPsC = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61117);
             $AwayPsA = hexdec(bin2hex(fread($fr, 1)));
-            
+
             // HOME TEAM STATS
-            
+
             // Home Goals
             fseek ($fr,60243);
             $HomeScore = hexdec(bin2hex(fread($fr, 1)));
-            
+
             // Home Power Play Goals/Opportunities
             fseek ($fr,60233);
             $HomePPG = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,60235);
             $HomePP = hexdec(bin2hex(fread($fr, 1)));
-        
+
             // Home SHG
             fseek ($fr,61085);
             $HomeSHG = hexdec(bin2hex(fread($fr, 1)));
-        
+
             // Home SHGA
             fseek ($fr,61953);
             $HomeSHGA = hexdec(bin2hex(fread($fr, 1)));
-        
-            // Home Breakaway Goals/Opportunities 
+
+            // Home Breakaway Goals/Opportunities
             fseek ($fr,61089);
             $HomeBKG = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61087);
             $HomeBKO = hexdec(bin2hex(fread($fr, 1)));
-        
+
             // Home One Timer Goals:Attempts
             fseek ($fr,61093);
             $Home1TG = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61091);
             $Home1TA = hexdec(bin2hex(fread($fr, 1)));
-        
+
             // Home Penalty Shot Goals:Attempts
             fseek ($fr,61097);
             $HomePSG = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61095);
             $HomePSA = hexdec(bin2hex(fread($fr, 1)));
-        
-            // Home Faceoffs Won 
+
+            // Home Faceoffs Won
             fseek ($fr,60245);
             $HomeFOW = hexdec(bin2hex(fread($fr, 1)));
-        
+
             // Home Body Checks
             fseek ($fr,60247);
             $HomeByCks = hexdec(bin2hex(fread($fr, 1)));
-        
+
             // Home Team Penalties / Minutes
             fseek ($fr,60237);
             $HomePen = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,60239);
             $HomePenM = hexdec(bin2hex(fread($fr, 1)));
-        
+
             // Home Attack Zone
             fseek ($fr,60240);
             $HomeAZMinutes = hexdec(bin2hex(fread($fr, 1))) *256;
@@ -178,34 +178,34 @@
             $HomeAZ = ($HomeAZMinutes + $HomeAZSeconds);
             $HomeAZDisplayM = Round((Floor($HomeAZ/60)),0);
             $HomeAZDisplayS = ($HomeAZ % 60);
-        
+
             // Home Passing Stats
             fseek ($fr,60251);
             $HomePsC = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,60249);
             $HomePsA = hexdec(bin2hex(fread($fr, 1)));
-            
+
             /*********PERIOD STATS*************/
-            
+
             // Away Team Period Goals
-            
+
             fseek ($fr,61933);
             $A1stGoals = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61935);
             $A2ndGoals = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61937);
             $A3rdGoals = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61939);
             $AOTGoals = hexdec(bin2hex(fread($fr, 1)));
-        
+
             // Away Team Period SOG
             fseek ($fr,61941);
             $A1stSOG = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61943);
             $A2ndSOG = hexdec(bin2hex(fread($fr, 1)));
 
@@ -214,7 +214,7 @@
 
             fseek ($fr,61947);
             $AOTSOG = hexdec(bin2hex(fread($fr, 1)));
-        
+
             //--------- End of Away Period Stats---------------
 
             //--------- Home Team Period Stats-----------------
@@ -222,61 +222,61 @@
             // Home Team Period Goals
             fseek ($fr,61065);
             $H1stGoals = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61067);
             $H2ndGoals = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61069);
             $H3rdGoals = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61071);
             $HOTGoals = hexdec(bin2hex(fread($fr, 1)));
-        
+
             // Home Team Period SOG
             fseek ($fr,61073);
             $H1stSOG = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61075);
             $H2ndSOG = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61077);
             $H3rdSOG = hexdec(bin2hex(fread($fr, 1)));
-        
+
             fseek ($fr,61079);
             $HOTSOG = hexdec(bin2hex(fread($fr, 1)));
-        
+
             //------ End of Home Period Stats ---------
-                
-                
+
+
             // OT Game?
-            
+
             $HTotalGoals = $H1stGoals + $H2ndGoals + $H3rdGoals + $HOTGoals;
             $ATotalGoals = $A1stGoals + $A2ndGoals + $A3rdGoals + $AOTGoals;
-            
+
             if(($HOTSOG > 0) || ($AOTSOG > 0) || ($HOTGoals > 0) || ($AOTGoals > 0) || ($HTotalGoals == $ATotalGoals))  // OT Game
                 $OT = '1';
             else
-                $OT = '0';			
-            
+                $OT = '0';
+
             // Add to GameStats
-            
-            $awayTeamAbv = GetTeamById($awayid);
-            $homeTeamAbv = GetTeamById($homeid);
+
+            $awayTeamAbv = GetTeamById($awayid, $leagueid);
+            $homeTeamAbv = GetTeamById($homeid, $leagueid);
             $schedule = GetScheduleByID($scheduleid);
 
             $homeUserAlias = GetUserAlias($homeuserid);
-            $awayUserAlias = GetUserAlias($awayuserid);			
-                    
+            $awayUserAlias = GetUserAlias($awayuserid);
+
             logMsg("Away Team: ID " . $awayid . " : " . $awayTeamAbv["ABV"] . ": " . $AwayScore . " Goals. Player: " . $awayUserAlias);
             logMsg("Home Team: ID " . $homeid . " : " . $homeTeamAbv["ABV"] . ": " . $HomeScore . " Goals. Player: " . $homeUserAlias);
-            
+
             $hazstring = '00:'. $HomeAZDisplayM. ':'. $HomeAZDisplayS;		// Attack Zone String
             $aazstring = '00:'. $AwayAZDisplayM. ':'. $AwayAZDisplayS;
-            
+
             $goalf = ", GHP1, GHP2, GHP3, GHOT, GAP1, GAP2, GAP3, GAOT";
             $goalv = ", '$H1stGoals', '$H2ndGoals', '$H3rdGoals', '$HOTGoals', '$A1stGoals', '$A2ndGoals', '$A3rdGoals', '$AOTGoals'";
             $shotf = ", SHP1, SHP2, SHP3, SHOT, SAP1, SAP2, SAP3, SAOT";
-            $shotv = ", '$H1stSOG', '$H2ndSOG', '$H3rdSOG', '$HOTSOG', '$A1stSOG', '$A2ndSOG', '$A3rdSOG', '$AOTSOG'"; 
+            $shotv = ", '$H1stSOG', '$H2ndSOG', '$H3rdSOG', '$HOTSOG', '$A1stSOG', '$A2ndSOG', '$A3rdSOG', '$AOTSOG'";
             $pmf = ", PIMH, PIMA";
             $pmv = ", '$HomePenM', '$AwayPenM'";
             $bcf = ", BCH, BCA";
@@ -293,14 +293,14 @@
             $foakv = ", '$HomeFOW', '$AwayFOW', '$hazstring', '$aazstring'";
             $pasf = ", PCH, PH, PCA, PA";
             $pasv = ", '$HomePsC', '$HomePsA', '$AwayPsC', '$AwayPsA'";
-        
+
 
             $sql = "INSERT INTO gamestats (LeagueID, SeriesID, Crowd
                     $goalf $shotf $pmf $bcf $ppshf $baf $otf $psf $foakf $pasf)
                     VALUES ($leagueid, '$seriesid', '$PeakMeter' $goalv $shotv $pmv $bcv $ppshv $bav $otv $psv $foakv $pasv)";
-            
+
             $sqlr = mysqli_query($conn, $sql);
-            
+
             $gameid = -1;
 
             if ($sqlr) {
@@ -309,8 +309,8 @@
             } else {
                 logMsg("Error: GameStats: " . $sql . "<br>" . mysqli_error($conn));
             }
-            
-        
+
+
             //logMsg($sql);
             // Update Schedule
 
@@ -323,16 +323,16 @@
                 $WinnerUserID = $awayuserid;
 
             }
-        
+
 
             $schupq = "UPDATE schedule SET LeagueID='$leagueid', HomeScore= '$HomeScore', AwayScore= '$AwayScore', HomeUserID='$homeuserid', AwayUserID='$awayuserid', HomeTeamID='$homeid', AwayTeamID='$awayid', OT= '$OT', ConfirmTime= NOW(), GameID='$gameid', WinnerUserID='$WinnerUserID'
                 WHERE ID= '$scheduleid' LIMIT 1";
 
             //$schupq = "INSERT INTO Schedule (HomeScore, AwayScore, OT, ConfirmTime, GameID, WinnerTeamID)
             //		VALUES ('$homeid', '$awayid', '$HomeUserID', '$AwayUserID', '$HomeScore', '$AwayScore', '$OT', NOW(), '$gameid', '$seriesid', '$WinnerTeamID')";
-            
+
             $schupr = mysqli_query($conn, $schupq);
-            
+
             if ($schupr) {
                 logMsg("Schedule Updated");
             } else {
@@ -341,33 +341,33 @@
 
             //Check to see if series is complete.  If so Mark as Complete
             CheckSeriesForWinner($seriesid, $homeuserid, $awayuserid);
-            
+
             //logMsg($schupq);
-                
+
     /**********************************************************************************/
 
-            
+
         // Add Player Stats
-        
-        
+
+
         $i = 1;
-        
+
         // Get Home Team
 
         //Get League Table
 
-        $lgTable = GetLeagueTableName($leagueid); 
-        
-        $plq = "SELECT PlayerID, TeamID, Last, Pos FROM $lgTable WHERE TeamID='$homeid' ORDER BY PlayerID ASC";	
-        
+        $lgTable = GetLeagueTableName($leagueid);
+
+        $plq = "SELECT PlayerID, TeamID, Last, Pos FROM $lgTable WHERE TeamID='$homeid' ORDER BY PlayerID ASC";
+
         $plr = @mysqli_query($conn, $plq) or die("Could not retrieve Home Player List.  Please contact administrator.");
         //echo $plq;
-        
+
         logMsg("Home Player Stats<br/>");
         while($prow = mysqli_fetch_array($plr, MYSQL_ASSOC)){	// Team Roster
-        
+
             // Home Player Stats
-            
+
             $pid = $prow['PlayerID'];
             $pos = $prow['Pos'];
             $name = $prow['Last'];
@@ -383,48 +383,48 @@
             $SOG = hexdec(bin2hex(fread($fr, 1)));
 
             if($blitz == 1){  // Blitz League
-				
+
 				fseek ($fr,60487 + $i);		// In Blitz, this is Chks For
    				$Chksfor = hexdec(bin2hex(fread($fr, 1)));
-			
+
 				fseek ($fr,60513 + $i);		// In Blitz, this is Chks Against
    				$ChksA = hexdec(bin2hex(fread($fr, 1)));
-				
+
 				$PIM = 0;  // will be calculated later
 				$PlusMinus = 0;
-			
-			}	
+
+			}
             else{
-                fseek ($fr,60487 + $i);		
+                fseek ($fr,60487 + $i);
                 $PIM = hexdec(bin2hex(fread($fr, 1)));
 
-                fseek ($fr,60513 + $i);		
+                fseek ($fr,60513 + $i);
                 $Chksfor = hexdec(bin2hex(fread($fr, 1)));
 
                 $ChksA = 0;
                 $PlusMinus = 0;
             }
-        
+
             // Home TOI
             fseek ($fr,(60538 + ($i * 2)));
             $TOIMinutes = hexdec(bin2hex(fread($fr, 1))) * 256;
             fseek ($fr,(60539 + ($i * 2)));
             $TOISeconds = hexdec(bin2hex(fread($fr, 1)));
-            
+
             $TOI = ($TOIMinutes + $TOISeconds);
             $TOIDisplayM = Round((Floor($TOI/60)),0);
             $TOIDisplayS = ($TOI % 60);
-            
+
             // Compensate for TOI bug in Genesis
-            
-            $TOIDisplayS = $TOIDisplayS - 2;  
+
+            $TOIDisplayS = $TOIDisplayS - 2;
             if($TOIDisplayM == 0 && $TOIDisplayS == 0)
                 $TOIDisplayS == 2;
-                
+
             $TOIString = "00:". $TOIDisplayM. ":". $TOIDisplayS;
-            
-            if($Goals != '0' || $Assists != '0' || $SOG != '0' || $PIM != '0' || $Chksfor != '0' || $TOI != '0'){  // Played Game 
-                
+
+            if($Goals != '0' || $Assists != '0' || $SOG != '0' || $PIM != '0' || $Chksfor != '0' || $TOI != '0'){  // Played Game
+
                 // Insert Stats into PlayerStats
                 if($Goals != '0'){
                     logMsg("Index:" . $i);
@@ -432,40 +432,40 @@
                         logMsg("PlayerName:" . $name);
             logMsg("Pos:" . $pos);
 
-            
+
             logMsg("Goals:" . $Goals . "<br/>");
                 }
-                
+
                 $psq = "INSERT INTO playerstats (GameID, TeamID, PlayerID, Pos, G, A, SOG, PIM, Chks, TOI, ChksA, PlusMinus, LeagueID)
                             VALUES ('$gameid', '$homeid', '$pid', '$pos', '$Goals', '$Assists', '$SOG', '$PIM',
                             '$Chksfor', '$TOIString', '$ChksA', '$PlusMinus', '$leagueid')";
-                            
 
-                $psr = mysqli_query($conn, $psq);			
-                
+
+                $psr = mysqli_query($conn, $psq);
+
                 if ($psr) {
                     //logMsg("Updated Home Player Stats");
                 } else {
                     logMsg("Error: Home PlayerStats" . $psq . "<br>" . mysqli_error($conn));
-                }						
-                
-                                    
+                }
+
+
             }
-        
+
         $i++;
         }
-        
+
         // Away Team
-        
+
         $i = 1;
-        
+
         $plq = "SELECT PlayerID, TeamID,Last, Pos FROM $lgTable WHERE TeamID='$awayid' ORDER BY PlayerID ASC";
         $plr = @mysqli_query($conn, $plq) or die("Could not retrieve Away Player List.  Please contact administrator.");
-        
+
         logMsg("Away Player Stats<br/>");
         $array = array();
         while($prow = mysqli_fetch_array($plr, MYSQL_ASSOC)){  // Team Roster
-        
+
             // Away Player Stats
             $pid = $prow['PlayerID'];
             $pos = $prow['Pos'];
@@ -482,17 +482,17 @@
             $SOG = hexdec(bin2hex(fread($fr, 1)));
 
             if($blitz == 1){  // Blitz League
-				
+
 				fseek ($fr,61355 + $i);		// In Blitz, this is Chks For
    				$Chksfor = hexdec(bin2hex(fread($fr, 1)));
-			
+
 				fseek ($fr,61381 + $i);		// In Blitz, this is Chks Against
    				$ChksA = hexdec(bin2hex(fread($fr, 1)));
-				
+
 				$PIM = 0;  // will be calculated later
 				$PlusMinus = 0;
-			
-			}		
+
+			}
 			else {
 
 				fseek ($fr,61355 + $i);
@@ -500,13 +500,13 @@
 
 				fseek ($fr,61381 + $i);
    				$Chksfor = hexdec(bin2hex(fread($fr, 1)));
-			
+
 				$ChksA = 0;
 				$PlusMinus = 0;
 
 			}
 
-               
+
 
             // Away TOI
             fseek ($fr,(61406 + ($i * 2)));
@@ -516,17 +516,17 @@
             $TOI = ($TOIMinutes + $TOISeconds);
             $TOIDisplayM = Round((Floor($TOI/60)),0);
             $TOIDisplayS = ($TOI % 60);
-            
+
             // Compensate for TOI bug in Genesis
-            
-            $TOIDisplayS = $TOIDisplayS - 2;  
+
+            $TOIDisplayS = $TOIDisplayS - 2;
             if($TOIDisplayM == 0 && $TOIDisplayS == 0)
                 $TOIDisplayS == 2;
-                
+
             $TOIString = "00:". $TOIDisplayM. ":". $TOIDisplayS;
-            
-            if($Goals != '0' || $Assists != '0' || $SOG != '0' || $PIM != '0' || $Chksfor != '0' || $TOI != '0'){  // Played Game 
-                
+
+            if($Goals != '0' || $Assists != '0' || $SOG != '0' || $PIM != '0' || $Chksfor != '0' || $TOI != '0'){  // Played Game
+
                 // Insert Stats into PlayerStats
 
                     if($Goals != '0'){
@@ -535,40 +535,40 @@
                         logMsg("PlayerName:" . $name);
                         logMsg("Pos:" . $pos);
 
-            
+
                         logMsg("Goals:" . $Goals . "<br/>");
                 }
 
                 logMsg("ChksA:" . $ChksA . "<br/>");
-                
+
                 $psq = "INSERT INTO playerstats (GameID, TeamID, PlayerID, Pos, G, A, SOG, PIM, Chks, TOI, ChksA, PlusMinus, LeagueID)
                             VALUES ('$gameid', '$awayid', '$pid', '$pos', '$Goals', '$Assists', '$SOG', '$PIM', '$Chksfor', '$TOIString', '$ChksA', '$PlusMinus', '$leagueid')";
-                
-                $psr = mysqli_query($conn, $psq);			
-                
+
+                $psr = mysqli_query($conn, $psq);
+
                 if ($psr) {
                     //logMsg("Updated Away Player Stats");
                 } else {
                     logMsg("Error: Away PlayerStats" . $psq . "<br>" . mysqli_error($conn));
-                }		
+                }
             }
-        
+
         $i++;
         }
 
-        
-    /**********************************************************************************/			
+
+    /**********************************************************************************/
 
     // Scoring Summary
-        
+
         logMsg("Scoring Summary<br/>");
 
         $tmpExtract = 59627;	// Scoring Summary Length Offset
         fseek ($fr,59627);
-        $EndofSS = hexdec(bin2hex(fread($fr, 1)));	
-        
+        $EndofSS = hexdec(bin2hex(fread($fr, 1)));
+
         for ($i=1;$i<(($EndofSS + 6) / 6);$i+=1){
-            
+
             // Period of Goal
             fseek ($fr,$tmpExtract + 1);
             $Period = (int) (hexdec(bin2hex(fread($fr, 1))) / 64) + 1;
@@ -588,13 +588,13 @@
             else
                 $Sec = $GoalSec;
             $time = $GoalMin. ":". $Sec;
-            
+
             // Team that scored, type of goal
-            
+
             fseek ($fr,$tmpExtract + 3);
             $GoalTeam = (bin2hex(fread($fr, 1)));
             switch($GoalTeam){
-            
+
                 case('0'):
                     $team = $homeid;
                     $type = 'SH2';
@@ -634,20 +634,20 @@
                 case('84'):
                     $team = $awayid;
                     $type = 'PP2';
-                break;	
+                break;
                 default:
                     die("Error with Scoring Summary. Could not retrieve Scoring Team Info.");
                 break;
             }
-            
-            
+
+
             // Player that scored
                 fseek ($fr,$tmpExtract + 4);
-                $GoalPlayer = (hexdec(bin2hex(fread($fr, 1))));			
+                $GoalPlayer = (hexdec(bin2hex(fread($fr, 1))));
                 $goalid = getPlayerID($team, $GoalPlayer, $leagueid);
 
               //  echo "lg:" . $leagueid;
-                
+
                 // Assisters on Goal
                 fseek ($fr,$tmpExtract + 5);
                 $GoalAst1 = (hexdec(bin2hex(fread($fr, 1))));
@@ -655,7 +655,7 @@
                     $a1id = getPlayerID($team, $GoalAst1, $leagueid);
                 else
                     $a1id = 0;
-                
+
                 fseek ($fr,$tmpExtract + 6);
                 $GoalAst2 = (hexdec(bin2hex(fread($fr, 1))));
                 if($GoalAst2 != 255)  // Assist occurred
@@ -664,16 +664,16 @@
                     $a2id = 0;
 
                 // Enter Scoring Summary into database
-            
+
             $ssq = "INSERT INTO scoresum (GameID, TeamID, Period, Time, G, A1, A2, Type)
                     VALUES ($gameid, '$team', '$Period', '$time', '$goalid', '$a1id', '$a2id', '$type')";
             $ssr = @mysqli_query($conn, $ssq) or die($ssq. " Could not enter Score Summary." .  mysqli_error($conn));
-            
+
             //echo $ssq;
-            $tmpExtract = ($tmpExtract + 6);  // move to next goal summary 
-        
+            $tmpExtract = ($tmpExtract + 6);  // move to next goal summary
+
         }
-        
+
         /**********************************************************************************/
             //Penalty Summary
 
@@ -687,7 +687,7 @@
                 // Period of Penalty
                 fseek ($fr,$tmpExtract2 + 1);
                 $PenPer = (int) (hexdec(bin2hex(fread($fr, 1))) / 64) + 1;
-    
+
                 // Time of Penalty (in Seconds)
                 fseek ($fr,$tmpExtract2 + 1);
                 $PenSec =  (hexdec(bin2hex(fread($fr, 1))));
@@ -700,28 +700,28 @@
                     $Sec = '0'. $PenSec;
                 else
                     $Sec = $PenSec;
-                    
+
                 $pentime = $PenMin. ":". $Sec;
 
                 // Team that got Penalized
                 fseek ($fr,$tmpExtract2 + 3);
-                $PenTeam = (hexdec(bin2hex(fread($fr, 1)))); 
-                
-                if($PenTeam == 18 || $PenTeam == 22 || $PenTeam ==  24 || $PenTeam ==  26 || $PenTeam == 28 || $PenTeam == 30 
+                $PenTeam = (hexdec(bin2hex(fread($fr, 1))));
+
+                if($PenTeam == 18 || $PenTeam == 22 || $PenTeam ==  24 || $PenTeam ==  26 || $PenTeam == 28 || $PenTeam == 30
                     || $PenTeam == 32 || $PenTeam ==  34 || $PenTeam ==  36 || $PenTeam == 38) // Home
                     $team = $homeid;
-                else 
+                else
                     $team = $awayid;
-            
+
                 if($PenTeam == '18'  || $PenTeam == '146')
                     $type = "Boarding";
                 else if($PenTeam == '22' || $PenTeam == '150')
                     $type = "Charging";
                 else if($PenTeam == '24' || $PenTeam == '152')
                     $type = "Slashing";
-                else if($PenTeam == '26' || $PenTeam == '154') 			
+                else if($PenTeam == '26' || $PenTeam == '154')
                     $type = "Roughing";
-                else if($PenTeam == '28' || $PenTeam == '156') 
+                else if($PenTeam == '28' || $PenTeam == '156')
                     $type = "Cross Check";
                 else if($PenTeam == '30' || $PenTeam == '158')
                     $type = "Hooking";
@@ -733,57 +733,57 @@
                     $type = "Holding";
                 else if($PenTeam == '38' || $PenTeam == '166')
                     $type = "Holding";
-                    
-                
+
+
                 // Player
-                
+
                 fseek ($fr,$tmpExtract2 + 4);
                 $PenPlayer = (hexdec(bin2hex(fread($fr, 1))));
                 $penid = getPlayerID($team, $PenPlayer, $leagueid);
-                            
-                
+
+
                 // Add to database
-                
+
                 $psq = "INSERT INTO pensum (GameID, TeamID, PlayerID, Period, Time, Type)
                         VALUES ('$gameid', '$team', '$penid', '$PenPer', '$pentime', '$type')";
-                $psr = @mysqli_query($conn, $psq) or die("Error: PenaltySummary " . $psq . "<br>" . mysqli_error($conn));		
-                
+                $psr = @mysqli_query($conn, $psq) or die("Error: PenaltySummary " . $psq . "<br>" . mysqli_error($conn));
+
                 if($blitz == 1){  // Blitz League
-			
-                    $pq = "UPDATE playerstats SET PIM=PIM+2 WHERE PlayerID='$penid' AND GameID='$gameid' LIMIT 1";    
-                    //echo $pq . "<br/>";  
-                    
-                    $psr = mysqli_query($conn, $pq);			
+
+                    $pq = "UPDATE playerstats SET PIM=PIM+2 WHERE PlayerID='$penid' AND GameID='$gameid' LIMIT 1";
+                    //echo $pq . "<br/>";
+
+                    $psr = mysqli_query($conn, $pq);
 
                     //echo mysqli_affected_rows($conn);
-                
+
                     if ($psr) {
                         //logMsg("Updated Home Player Stats");
                     } else {
                         die("Error: COuld not add Blitz Penalties" . $pq . "<br>" . mysqli_error($conn));
-                    }	
+                    }
 
-                    
+
                 }
 
                 $tmpExtract2 = ($tmpExtract2 + 4);
             }
-        
+
 
             // Plus/Minus for Blitz
-        
+
             $tmpExtract = 66413;	// Plus/Minus Info Length Offsets 66412, 66413
             fseek ($fr,66412);
             $EndofPM = hexdec(bin2hex(fread($fr, 2)));
-            
+
             for ($i=1;$i<(($EndofPM + 14) / 14);$i+=1){
 
                 // Type of Goal, Team that Scored
-                fseek ($fr,$tmpExtract + 1);		
+                fseek ($fr,$tmpExtract + 1);
                 $GoalTeam = hexdec(bin2hex(fread($fr, 1)));
     //			echo 'Goal Type: '. $GoalTeam. '<br />';
                 switch($GoalTeam){
-                
+
                     case(0):
                         $pm = 1;
                         $type = 'SH2';
@@ -808,7 +808,7 @@
                         $hpm = 1;
                         $apm = -1;
                     break;
-                    
+
                     case(128):
                         $pm = 1;
                         $type = 'SH2';
@@ -833,40 +833,40 @@
                         $hpm = -1;
                         $apm = 1;
                     break;
-                    
+
                     default:
                         $pm = 0;
                     break;
                 }
-                
+
                 //if($pm == 1){  // Plus/Minus will be applied
                 if(false){
                     $hmonice = $tmpExtract + 3;
                     $awonice = $tmpExtract + 9;
-                    
+
                     // Retrieve Home Players and Add Plus/Minus
-                    
+
                     for($j = 0;$j < $hplayers;$j++){
-                        
+
                         fseek ($fr,$hmonice + $j);
                         $Player = (hexdec(bin2hex(fread($fr, 1))));
-                        
+
                         if($Player != '0' && $Player != '1' && $Player != '255'){	// FF is in place of a player missing (like on a SH goal) or Goalie ( 0 or 1)
                             $plid = getPlayerID($hmtm, $Player, $stattype, 0, 'G');
-                        
-                            $pmq = "UPDATE playerstats SET PlusMinus = PlusMinus + $hpm 
+
+                            $pmq = "UPDATE playerstats SET PlusMinus = PlusMinus + $hpm
                                     WHERE PlayerID='$plid' AND GameID='$gameid' AND TeamID='$hmtm' LIMIT 1";
                             $pmr = @mysql_query($pmq) or die("Error:  Could not update Home Plus/Minus Stat.");
                         }
                     }
-                    
+
                     // Away Players
-                    
+
                     for($j = 0;$j < $aplayers;$j++){
-                        
+
                         fseek ($fr,$awonice + $j);
                         $Player = (hexdec(bin2hex(fread($fr, 1))));
-                        
+
                         if($Player != '0' && $Player != '1' && $Player != '255'){	// 255 is in place of a player missing (like on a SH goal) or Goalie ( 0 or 1)
 
                             $plid = getPlayerID($awtm, $Player, $stattype, 0, 'G');
@@ -875,10 +875,10 @@
                             $pmr = @mysql_query($pmq) or die("Error:  Could not update Away Plus/Minus Stat.");
                         }
                     }
-                
-            
+
+
                 }
-            
+
                 $tmpExtract = ($tmpExtract + 14);  // move to next summary
 
             }
@@ -888,6 +888,6 @@
         fclose($fr);
         rename ($file, $filePath . "/" . $awayTeamAbv["ABV"] . "-" . $awayUserAlias . "_at_" . $homeTeamAbv["ABV"] . "-" . $homeUserAlias . "_gameId-" . $gameid . "_seriesId-" .$seriesid . "_bin-" . $leagueName . ".gs0" );
 
-	//mysqli_close($conn);	
+	//mysqli_close($conn);
 	}  // end of function
 ?>

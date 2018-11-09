@@ -54,7 +54,7 @@
     background-position: -900px 0;
 }
 
-.large.LA {
+.large.LA, .large.LAK {
     background-position: -1000px 0;
 }
 
@@ -135,6 +135,10 @@
     background-position: -2697px 0;
 }
 
+.large.HAM {
+    background-position: -2797px 0;
+}
+
 /* Small icons */
 .logo.small {
     width: 49px;
@@ -184,7 +188,7 @@
     background-position: -451px -107px;
 }
 
-.small.LA {
+.small.LA, .small.LAK {
     background-position: -501px -107px;
 }
 
@@ -258,3 +262,17 @@
 .small.ASW {
     background-position: -1349px -107px;
 }
+
+.small.HAM {
+    background-position: -1399px -107px;
+}
+
+.small.COL {
+    background-position: -1450px -107px;
+}
+
+.small.VGK {
+    background-position: -1499px -107px;}
+
+
+

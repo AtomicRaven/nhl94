@@ -57,14 +57,16 @@
 						if ($LOGGED_IN == true) {
 					?>
 
-					<h2>A. Upload a League Game</h2>
+					<h2>Upload a League Game</h2>
 
 					<div style=""><?= $msg ?></div><br/>
 
 					<div id="msg" style="color:red;"></div>
 					<form name="seriesForm" method="post" action="processCreateTourney.php" enctype="multipart/form-data">
 						<?=$hiddenInputs?>
-						<table class="">
+
+						
+						<table class="uploadThingy">
 							<tr class="">
 								<td class="">
 										 <?= $awayUserSelectBox?> 
@@ -72,14 +74,15 @@
 								<td class="">@</td>
 								<td class="">
 										<?= $homeUserSelectBox?>
-								</td>					
-								<td>
-									<!--<button type="button" class='square' id='submit1' onclick="UploadFile('1', true)">Upload File</button><br/>-->
-									Choose file: <input type="file" name="uploadfile"><input type="button" onclick="SubmitForm()" value="Upload"><input type="hidden" name="scheduleid" value="1">
+								</td>		
+							</tr>
+							<tr>		
+								<td colspan="3">
+									<input type="file" name="uploadfile"><input type="button" onclick="SubmitForm()" value="Upload"><input type="hidden" name="scheduleid" value="1">
 								</td>										
 							</tr>							
 						</table>
-						<div colspan="4" id="fileInput1" style="display:none;"></div>	
+						<div id="fileInput1" style="display:none;"></div>	
 					</form>
 
 					<?php
@@ -88,18 +91,23 @@
 
 
 					<p><br /></p>  	
-					<h2>B. Standings</h2> 
+					<h2>Standings</h2> 
 					
 					<table class="lg_standings">
 						<tr class="">
 							<td class="c"><br /></td>
 							<td class="">#</td>
+							<?php if ($tourney["StaticTeam"] == 1){ ?>
 							<td class="">Tm</td>
+							<?php } ?>
 							<td class="">Coach</td>
 							<td class="">GP</td>
 							<td class="">W</td>
 							<td class="">L</td>
 							<td class="c">%</td>
+							<?php if ($tourney["StaticTeam"] != 1){ ?>
+							<!-- <td class="">Lvl</td> -->
+							<?php } ?>
 						</tr>
 						<?php
 
@@ -132,12 +140,14 @@
 									//"gAgainst"=>$gAgainst,
 									//"gTotal"=>$gTotal,
 									"GP"=>$GP,
-									"PCT"=>GetAvg($Wins, $GP)
+									"PCT"=>GetAvg($Wins, $GP),
+									"Level"=> $row["Level"]
 									//"GFA"=>GetAvg($gFor, $GP),
 									//"GAA"=>GetAvg($gAgainst, $GP)
 								);							
 
-								usort($sortedLeaders, 'SortByWins');							
+								usort($sortedLeaders, 'SortByWins');
+											
 							
 							}
 							$j=0;
@@ -148,17 +158,35 @@
 						<tr class="tight">
 							<td class="c"><button type="button" class='square detailsButton' style='width: 22px; text-align: center;'>+</button></td>
 							<td class="c"><?=$j?></td>
+							<?php if ($tourney["StaticTeam"] == 1){ ?>
 							<td class=""><?=$user["ABV"]?></td>
+							<?php } ?>
 							<!--<td class=""><a href="javascript:location='./leagueStats.php';">(<?=$user["UserName"]?>)</a></td>-->
-							<td class="">(<?=$user["UserName"]?>)</td>
+							<td class=""><?=$user["UserName"]?> <!-- (<?=$user["Level"]?>) --></td>
 							<td class="c"><?=$user["GP"]?></td>
 							<td class="c"><?=$user["Wins"]?></td>
 							<td class="c"><?=$user["Losses"]?></td>
 							<td class="c"><?=$user["PCT"]?></td>
+							<?php if ($tourney["StaticTeam"] != 1){ ?>
+							<!-- <td class=""><?=$user["Level"]?></td> -->
+							<?php } ?>
 						</tr>												
 
 						<tr class="show_game_histories"><td><br/></td><td colspan="7">
-							<ol>
+							<table class="newTable">
+								<thead>
+									<tr class="headerLg">
+										<th>Gm</th>
+										<th>Away</th>	
+										<th>@</th>
+										<th>Home</th>
+										<th>Score</th>
+										<th>Timestamp</th>
+										<th><br /></th>
+									</tr>
+								</thead>
+								<tbody>
+							
 							<?php
 
 								$i=0;
@@ -166,7 +194,12 @@
 								
 								foreach($user["Games"] as $row2) {
 
-									$i++;								
+									$i++;				
+
+									if(($_SESSION['userId'] == $row2["HomeUserID"] || $_SESSION['userId'] == $row2["AwayUserID"]) || $_SESSION['Admin'])
+										$showDeleteBtn = true;
+									else
+										$showDeleteBtn = false;
 
 									$homeTeam = GetTeamABVById($row2["HomeTeamID"], $leagueid);
 									$awayTeam = GetTeamABVById($row2["AwayTeamID"], $leagueid);
@@ -177,54 +210,87 @@
 									$homeScore = $row2["HomeScore"];
 									$awayScore = $row2["AwayScore"];
 
-									$score = $i . ". ";									
-									$score .= $awayTeam;
-									//$score .= "(" . $homeUser . ") @ ";
 									if( $awayScore < $homeScore ) {
-										$wins = ' loses';
+										$winnerScore = $homeScore;
+										$loserScore = $awayScore;
+										$winnerTeam = $homeTeam;
+										$loserTeam = $awayTeam;
+										$winnerUser = $homeUser;
+										$loserTeam = $awayUser;
+										$awayTitle = $awayTeam . " (" . $awayUser . ")";
+										$homeTitle = "<em>". $homeTeam . " (" . $homeUser . ")</em>";
 									}
 									else {
-										$wins = ' wins';
-									}
-									$score .= $wins . " @ ";
-									$score .= $homeTeam;
-									//$score .=  "(" . $awayUser . ")";
-									$score .= " [ " . $awayScore . " to " . $homeScore . " ]";
+										$winnerScore = $awayScore;
+										$loserScore = $homeScore;
+										$winnerTeam = $awayTeam;
+										$loserTeam = $homeTeam;
+										$winnerUser = $awayUser;
+										$loserTeam = $homeUser;
+										$awayTitle = "<em>". $awayTeam . " (" . $awayUser . ")</em>";
+										$homeTitle = $homeTeam . " (" . $homeUser . ")";
+									}							
 
+									//Overtime
+									$ot = "";
+									if($row2["OT"] == 1)
+										$ot = "(OT)";
+
+									$dateSubmitted = new DateTime($row2["ConfirmTime"]);
+									$formattedDate = date_format($dateSubmitted, 'M d, Y @ h:i A');
 									
 
-									if(($_SESSION['userId'] == $row2["HomeUserID"] || $_SESSION['userId'] == $row2["AwayUserID"]) || $_SESSION['Admin'])
-										$showDeleteBtn = true;
-									else
-										$showDeleteBtn = false;
-									
 							?>
-								<li><?php
-									if($showDeleteBtn){
+								<!-- start: repeat this part (1 row for each game) -->
+								<tr class="resultsLg">
+									<td class="c"><?=$i?></td>
+									<td><?=$awayTitle?></td>	
+									<td class="c">@</th>
+									<td><?=$homeTitle?></td>
+									<td class="c"><?=$winnerScore . "-" . $loserScore?><em> <?=$winnerTeam?></em> <?=$ot?></td>
+									<td class="c"><?=$formattedDate?></td>
+									<td class="c">
+									<button type="button" class="square gameResultsButton" data-game-results=<?php print $row2['SeriesID']; ?>>Details</button>
+									<?php
+										if($showDeleteBtn){
 									?>
-										<button type="button" class="square" onclick="DeleteGame('<?=$row2['GameID']?>','<?=$row2['SeriesID']?>', 'tourney', '<?=$tourneyid?>')">x</button> 
+									<button type="button" class="square" onclick="DeleteGame('<?=$row2['GameID']?>','<?=$row2['SeriesID']?>', 'tourney', '<?=$tourneyid?>')">x</button> 
 									<?php
 										}
 									?>
-									<?=$score?>&nbsp;
-									<button type="button" class="square gameResultsButton" data-game-results=<?php print $row2['SeriesID']; ?>>Details</button>
-								</li>
+									</td>
+								</tr>											
+							<!-- end: repeat this part -->		
+								
+								
 							<?php
 								}
 								if ($i == 0 ) {
 								?>
-								 <li>No games yet...</li>
+								<tr class="resultsLg">
+									<td class="c">No games yet...</td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
 								<?php 
 								}
 								?>
-							</ol>	
+							
+								</tbody>
+							</table>
 						</td></tr>					
 						<?php
 							}
 						?>						
 					</table>			
 					
-		
+			<p><br /></p>  	
+			<h2>Submit Series Result (Google Forms)</h2> 					
+			<iframe frameborder="0" height="800" marginheight="0" marginwidth="0" src="https://docs.google.com/forms/d/e/1FAIpQLSdE7cfAb9fiMOwy77OaBnVWzSlB1HOS8IO6Qd5tyZ4uNRU5Hw/viewform?embedded=true" width="700">Loading...</iframe>
+			<h3>Standings: <a href="https://tinyurl.com/y87a9scl" target="_blank">https://tinyurl.com/y87a9scl</a></h3>
 		</div><!-- end: #page -->	
 		
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>

@@ -9,11 +9,15 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "nhl94db";
+$dumppath = "C:/xampp/mysql/bin/";
+
 
 //prod
-
-//$username = "nhl94";
-//$password = "Mysp@ce2174";
+/*
+$username = "nhl94";
+$password = "Mysp@ce2174";
+$dumppath = "/usr/bin/mysqldump";
+*/
 
 // matt
 /*

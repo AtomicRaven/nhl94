@@ -16,11 +16,12 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 <title>Compare Player</title>
     <?php include_once './_INCLUDES/01_HEAD.php'; ?>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
+
+    <script> var leagueType = <?=$leagueType?>; </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>        
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>	
-    <script src="./js/sortable.js"></script>    
-    
+    <script src="./js/sortable.js"></script>        
     <script src="./js/app.js"></script>
 </head>
 
@@ -47,8 +48,12 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
                             <input type="checkbox" ng-model="Filter.defense" ng-true-value="'D'" data-ng-false-value="''"/> Defense
                             <input type="checkbox" ng-model="Filter.goalies" ng-true-value="'G'" data-ng-false-value="''"/> Goalies
 
+                            <select ng-model="selectedTeams" ng-options="item as item.Team for item in teams track by item.TeamID" ng-change="ChangeTeams(selectedTeams)">
+                                <option value="">Select Team</option>
+                            </select>
+
                             <select ng-model="selectedLeagues" ng-options="item as item.Name for item in leagues track by item.LeagueID" ng-change="ChangeLeague(selectedLeagues)">
-                                <option value="">Select Account</option>
+                                <option value="">Select League</option>
                             </select>
                         </div>
 
@@ -72,6 +77,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
                                     <td class="c"><input type="checkbox" ng-click="toggleAll()" ng-model="isAllSelected"></td>
                                     <td class="c">Rnk</td>
                                     <td class="c">Nm</td>
+                                    <td class="c">#</td>
                                     <td class="c">
                                        <div class='link' ng-click="sortType = 'Handed'; ReverseSort()">Hnd
                                             <span ng-show="sortType == 'Handed' && sortReverse" class="fa fa-caret-down"></span>
@@ -157,6 +163,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
                                     <td class="c"><input type="checkbox" value="{{post.ID}}" ng-model="post.selected"/></td>
                                     <td class="c">{{$index +1}}</td>                                    
                                     <td class="c">{{post.Name}}</td>
+                                    <td class="c">{{post.JNo}}</td>
                                     <td class="c">{{post.Handed}}</td>
                                     <td class="c">{{post.Overall}}</td>
                                     <td class="c">{{post.Team}}</td>

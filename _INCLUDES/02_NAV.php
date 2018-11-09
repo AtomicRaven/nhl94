@@ -24,20 +24,20 @@
 				else {
 	?>				
 		<li>
-			<a href="./manage.php">MANAGE</a>
+			<a href="./manage.php">EXIS</a>
 		</li>
 	<?php
 				}
 	?>		
-		<li>
-			<a href="./tourney.php?tId=1">LEAGUE</a>
-		</li>			
+		<!--<li>
+			<a href="./tourneyList.php">LEAGUES</a>
+		</li>		-->	
 	
 		<li>
 			<a href="./results.php">RESULTS</a>
 		</li>
 		<li>
-			<a href="./resultsLeader.php">LEADER</a>
+			<a href="./resultsLeader.php">STATS</a>
 		</li>
 		<?php		
 
@@ -56,7 +56,12 @@
 		</li>
 		<?php
 				}
-		?>	
+		?>
+		
+		<li>
+			<a href="http://nhl94.com" target="nhl94">NHL94</a>
+		</li>
+
 		<?php
 
 	//echo "IsLoggedIn:" . $LOGGED_IN;
@@ -78,5 +83,6 @@
 			}
 		}
 		?>	
+
 
 </div>	

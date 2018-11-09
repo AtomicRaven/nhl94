@@ -18,7 +18,6 @@
         $homeuserid = 0;
         $awayuserid = 0;
         $recordStyle = "all";
-        $leagueType = -1;
 
         if (isset($_GET["homeUser"]) && isset($_GET["awayUser"])) {
 
@@ -26,11 +25,6 @@
 		    $awayuserid = $_GET['awayUser'];           
 
         }  
-
-        if (isset($_GET["leagueType"])){
-
-            $leagueType = $_GET["leagueType"];
-        }      
         
         if($homeuserid==0 || $awayuserid==0){
             
@@ -47,15 +41,15 @@
             $gamesleaders = CompareUsers($homeuserid, $awayuserid);
         }
        
-        $homeUserSelectBox = CreateSelectBox("homeUser", "Select User", GetUsers(true), "id_user", "username", null, $homeuserid);
-        $awayUserSelectBox = CreateSelectBox("awayUser", "Select User", GetUsers(true), "id_user", "username", null, $awayuserid);
-        $leagueTypeSelectBox = CreateSelectBox("leagueType", "Select Bin", GetLeagueTypes(), "LeagueID", "Name", null, $leagueType);
+        $homeUserSelectBox = CreateSelectBox("homeUser", "Select Coach", GetUsers(true), "id_user", "username", null, $homeuserid);
+        $awayUserSelectBox = CreateSelectBox("awayUser", "Select Coach", GetUsers(true), "id_user", "username", null, $awayuserid);
+        $leagueTypeSelectBox = CreateSelectBox("leagueType", "Select League", GetLeagueTypes(), "LeagueID", "Name", null, $leagueType);
 
 
 ?><!DOCTYPE HTML>
 <html>
 <head>
-<title>Leaderboard Games</title>
+<title>Games Stats</title>
 <?php include_once './_INCLUDES/01_HEAD.php'; ?>
 </head>
 
@@ -67,8 +61,10 @@
 				
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
-					<h1>Leaderboard Games</h1>	
-                    <span class="note"><a href="resultsLeaderSeries.php">Leaderboard Series</a></span>				
+					<h1>Game Stats</h1>	
+                    <a href="resultsLeaderSeries.php" class="square-button">Series Stats</a>	
+                    <a href="resultsLeader.php" class="square-button">Game Stats</a>
+                    <a href="playerStats.php" class="square-button">Player Stats</a>
 					
                     <div id="msg" style="color:red;"></div>
 
@@ -102,7 +98,7 @@
 
                                 $numGames = mysqli_num_rows($games);
 
-                                if($numGames > 0){
+                                
                                     while($game = mysqli_fetch_array($games)){
 
                                         if($game["WinnerUserID"] == $row["id_user"]){
@@ -144,7 +140,7 @@
                                                         "GFA"=>GetAvg($gFor, $GP),
                                                         "GAA"=>GetAvg($gAgainst, $GP)
                                     );
-                                }
+                                
                             }
 
                             $sBy = "Wins";
@@ -187,21 +183,17 @@
                                
                             }
                              
-                             if( $numGames >0 ){
+                             
 
-                                 $sBy = "Sorted By: " . $sBy;                                 
+                            $sBy = "Sorted By: " . $sBy;                                 
                                  
-                             }else{
-
+                            if( $numGames <1 && $recordStyle == "h2h" ){
                                 $sBy = "These two coaches have never played each other.";
-
-                             }
+                            }
 
                         ?>
                         <div><?=$sBy?></div><br/>
-                        <?php
-                             if( $numGames >0 ){
-                        ?>
+                       
                         
                         <table class="standard smallify leader">
 						<tr class="heading">
@@ -217,10 +209,12 @@
 						</tr>
 
                         <?php
-                             }
+                             
                              foreach($sortedLeaders as $user){  
-                        ?>
 
+                                if($user["GP"] > 0){
+                        ?>
+                                
                                 <tr class="<?php print $stripe[$j & 1]; ?>">
                                     <td class="c"><?=$user["UserName"]?></td>
                                     <td class="c"><?=$user["GP"]?></td>
@@ -235,6 +229,8 @@
                             
                         <?php
                             $j++;
+                                }
+                            
                             }  
                             
                         ?>									

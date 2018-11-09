@@ -25,6 +25,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
                         $newCsv = $upload_path;
                         $newTable = str_replace(".csv","",$filename);                
                         $newTable = str_replace("_","",$newTable);
+                        $newTable = "roster_" . $newTable;
 
                         echo "newTable:" . $newTable . "<br/>";
 

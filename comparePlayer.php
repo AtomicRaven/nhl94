@@ -9,7 +9,7 @@
         $sOrder = "DESC";
         $nSortOrder = "DESC";
         $s = "";
-        $leagueid = 1;
+        $teamid = -1;
 
         $pFilter = array(
             'forwards' => "checked",
@@ -17,12 +17,12 @@
             'goalies' => "checked"
         );       
 
-        if (isset($_GET["binId"])){
-            $leagueid = $_GET["binId"];
+        if (isset($_GET["teamId"])){
+            $teamid = $_GET["teamId"];
         }
 
-        $leagueTypeSelectBox = CreateSelectBox("binId", "Select Bin", GetLeagueTypes(), "LeagueID", "Name", "this.form.submit()", $leagueid);
-
+        $leagueTypeSelectBox = CreateSelectBox("leagueType", "Select League", GetLeagueTypes(), "LeagueID", "Name", "this.form.submit()", $leagueType);
+        
         //Need to massivley simplfy this logic
         if (isset($_GET["sOrder"]) && !empty($_GET["sOrder"])) {
             
@@ -105,19 +105,24 @@
                 unset($playerArray[$key]);
             }            
         }       
-
+        
+        logMsg("MYlg:" . $leagueType); 
+        
          if(!$compare){
             
-            $rosters = GetRosters($pFilter, $leagueid);
+            $rosters = GetRosters($pFilter, $leagueType, $teamid);
             $vis = "show";
 
         }else{
 
-            $rosters = ComparePlayers($playerArray);
+            $rosters = ComparePlayers($playerArray, $leagueType);
             $vis = "hidden";
         }
+        
+        //echo "TeamId: " . $teamid;
+        $teamSelectBox = CreateSelectBox("teamId", "Select Team", GetTeams($leagueType), "TeamID", "Team", "this.form.submit()", $teamid);
 
-?><!DOCTYPE HTML>
+?><!DOCTYPE HTML
 <html>
 <head>
 <title>Compare Player</title>
@@ -154,7 +159,8 @@
 
                             <?php
                                 //if ($LOGGED_IN == true && $_SESSION['Admin'] == true){                                    
-                                    echo $leagueTypeSelectBox;
+                                    echo $teamSelectBox;
+                                    echo $leagueTypeSelectBox;                                    
                                 //}
                             ?>
                         </div>
@@ -165,6 +171,7 @@
                                     <td class="c"></td>
                                     <td class="c">Rnk</td>
                                     <td class="c">Nm</td>
+                                    <td class="c">#</td>
                                     <td class="c"><button type="submit" name="s" value="Handed">Hnd</button></td>
                                     <td class="c"><button type="submit" name="s" value="Overall">Ovrll</button></td>
                                     <td class="c"><button type="submit" name="s" value="Team">Tm</button></td>                                    
@@ -187,36 +194,40 @@
 
                                     while($row = mysqli_fetch_array($rosters)){                                          
 
-                                        $hField = $row["H/F"];
+                                        if ( !in_array($row["First"], $nameFilter)) {
+                                            
+                                            $hField = $row["H/F"];
 
-                                        if ($hField & 1) {
-                                            $handed = 'R';
-                                        } else { 
-                                            $handed = 'L';
+                                            if ($hField & 1) {
+                                                $handed = 'R';
+                                            } else { 
+                                                $handed = 'L';
+                                            }
+
+                                            //$handed .= " " . $hField;
+
+                                            $overall = CalculateOverallRanking($row);
+
+                                            $sortedPlayers[] = array(
+                                                            "ID"=>$row["PlayerID"],
+                                                            "Name"=>$row["First"] . " " . $row["Last"],
+                                                            "Num"=>$row["JNo"],
+                                                            "Handed"=>$handed,
+                                                            "Overall"=>$overall,
+                                                            "Team"=>$row["Team"],
+                                                            "Pos"=>$row["Pos"],
+                                                            "Weight"=>$row["Wgt"],
+                                                            "Checking"=>$row["ChK"],
+                                                            "ShotP"=>$row["ShP"],
+                                                            "ShotA"=>$row["ShA"],
+                                                            "Speed"=>$row["Spd"],
+                                                            "Agility"=>$row["Agl"],
+                                                            "Stick"=>$row["StH"],
+                                                            "Pass"=>$row["Pas"],
+                                                            "Off"=>$row["OfA"],
+                                                            "Def"=>$row["DfA"]
+                                            );
                                         }
-
-                                         //$handed .= " " . $hField;
-
-                                        $overall = CalculateOverallRanking($row);
-
-                                        $sortedPlayers[] = array(
-                                                        "ID"=>$row["PlayerID"],
-                                                        "Name"=>$row["First"] . " " . $row["Last"],
-                                                        "Handed"=>$handed,
-                                                        "Overall"=>$overall,
-                                                        "Team"=>$row["Team"],
-                                                        "Pos"=>$row["Pos"],
-                                                        "Weight"=>$row["Wgt"],
-                                                        "Checking"=>$row["ChK"],
-                                                        "ShotP"=>$row["ShP"],
-                                                        "ShotA"=>$row["ShA"],
-                                                        "Speed"=>$row["Spd"],
-                                                        "Agility"=>$row["Agl"],
-                                                        "Stick"=>$row["StH"],
-                                                        "Pass"=>$row["Pas"],
-                                                        "Off"=>$row["OfA"],
-                                                        "Def"=>$row["DfA"]
-                                        );
                                     }
 
                                     //Sort by Overall
@@ -250,6 +261,7 @@
                                     <td class="c"><input type="checkbox" name="player<?=$i?>" value="<?=$p["ID"]?>" <?=$checked?>/></td>
                                     <td class="c"><?=$i?></td>                                    
                                     <td class="c"><?=$p["Name"]?></td>
+                                    <td class="c"><?=$p["Num"]?></td>
                                     <td class="c"><?=$p["Handed"]?></td>
                                     <td class="c"><?=$p["Overall"]?></td>
                                     <td class="c"><?=$p["Team"]?></td>

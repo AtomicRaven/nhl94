@@ -65,12 +65,49 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 							<h2>Links</h2>
 							<ul>
 								<li>
+									<a href="sql.php">Do SQL</a>
+								</li>
+								<li>
+									<a href="backup.php">BackUp DB</a>
+								</li>
+								<li>
 									<a href="registerAdmin.php">Register Fake User</a>
 								</li>
 								<li>
 									<a href="links.php">Links</a>
-								</li>                        
+								</li>
+								<li>
+									<a href="draft.php">Drafter</a>
+								</li>									
 							</ul>
+						</div>
+						<div style="padding:20px;border:1px solid black;margin-bottom:10px;">
+							<h2>Users</h2>							
+							<table class="newTable" style="width:100%">
+								<thead>
+									<tr class="headerLg">
+										<th>ID</th>
+										<th>UserName</th>	
+										<th>Email</th>
+										<th>Real Name</th>										
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+										$users = GetUsers(true);
+										while($user = mysqli_fetch_array($users)){
+									?>
+									<tr class="resultsLg">
+										<td class="c"><?=$user["id_user"]?></td>
+										<td class="c"><?=$user["username"]?></td>
+										<td class="c"><?=$user["email"]?></td>
+										<td class="c"><?=$user["name"]?></td>			
+									</tr>									                        
+									<?php
+										}
+									?>
+							</tbody>
+							</table>
 						</div>
 
 					</div>

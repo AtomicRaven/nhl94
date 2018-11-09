@@ -21,10 +21,20 @@
 			
 				}
 			}	
+			
+			$showAll = null;
 
+			if(isset($_GET['showAll'])){
+				$showAll = true;
+			}
+
+			if($showAll)
+				$allseries = GetSeriesAndGames(false, 0, null);
+			else
+				$allseries = GetSeriesAndGames(false, 0, 25);	
 
 			// User wants to update an existing series so gab all the series games and show in drop down box
-			$allseries = GetSeriesAndGames(true,0, null);
+			//$allseries = GetSeriesAndGames(true,0, null);
 			$numSeries = mysqli_num_rows($allseries);
 			$seriesHtml = '<table class="hidden lined">';
 
@@ -84,9 +94,9 @@
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
 				
-					<h1>Manage</h1>
+					<h1>Exis</h1>
 
-					<h2>1. Create New Series</h2>
+					<h2>1. Create New Exi Series</h2>
 
 					<div style="color:red;"><?= $msg ?></div><br/><br/>
 					
@@ -106,6 +116,8 @@
 
 						Total Series: <?= $numSeries ?></br>
 						<?= $seriesHtml ?>
+
+						<button type="button" onclick="javascript:location.href='manage.php?showAll=true'" style="margin-top: 10px;">Show All</button>
 											  
 						<!-- Example
 						<table class="hidden lined">

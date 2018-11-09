@@ -12,7 +12,7 @@ function CleanTable($tableName){
 	$sql = "DELETE FROM " . $tableName;
 
 	$tmr = mysqli_query($conn, $sql);
-		
+
 	if ($tmr) {
 		logMsg("Delete Data From Table: " .$tableName);
 	} else {
@@ -23,8 +23,8 @@ function CleanTable($tableName){
 
 function NeededWins($seriesId){
 
-    $gamesplayed = GetGamesBySeriesId($seriesId);  
-    
+    $gamesplayed = GetGamesBySeriesId($seriesId);
+
     $half = ( 50/100 * mysqli_num_rows($gamesplayed));
     $win = $half + 1;
 
@@ -35,8 +35,8 @@ function NeededWins($seriesId){
 
 function NumGamesPerSeries($seriesId){
 
-    $gamesplayed = GetGamesBySeriesId($seriesId);  
-    
+    $gamesplayed = GetGamesBySeriesId($seriesId);
+
     return mysqli_num_rows($gamesplayed);
 
 }
@@ -48,19 +48,19 @@ function CreateSelectBox($selectName, $selectTitle, $data, $id, $value, $onChang
 
     if($onChange != null){
         $selectBox .= " onchange='" . $onChange . "'";
-    }        
+    }
 
     $selectBox .= ">";
 
-    if($selectTitle != null){        
+    if($selectTitle != null){
 
         $selectBox .= "<option value='-1'>" . $selectTitle . "</option>";
-    }		
-    
+    }
+
     while($row = mysqli_fetch_array($data)){
-        
-        $selectBox .= "<option value='" . $row[$id] . "'"; 
-        
+
+        $selectBox .= "<option value='" . $row[$id] . "'";
+
         if($indexSelected != null){
 
             if($row[$id] == $indexSelected){
@@ -76,18 +76,18 @@ function CreateSelectBox($selectName, $selectTitle, $data, $id, $value, $onChang
 
 
         if($selectTitle == "Select Player"){
-            
+
             $retVal =  $row["Last"] . ", " . $row["First"];
         }
 
         $selectBox .= ">" . $retVal . "</option>";
-    }	
-    
+    }
+
     $selectBox .= "</select>";
 
     return $selectBox;
 
-}	
+}
 
 function GetDateFromSQL($time){
 
@@ -101,7 +101,7 @@ function GetDateFromSQL($time){
 
 function HumanTiming ($time)
 {
-	
+
     $time = time() - strtotime($time); // to get the time since that moment
 
     $tokens = array (
@@ -138,8 +138,8 @@ function CheckSeriesForWinner($seriesid, $homeuserid, $awayuserid){
     $awayWinnerCount = 0;
 
     while($row = mysqli_fetch_array($gamesplayed, MYSQL_ASSOC)){
-        if($row["WinnerUserID"] != 0){								
-                            
+        if($row["WinnerUserID"] != 0){
+
             if($row["WinnerUserID"] == $homeuserid){
                 $homeWinnerCount++;
             }
@@ -152,19 +152,19 @@ function CheckSeriesForWinner($seriesid, $homeuserid, $awayuserid){
 
     if($homeWinnerCount >= $gamesNeededToWin || $awayWinnerCount >= $gamesNeededToWin){
 
-        if($homeWinnerCount >= $gamesNeededToWin){        
+        if($homeWinnerCount >= $gamesNeededToWin){
             MarkSeriesAsWon($seriesid, $homeuserid, $awayWinnerCount);
         }
 
         if($awayWinnerCount >= $gamesNeededToWin){
-            MarkSeriesAsWon($seriesid, $awayuserid, $homeWinnerCount);	
-        } 
+            MarkSeriesAsWon($seriesid, $awayuserid, $homeWinnerCount);
+        }
     }else{
 
         //If game has been deleted and series is no longer won we set back to 0
          MarkSeriesAsWon($seriesid, 0, 0);
-        
-    } 
+
+    }
 
 }
 
@@ -188,7 +188,7 @@ function GetAvg($val1, $val2){
 
 function FormatZoneTime($time){
 
-    $t = explode(':', $time); 
+    $t = explode(':', $time);
     return $t[1] . ":" .$t[2];
 }
 
@@ -200,7 +200,36 @@ function FormatPercent($val1, $val2){
 }
 
 
-//LeaderBoard sorting
+//PLayer sorting
+function SortByG($x, $y) {
+    return $y['tG'] - $x['tG'];
+}
+function SortByA($x, $y) {
+    return $y['tA'] - $x['tA'];
+}
+function SortByAvgPts($x, $y) {
+    return $y['avgPts'] - $x['avgPts'];
+}
+function SortByPts($x, $y) {
+    return $y['tPoints'] - $x['tPoints'];
+}
+function SortBySOG($x, $y) {
+    return $y['tSOG'] - $x['tSOG'];
+}
+function SortBySPCT($x, $y) {
+    return $y['SPCT'] - $x['SPCT'];
+}
+function SortByChk($x, $y) {
+    return $y['tChks'] - $x['tChks'];
+}
+function SortByPEN($x, $y) {
+    return $y['tPIM'] - $x['tPIM'];
+}
+function SortByTOIG($x, $y) {
+    return $y['TOIG'] - $x['TOIG'];
+}
+
+//Leader
 
 function SortByGP($x, $y) {
     return $y['GP'] - $x['GP'];
@@ -225,7 +254,7 @@ function SortByGFA($x, $y) {
 }
 function SortByGAA($x, $y) {
     return $y['GAA'] > $x['GAA'] ? 1 : -1;
-}               
+}
 function SortByOverall($x, $y) {
     return $y['Overall'] > $x['Overall'];
 }
@@ -235,23 +264,23 @@ function SortBy($x, $y, $field, $sOrder) {
         return $y[$field] < $x[$field];
     else
         return $y[$field] > $x[$field];
-}      
+}
 
 function CalculateOverallRanking($p){
 
     if($p["Pos"] == "F"){
 
-        $total = ($p["Agl"]) + ($p["Spd"] * 1.5) + ($p["OfA"] * 1.5) + ($p["DfA"]) + ($p["ShP"] * 0.5) + 
+        $total = ($p["Agl"]) + ($p["Spd"] * 1.5) + ($p["OfA"] * 1.5) + ($p["DfA"]) + ($p["ShP"] * 0.5) +
                 ($p["ChK"]) + ($p["StH"] * 1.5) + ($p["ShA"]) + ($p["End"] * 0.5) + ($p["Pas"] * 0.5);
     }else{
         //Its a Goalie
 
-        $total = (($p["Agl"] * 2.25) - (0.25 * ($p["Agl"] % 2))) + 
-          (($p["DfA"] * 2.25)  - (0.25 * ($p["DfA"] % 2)))+ 
-          (($p["ShP"] * 2.25)  - (0.25 * ($p["DfA"] % 2)))+ 
-          ($p["End"] * 0.5) + 
-          ($p["Rgh"] * 0.5) + 
-          ($p["Pas"] * 0.5) + 
+        $total = (($p["Agl"] * 2.25) - (0.25 * ($p["Agl"] % 2))) +
+          (($p["DfA"] * 2.25)  - (0.25 * ($p["DfA"] % 2)))+
+          (($p["ShP"] * 2.25)  - (0.25 * ($p["DfA"] % 2)))+
+          ($p["End"] * 0.5) +
+          ($p["Rgh"] * 0.5) +
+          ($p["Pas"] * 0.5) +
           ($p["Agr"] * 0.5);
 
     }
@@ -270,7 +299,7 @@ function CalculateOverallRanking($p){
     if ($x > 99)
         $overall_player = 99;
     else
-        $overall_player  = $x;    
+        $overall_player  = $x;
 
     return $overall_player;
 
@@ -279,9 +308,9 @@ function CalculateOverallRanking($p){
 function GetUploadMsg($state){
 
     $msg = "";
-    
+
     switch ($state){
-        
+
         case 0:
             $msg = "Game has been uploaded and submitted.";
         break;
@@ -293,10 +322,10 @@ function GetUploadMsg($state){
         break;
         case 3:
             $msg = "File is not valid.  Please choose a file that ends in .gs (Genesis)"; // or .zs (SNES).";
-        break; 
+        break;
         case 4:
             $msg = "Error submitting game.  Please contact the administrator.";
-        break;			
+        break;
         case 5:
             $msg = "Game could not be uploaded.  Please contact the administrator.";
         break;

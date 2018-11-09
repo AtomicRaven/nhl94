@@ -14,7 +14,7 @@
 		if($showAll)
 			$allseries = GetSeriesAndGames(false, 0, null);
 		else
-			$allseries = GetSeriesAndGames(false, 0, 50);		
+			$allseries = GetSeriesAndGames(false, 0, 25);		
 		
 		$seriesHtml = "";	
 		$i = 0;

@@ -1,49 +1,31 @@
+<!doctype>
+<html>
+<head>
+</head>
+<body>
 <?php
-		session_start();
-		$ADMIN_PAGE = false;
-		include_once './_INCLUDES/00_SETUP.php';
-		include_once './_INCLUDES/dbconnect.php';
-
-        $gamesplayed = GetGamesBySeriesId(198);
-        $sGoalieStats = GetPlayerStatsBySeriesId(198, 'G', 3);
-        $series = GetSeriesById(198);
-
-        $sHomeShots = 0;
-        $sAwayShots = 0;
-        $savePct = 0;
-
-        while($row = mysqli_fetch_array($gamesplayed)){
-            if($row["GameID"] != NULL){
-					
-					$gStats = GetGameById($row["GameID"]);
-				
-                    if($series["HomeUserID"] == $row["HomeUserID"]){
-                        $sHomeShots += $gStats["SHP1"] + $gStats["SHP2"] + $gStats["SHP3"];
-                        $sAwayShots += $gStats["SAP1"] + $gStats["SAP2"] + $gStats["SAP3"];
-                    }else{                            
-                        $sAwayShots += $gStats["SHP1"] + $gStats["SHP2"] + $gStats["SHP3"];
-                        $sHomeShots += $gStats["SAP1"] + $gStats["SAP2"] + $gStats["SAP3"];
-                    }
-            }
-        }
-
-        while($row = mysqli_fetch_array($sGoalieStats))
-					{
-						$player = GetPlayerFromID($row["PlayerID"], 3);															
-
-						if($row["Pos"] == "G"){
-
-						//		if($row["SOG"]!= 0){									
-
-									$savePct = $row["tSOG"];									
-                                    echo "Saves= " .$savePct . "</br>";
-						//		}
-                        }
-                    }
-
-        echo "HomeShots= " . $sHomeShots ."</br>";
-        echo "AwayShots= " . $sAwayShots ."</br>";
-        
-
-
+require_once "Classes/PHPExcel.php";
+		//$tmpfname = "test.xlsx";
+		$url = "https://docs.google.com/spreadsheets/d/1uNS6Ejp8d7QqOtqsY36D9gQPXc8QyuPhlFFx2pfe--A/export?format=xlsx&id=1uNS6Ejp8d7QqOtqsY36D9gQPXc8QyuPhlFFx2pfe--A";
+		$filecontent = file_get_contents($url);
+		$tmpfname = tempnam(sys_get_temp_dir(),"tmpxls");
+		file_put_contents($tmpfname,$filecontent);
+		
+		$excelReader = PHPExcel_IOFactory::createReaderForFile($tmpfname);
+		$excelObj = $excelReader->load($tmpfname);
+		$worksheet = $excelObj->getSheet(0);
+		$lastRow = $worksheet->getHighestRow();
+		
+		echo "<table>";
+		for ($row = 1; $row <= $lastRow; $row++) {
+			 echo "<tr><td>";
+			 echo $worksheet->getCell('A'.$row)->getValue();
+			 echo "</td><td>";
+			 echo $worksheet->getCell('B'.$row)->getValue();
+			 echo "</td><tr>";
+		}
+		echo "</table>";	
 ?>
+
+</body>
+</html>
