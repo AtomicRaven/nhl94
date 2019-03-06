@@ -22,12 +22,10 @@
 		logMsg("Tournament Type:" . $tournamentType);
 		logMsg("LeagueType:" . $leaguetype);
 		logMsg("BracketSize:" . $bracketSize);
-		logMsg("StartDate:" . $startDate);
+		logMsg("StartDate:" . $startDate);	
 		
-		
-			
 		// redirect to Update Existing series
-		//header('Location: update.php?seriesId=' . $seriesid);
+		header('Location: tournamentMenu.php?tournamentId=' . $tournamentid);
 
 						
 		

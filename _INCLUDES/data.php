@@ -1045,6 +1045,27 @@ function GetTourneys(){
 	return $result;
 }
 
+function GetTournament($tournamentid){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT * FROM tournament Where ID='$tournamentid'";
+
+	$tmr = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+
+	return $row;
+}
+
+function GetTournaments(){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT * FROM tournaments";
+
+	$result = mysqli_query($conn, $sql);
+
+	return $result;
+}
+
 function GetSeries(){
 
 	$conn = $GLOBALS['$conn'];
