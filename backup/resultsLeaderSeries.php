@@ -18,19 +18,13 @@
         $homeuserid = 0;
         $awayuserid = 0;
         $recordStyle = "all";
-        $leagueType = -1;
 
         if (isset($_GET["homeUser"]) && isset($_GET["awayUser"])) {
 
 		    $homeuserid = $_GET['homeUser'];
 		    $awayuserid = $_GET['awayUser'];           
 
-        }        
-
-         if (isset($_GET["leagueType"])){
-
-            $leagueType = $_GET["leagueType"];
-        }     
+        }         
         
         if($homeuserid==0 || $awayuserid==0){
             
@@ -47,15 +41,15 @@
             $gamesleaders = CompareUsers($homeuserid, $awayuserid);
         }
        
-        $homeUserSelectBox = CreateSelectBox("homeUser", "Select User", GetUsers(true), "id_user", "username", null, $homeuserid);
-        $awayUserSelectBox = CreateSelectBox("awayUser", "Select User", GetUsers(true), "id_user", "username", null, $awayuserid);
+        $homeUserSelectBox = CreateSelectBox("homeUser", "Select Coach", GetUsers(true), "id_user", "username", null, $homeuserid);
+        $awayUserSelectBox = CreateSelectBox("awayUser", "Select Coach", GetUsers(true), "id_user", "username", null, $awayuserid);
         $leagueTypeSelectBox = CreateSelectBox("leagueType", "Select League", GetLeagueTypes(), "LeagueID", "Name", null, $leagueType);
 
 
 ?><!DOCTYPE HTML>
 <html>
 <head>
-<title>Leaderboard Series </title>
+<title>Series Stats </title>
 <?php include_once './_INCLUDES/01_HEAD.php'; ?>
 </head>
 
@@ -67,8 +61,11 @@
 				
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
-					<h1>Leaderboard Series </h1>					
-					<span class="note"><a href="resultsLeader.php">Leaderboard Games</a></span>
+                    <h1>Series Stats </h1>				
+                    <a href="resultsLeaderSeries.php" class="square-button">Series Stats</a>	
+                    <a href="resultsLeader.php" class="square-button">Game Stats</a>
+                    <a href="playerStats.php" class="square-button">Player Stats</a>
+                    
                     <div id="msg" style="color:red;"></div>
 
                     <form name="seriesForm" method="get" action="resultsLeaderSeries.php">                    
@@ -87,7 +84,7 @@
                                     $games = GetHeadToHeadSeries($homeuserid, $awayuserid, $leagueType);
 
                                 }else{
-
+                                    
                                     $games = GetSeriesByUser($row["id_user"], $leagueType);
                                     
                                 }
@@ -101,7 +98,7 @@
 
                                 $numGames = mysqli_num_rows($games);
 
-                                if($numGames > 0){
+                                
                                     while($game = mysqli_fetch_array($games)){
 
                                         if($game["SeriesWonBy"] == $row["id_user"]){
@@ -110,7 +107,7 @@
                                             //$gFor = $game[""];
                                         }
 
-                                        if($game["HomeUserID"] == $row["id_user"] ){
+                                        /*if($game["HomeUserID"] == $row["id_user"] ){
                                             
                                             $gFor += $game["HomeScore"];
                                             $gAgainst += $game["AwayScore"];
@@ -120,7 +117,7 @@
                                             
                                             $gFor += $game["AwayScore"];
                                             $gAgainst += $game["HomeScore"];
-                                        }
+                                        }*/
 
 
                                         $GP++;                                   
@@ -143,7 +140,7 @@
                                                         "GFA"=>GetAvg($gFor, $GP),
                                                         "GAA"=>GetAvg($gAgainst, $GP)
                                     );
-                                }
+                                
                             }
 
                             $sBy = "Wins";
@@ -170,11 +167,11 @@
                                
                             }
                              
-                             if( $numGames >0 ){
+                             
 
-                                 $sBy = "Sorted By: " . $sBy;                                 
+                            $sBy = "Sorted By: " . $sBy;                                 
                                  
-                             }else{
+                            if( $numGames <1 && $recordStyle == "h2h" ){
 
                                 $sBy = "These two coaches have never played each other.";
 
@@ -182,9 +179,7 @@
 
                         ?>
                         <div><?=$sBy?></div><br/>
-                        <?php
-                             if( $numGames >0 ){
-                        ?>
+                       
                         
                         <table class="standard smallify leader">
 						<tr class="heading">
@@ -196,8 +191,9 @@
 						</tr>
 
                         <?php
-                             }
+                             
                              foreach($sortedLeaders as $user){  
+                                if($user["GP"] > 0){
                         ?>
 
                                 <tr class="<?php print $stripe[$j & 1]; ?>">
@@ -210,6 +206,7 @@
                             
                         <?php
                             $j++;
+                                }
                             }  
                             
                         ?>									

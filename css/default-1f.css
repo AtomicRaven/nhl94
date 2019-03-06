@@ -534,4 +534,11 @@ table.newTable tr.resultsLg	td  {
 
 table.newTable tr.resultsLg	em  {
 	font-weight: bold;
-}		
+}
+
+#msg{
+	font-weight:bold;
+	color: red;
+    padding-top: 10px;
+    margin: 5px;
+}	

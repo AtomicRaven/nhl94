@@ -15,16 +15,7 @@
         }
 
         $numGames = 0;
-        $homeuserid = 0;
-        $awayuserid = 0;
         $recordStyle = "all";
-
-        if (isset($_GET["homeUser"]) && isset($_GET["awayUser"])) {
-
-		    $homeuserid = $_GET['homeUser'];
-		    $awayuserid = $_GET['awayUser'];           
-
-        }  
         
         if($homeuserid==0 || $awayuserid==0){
             

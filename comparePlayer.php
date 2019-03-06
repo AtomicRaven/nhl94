@@ -105,9 +105,7 @@
                 unset($playerArray[$key]);
             }            
         }       
-        
-        logMsg("MYlg:" . $leagueType); 
-        
+
          if(!$compare){
             
             $rosters = GetRosters($pFilter, $leagueType, $teamid);

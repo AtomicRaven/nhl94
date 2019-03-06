@@ -2,7 +2,7 @@
 
 function logMsg($msg){
 
-	//echo $msg . "</br>";
+	echo $msg . "</br>";
 
 }
 
@@ -102,8 +102,10 @@ function GetDateFromSQL($time){
 function HumanTiming ($time)
 {
 
-    $time = time() - strtotime($time); // to get the time since that moment
+    //$time = time() - (strtotime($time) + 7200); // to get the time since that moment
+    $time = time() - (strtotime($time));
 
+    $time = ($time<1)? 1 : $time;
     $tokens = array (
         31536000 => 'year',
         2592000 => 'month',

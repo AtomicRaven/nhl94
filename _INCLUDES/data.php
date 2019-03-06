@@ -17,7 +17,7 @@ function DuplicateRosterTable($newTable){
 	}
 }
 
-function TransferPlayerRoster($newTable, $newCsv, $isblitz){
+function TransferPlayerRoster($newTable, $newCsv, $isblitz, $binName){
 
 	$conn = $GLOBALS['$conn'];
 	$File = $newCsv;
@@ -103,7 +103,7 @@ function TransferPlayerRoster($newTable, $newCsv, $isblitz){
 		}
 	}
 
-	AddLeague($newTable, $isblitz);
+	AddLeague($newTable, $isblitz, $binName);
 }
 
 function DropNewRosterTable($newTable){
@@ -481,9 +481,27 @@ function GetGamesByUser($userId, $lg){
 	$conn = $GLOBALS['$conn'];
 	$sql = "SELECT * FROM `schedule` WHERE (HomeUserID = '$userId' OR AwayUserID = '$userId') AND WinnerUserID >0";
 
+	$sql .= GetSubLeagues($lg);	  
+	// $sql .= ")";			 
+
+	$result = mysqli_query($conn, $sql);
+
+	if ($result) {
+		logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
+		//echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
+	} else {
+		echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
+	}
+
+	return $result;
+
+}
+
+function GetSubLeagues($lg){
+
 	if($lg != -1){
 
-		$sql .= " AND ";
+		$sql = " AND ";
 		$sql .= "LeagueID in ('$lg'";
 
 		//CHeck for Sub Leagues (IE practice rom games we want to ADD here)
@@ -497,18 +515,6 @@ function GetGamesByUser($userId, $lg){
 
 		$sql .= ")";		
 	}
-
-	$result = mysqli_query($conn, $sql);
-
-	if ($result) {
-		logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
-		//echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
-	} else {
-		echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
-	}
-
-	return $result;
-
 }
 
 function GetSeriesByUser($userId, $lg){
@@ -743,6 +749,22 @@ function GetLeagueTypes(){
 	return $result;
 }
 
+function GetTournamentTypes(){
+
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "SELECT * FROM TournamentTypes WHERE Active = true ORDER BY ID ASC";
+	$result = mysqli_query($conn, $sql);
+
+	if ($result) {
+		//logMsg("Retrieved GameById");
+	} else {
+		echo("Error: GetTournamentTypes: " . $sql . "<br>" . mysqli_error($conn));
+	}
+
+	return $result;
+}
+
 function GetAllLeagueTypes(){
 
 	$conn = $GLOBALS['$conn'];
@@ -758,12 +780,12 @@ function GetAllLeagueTypes(){
 
 }
 
-function AddLeague($tablename, $isblitz){
+function AddLeague($tablename, $isblitz, $binName){
 
 	$conn = $GLOBALS['$conn'];
 
 	$sql = "INSERT INTO league (Name, TableName, Visible, Blitz)
-			VALUES ('$tablename', '$tablename', 1, '$isblitz')";
+			VALUES ('$binName', '$tablename', 1, '$isblitz')";
 
 	$sqlr = mysqli_query($conn, $sql);
 
@@ -773,6 +795,28 @@ function AddLeague($tablename, $isblitz){
 	} else {
 		echo("Error: AddLeague: " . $sql . "<br>" . mysqli_error($conn));
 	}
+
+}
+
+function AddNewTournament($tournamentName, $tournamentType, $leaguetype, $bracketSize, $startDate){
+
+	echo "date: " . $startDate;
+
+	$conn = $GLOBALS['$conn'];
+
+	$sql = "INSERT INTO tournament (Name, Type, LeagueID, BracketSize, Status, StartDate)
+			VALUES ('$tournamentName', $tournamentType, $leaguetype, $bracketSize, 'Created', '$startDate')";
+
+	$sqlr = mysqli_query($conn, $sql);
+
+	if ($sqlr) {
+		$tournamentid = $conn->insert_id;
+		logMsg("New Tournament created: " . $tournamentName . " sql: " .$sql);
+	} else {
+		echo("Error: AddNewTournament: " . $sql . "<br>" . mysqli_error($conn));
+	}
+
+	return $tournamentid;
 
 }
 
@@ -1302,9 +1346,13 @@ function GetRosters($pFilter, $leagueid, $teamid){
 
 	$tblName = GetLeagueTableName($leagueid);
 
-	//$sql = "SELECT * FROM $tblName WHERE Team != 'ASW' AND Team != 'ASE' AND Team!='ANH' AND Team !='FLA'";
-
-	$sql = "SELECT * FROM $tblName WHERE Team != 'NHL' AND Team != 'ASW' AND Team != 'ASE' AND Team!='ANH' AND Team !='FLA'";
+	
+	$sql = "SELECT * FROM $tblName WHERE Team != 'blah'";
+	
+	//if($tblName == "roster")
+		//$sql = "SELECT * FROM $tblName WHERE Team != 'NHL' AND Team != 'ASW' AND Team != 'ASE' AND Team!='ANH' AND Team !='FLA'";
+	//else 
+		//$sql = $sql = "SELECT * FROM $tblName WHERE Team != 'ASW' AND Team != 'ASE'";
 
 	if($pFilter['forwards'] != "checked")
 		$sql .= " AND Pos!='F'";

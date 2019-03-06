@@ -13,11 +13,10 @@ $dumppath = "C:/xampp/mysql/bin/";
 
 
 //prod
-/*
-$username = "nhl94";
-$password = "Mysp@ce2174";
-$dumppath = "/usr/bin/mysqldump";
-*/
+
+//$username = "nhl94";
+//$password = "Mysp@ce2174";
+//$dumppath = "/usr/bin/mysqldump";
 
 // matt
 /*

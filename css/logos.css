@@ -9,7 +9,7 @@
 }
 
 /* Large icons */
-.large.ANH {
+.large.ANH, .large.ANA {
     background-position: 0 0;
     width: 100px;
 }
@@ -50,7 +50,7 @@
     background-position: -800px 0;
 }
 
-.large.HFD {
+.large.HFD, .large.HAR {
     background-position: -900px 0;
 }
 
@@ -105,7 +105,7 @@
     background-position: -1997px 0;
 }
 
-.large.TB {
+.large.TB, .large.TBL {
     background-position: -2096px 0;
     width: 100px;
 }
@@ -139,13 +139,17 @@
     background-position: -2797px 0;
 }
 
+.large.CBJ {
+    background-position: -2797px 0;
+}
+
 /* Small icons */
 .logo.small {
     width: 49px;
     height: 53px;
 }
 
-.small.ANH {
+.small.ANH, .small.ANA {
     background-position: 0 -107px;
     width: 50px;
 }
@@ -160,7 +164,7 @@
     width: 50px;
 }
 
-.small.CGY {
+.small.CGY, .small.ATL {
     background-position: -151px -107px;
 }
 
@@ -184,7 +188,7 @@
     background-position: -401px -107px;
 }
 
-.small.HFD {
+.small.HFD, .small.HAR {
     background-position: -451px -107px;
 }
 
@@ -235,7 +239,7 @@
     background-position: -1000px -107px;
 }
 
-.small.TB {
+.small.TB, .small.TBL {
     background-position: -1049px -107px;
 }
 
@@ -271,8 +275,14 @@
     background-position: -1450px -107px;
 }
 
-.small.VGK {
-    background-position: -1499px -107px;}
+.small.VGK, .small.LV {
+    background-position: -1499px -107px;
+}
+
+.small.CBJ {
+    background-position: -1547px -107px;
+	width:55px;
+}
 
 
 

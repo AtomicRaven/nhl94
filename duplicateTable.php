@@ -11,6 +11,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 
                 $filename = $_FILES['csv']['name'];
                 $isblitz = $_POST["blitz"];                
+                $binName = $_POST["binName"];                
                 $upload_path = $GLOBALS['$csvUploadPath'] . $filename;
 
                 //echo "CSV Path:" . $upload_path. $filename;
@@ -23,7 +24,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
                     if($ext == ".csv"){
 
                         $newCsv = $upload_path;
-                        $newTable = str_replace(".csv","",$filename);                
+                        $newTable = str_replace(".csv","",$filename);        
                         $newTable = str_replace("_","",$newTable);
                         $newTable = "roster_" . $newTable;
 
@@ -34,7 +35,11 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 
                         //Replace All TeamId data with new Team ID'sin
 
-                        TransferPlayerRoster($newTable, $newCsv, $isblitz);
+                        if($binName == ""){
+                            $binName = $newTable;
+                        }
+
+                        TransferPlayerRoster($newTable, $newCsv, $isblitz, $binName);
                     }else{
                         echo "<br/>Wrong file type!";    
                     }

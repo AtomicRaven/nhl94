@@ -47,7 +47,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 										<option value="0">Normal</option>
 										<option value="1">Blitz</option>
 									</select>
-
+									<input type="text" name="binName" style="width:200px">
 									<input type="file" name="csv">
 									<input type="submit" style="margin-top: 10px;" value="Import"/>									
 																	
