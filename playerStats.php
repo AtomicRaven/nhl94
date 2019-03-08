@@ -44,6 +44,7 @@
                 
         $leagueTypeSelectBox = CreateSelectBox("leagueType", null, GetLeagueTypes(), "LeagueID", "Name", null, $leagueType);
         $homeUserSelectBox = CreateSelectBox("homeUser", "Select Coach", GetUsers(true), "id_user", "username", null, $homeuserid);
+        $GLOBALS["subLg"] = GetSubLeagues($leagueType);
 
         if($homeuserid > 0){
             $rosters = GetPlayerStatsByCoachId($pos, $leagueType, $homeuserid, $limit);            

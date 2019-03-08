@@ -1,6 +1,5 @@
 <?php
 
-
 //Duplaicate Ro
 function DuplicateRosterTable($newTable){
 
@@ -481,13 +480,11 @@ function GetGamesByUser($userId, $lg){
 	$conn = $GLOBALS['$conn'];
 	$sql = "SELECT * FROM `schedule` WHERE (HomeUserID = '$userId' OR AwayUserID = '$userId') AND WinnerUserID >0";
 
-	$sql .= GetSubLeagues($lg);	  
-	// $sql .= ")";			 
-
+	$sql .= $GLOBALS["subLg"];	 
 	$result = mysqli_query($conn, $sql);
 
 	if ($result) {
-		logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
+		//logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
 		//echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
 	} else {
 		echo("Error:  GetLeaders: " . $sql . "<br>" . mysqli_error($conn));
@@ -499,6 +496,8 @@ function GetGamesByUser($userId, $lg){
 
 function GetSubLeagues($lg){
 
+	$conn = $GLOBALS['$conn'];
+
 	if($lg != -1){
 
 		$sql = " AND ";
@@ -506,8 +505,10 @@ function GetSubLeagues($lg){
 
 		//CHeck for Sub Leagues (IE practice rom games we want to ADD here)
 		$sublgs = "SELECT LeagueID FROM league WHERE subLeagueID = '$lg'";
-		$sublgsResult = mysqli_query($conn, $sublgs);
 
+		//echo $sublgs;
+		$sublgsResult = mysqli_query($conn, $sublgs);
+		
 		while($row = mysqli_fetch_array($sublgsResult)){
 			$id = $row["LeagueID"];
 			$sql .= ",'$id'";
@@ -515,6 +516,8 @@ function GetSubLeagues($lg){
 
 		$sql .= ")";		
 	}
+
+	return $sql;
 }
 
 function GetSeriesByUser($userId, $lg){
@@ -522,24 +525,7 @@ function GetSeriesByUser($userId, $lg){
 	$conn = $GLOBALS['$conn'];
 	$sql = "SELECT * FROM `series` WHERE (HomeUserID = '$userId' OR AwayUserID = '$userId') AND SeriesWonBy >0";
 
-	if($lg != -1){
-
-		$sql .= " AND ";
-		$sql .= "LeagueID in ('$lg'";
-
-		//CHeck for Sub Leagues (IE practice rom games we want to ADD here)
-		$sublgs = "SELECT LeagueID FROM league WHERE subLeagueID = '$lg'";
-		$sublgsResult = mysqli_query($conn, $sublgs);
-
-		while($row = mysqli_fetch_array($sublgsResult)){
-			$id = $row["LeagueID"];
-			$sql .= ",'$id'";
-		}		
-
-		$sql .= ")";		
-	}
-
-	//echo "SQL: " . $sql . "<br/>";
+	$sql .= $GLOBALS["subLg"];	
 	
 	$result = mysqli_query($conn, $sql);
 
@@ -596,22 +582,7 @@ function GetHeadToHead($userId1, $userId2, $lg){
 	$conn = $GLOBALS['$conn'];
 	$sql = "SELECT * FROM `schedule` WHERE (HomeUserID = '$userId1' OR AwayUserID = '$userId1') AND (HomeUserID = '$userId2' OR AwayUserID = '$userId2')  AND WinnerUserID >0";
 
-	if($lg != -1){
-
-		$sql .= " AND ";
-		$sql .= "LeagueID in ('$lg'";
-
-		//CHeck for Sub Leagues (IE practice rom games we want to ADD here)
-		$sublgs = "SELECT LeagueID FROM league WHERE subLeagueID = '$lg'";
-		$sublgsResult = mysqli_query($conn, $sublgs);
-
-		while($row = mysqli_fetch_array($sublgsResult)){
-			$id = $row["LeagueID"];
-			$sql .= ",'$id'";
-		}		
-
-		$sql .= ")";		
-	}
+	$sql .= $GLOBALS["subLg"];	
 
 	$result = mysqli_query($conn, $sql);
 
@@ -631,22 +602,7 @@ function GetHeadToHeadSeries($userId1, $userId2, $lg){
 	$conn = $GLOBALS['$conn'];
 	$sql = "SELECT * FROM `series` WHERE (HomeUserID = '$userId1' OR AwayUserID = '$userId1') AND (HomeUserID = '$userId2' OR AwayUserID = '$userId2')  AND SeriesWonBy >0";
 
-	if($lg != -1){
-
-		$sql .= " AND ";
-		$sql .= "LeagueID in ('$lg'";
-
-		//CHeck for Sub Leagues (IE practice rom games we want to ADD here)
-		$sublgs = "SELECT LeagueID FROM league WHERE subLeagueID = '$lg'";
-		$sublgsResult = mysqli_query($conn, $sublgs);
-
-		while($row = mysqli_fetch_array($sublgsResult)){
-			$id = $row["LeagueID"];
-			$sql .= ",'$id'";
-		}		
-
-		$sql .= ")";		
-	}
+	$sql .= $GLOBALS["subLg"];	
 
 	//echo "GetSeriesByUser: SQL: " . $sql;
 

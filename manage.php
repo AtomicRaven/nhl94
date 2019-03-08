@@ -96,19 +96,21 @@
 				
 					<h1>Exis</h1>
 
-					<h2>1. Create New Exi Series</h2>
+					<h2>1. Create New</h2>
 
-					<div style="color:red;"><?= $msg ?></div><br/><br/>
+					<div style="color:red;"><?= $msg ?></div>
 					
 					<table class="two-column">
 						<tr class="">
-							<td class=""><a href="./create.php" class="square-button">Create</a></td>
-							<td class="">Create a new series</td>
-						</tr>
+							<td class=""><a href="./create.php" class="square-button">New</a></td>
+							<td class=""> Exhibition series</td>
+						</tr>						
+						<tr class="">
+							<td class=""><a href="./createTournament.php" class="square-button">New</a></td>
+							<td class=""> Tournament</td>
+						</tr>		
 
-					</table>
-
-
+					</table>					
 
 					<p><br /></p>  	
 					<h2>2. Update Existing Series</h2> 
