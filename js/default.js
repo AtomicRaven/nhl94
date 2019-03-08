@@ -2,8 +2,8 @@
 
 
 	function RosterSubmit(){
-
-		if(s!="" && s!='Off'){
+		
+		if(typeof s !== 'undefined' && s!="" && s!='Off'){
 
 			var theForm = document.forms['rosterForm'];
 			var sOrder = document.getElementById("sOrder");

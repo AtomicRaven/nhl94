@@ -42,8 +42,8 @@
 
         }  
                 
-        $leagueTypeSelectBox = CreateSelectBox("leagueType", null, GetLeagueTypes(), "LeagueID", "Name", null, $leagueType);
-        $homeUserSelectBox = CreateSelectBox("homeUser", "Select Coach", GetUsers(true), "id_user", "username", null, $homeuserid);
+        $leagueTypeSelectBox = CreateSelectBox("leagueType", null, GetLeagueTypes(), "LeagueID", "Name", "this.form.submit()", $leagueType);
+        $homeUserSelectBox = CreateSelectBox("homeUser", "Select Coach", GetUsers(true), "id_user", "username", "this.form.submit()", $homeuserid);
         $GLOBALS["subLg"] = GetSubLeagues($leagueType);
 
         if($homeuserid > 0){
@@ -79,13 +79,11 @@
                         <?php
                             echo $homeUserSelectBox;    
                             echo $leagueTypeSelectBox;                                                                                        
-                        ?>
-
-                        &nbsp; <button id="submitBtn" type="submit" style="margin-top: 10px;">Go</button>   
+                        ?>                         
 
                         <div style="display:inline;visibility: <?=  $vis?>;">
-                            <input type="radio" value="F" name="pos" <?=$fChecked?>/>Forwards                            
-                            <input type="radio" value="G" name="pos" <?=$gChecked?>/>Goalies                        
+                            <input type="radio" value="F" name="pos" onclick="RosterSubmit()" <?=$fChecked?>/>Forwards                            
+                            <input type="radio" value="G" name="pos" onclick="RosterSubmit()" <?=$gChecked?>/>Goalies                        
                         </div>
 
                         
