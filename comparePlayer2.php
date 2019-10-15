@@ -32,7 +32,8 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
         
         <div id="main">
             <?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
-            <h1>Compare Player</h1>					                    
+            <h1>Compare Player</h1>			
+            <a href="comparePlayer.php" class="square-button">Old Roster Page</a>			                    
             
                 <div ng-app="myApp">
 

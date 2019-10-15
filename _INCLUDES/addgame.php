@@ -267,8 +267,8 @@
             $homeUserAlias = GetUserAlias($homeuserid);
             $awayUserAlias = GetUserAlias($awayuserid);
 
-            logMsg("Away Team: ID " . $awayid . " : " . $awayTeamAbv["ABV"] . ": " . $AwayScore . " Goals. Player: " . $awayUserAlias);
-            logMsg("Home Team: ID " . $homeid . " : " . $homeTeamAbv["ABV"] . ": " . $HomeScore . " Goals. Player: " . $homeUserAlias);
+            //logMsg("Away Team: ID " . $awayid . " : " . $awayTeamAbv["ABV"] . ": " . $AwayScore . " Goals. Player: " . $awayUserAlias);
+            //logMsg("Home Team: ID " . $homeid . " : " . $homeTeamAbv["ABV"] . ": " . $HomeScore . " Goals. Player: " . $homeUserAlias);
 
             $hazstring = '00:'. $HomeAZDisplayM. ':'. $HomeAZDisplayS;		// Attack Zone String
             $aazstring = '00:'. $AwayAZDisplayM. ':'. $AwayAZDisplayS;
@@ -886,7 +886,7 @@
     	/**********************************************************************************/
 
         fclose($fr);
-        rename ($file, $filePath . "/" . $awayTeamAbv["ABV"] . "-" . $awayUserAlias . "_at_" . $homeTeamAbv["ABV"] . "-" . $homeUserAlias . "_gameId-" . $gameid . "_seriesId-" .$seriesid . "_bin-" . $leagueName . ".gs0" );
+        rename ($file, $filePath . "/" . $awayTeamAbv["Team"] . "-" . $awayUserAlias . "_at_" . $homeTeamAbv["Team"] . "-" . $homeUserAlias . "_gameId-" . $gameid . "_seriesId-" .$seriesid . "_bin-" . $leagueName . ".gs0" );
 
 	//mysqli_close($conn);
 	}  // end of function

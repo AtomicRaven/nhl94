@@ -208,7 +208,26 @@ function GetGamesBySeriesId($seriesid){
 	}
 
 	return $result;
+}
 
+function GetScoringSummary($gameid){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT * FROM scoresum Where GameID='$gameid' ORDER BY Period ASC, Time ASC";
+
+	$result = mysqli_query($conn, $sql);
+
+	return $result;
+}
+
+function GetPenaltySummary($gameid){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "SELECT * FROM pensum Where GameID='$gameid' ORDER BY Period ASC, Time ASC";
+
+	$result = mysqli_query($conn, $sql);
+
+	return $result;
 }
 
 function GetScheduleByID($scheduleid){
@@ -352,8 +371,8 @@ function GetPlayerStatsByCoachId($pos, $leagueid, $userid, $limit){
     $sql2 = $sql . " s.AwayUserID = '$userid' AND s.AwayTeamID = p.TeamID";
     
 	if($leagueid != -1){
-        $sql1 .= " AND p.LeagueID = '$leagueid'";
-        $sql2 .= " AND p.LeagueID = '$leagueid'";
+        $sql1 .= str_replace("LeagueID", "p.LeagueID", $GLOBALS["subLg"]);
+		$sql2 .= str_replace("LeagueID", "p.LeagueID", $GLOBALS["subLg"]);	
 	}    
 
 	$sql1 .= " GROUP BY p.PlayerID"; 
@@ -422,7 +441,8 @@ function GetPlayerStats($pos, $leagueid){
 		FROM playerstats p $posFilter";
 
 		if($leagueid != -1){
-			$sql .= " AND LeagueID = '$leagueid'";
+			//$sql .= " AND LeagueID = '$leagueid'";
+			$sql .= $GLOBALS["subLg"];
 		}
 
 		$sql .= " GROUP BY p.PlayerID ";
@@ -433,6 +453,7 @@ function GetPlayerStats($pos, $leagueid){
 			$sql .= "ORDER BY tG DESC";
 	
 	//$sql .= " LIMIT 100";
+	
 	$result = mysqli_query($conn, $sql);
 
 	//echo "sql:" . $sql . "<br/>";
@@ -497,6 +518,8 @@ function GetGamesByUser($userId, $lg){
 function GetSubLeagues($lg){
 
 	$conn = $GLOBALS['$conn'];
+
+	$sql = "";
 
 	if($lg != -1){
 
@@ -645,9 +668,10 @@ function GetSeriesAndGames($useronly, $tourneyid, $topN){
 	if (isset($_SESSION['userId'])){
 		$userid = $_SESSION['userId'];
 	}
-
-	if($_SESSION['Admin'])
-		$useronly = false;
+	
+  	if(isset($_SESSION['Admin']))
+		if($_SESSION['Admin'])
+			$useronly = false;
 
 	$sql = "SELECT a.*, b.*, MAX(b.ConfirmTime) as LastEntryDate,
 		COUNT(CASE WHEN b.GameID >= 0 then 1 ELSE NULL END) AS TotalGames

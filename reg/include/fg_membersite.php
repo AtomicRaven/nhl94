@@ -169,7 +169,7 @@ class FGMembersite
     
     function UserEmail()
     {
-        return isset($_SESSION['email'])?$_SESSION['email']:'';
+        return isset($_SESSION['email_of_user'])?$_SESSION['email_of_user']:'';
     }
     
     function LogOut()
@@ -375,7 +375,7 @@ class FGMembersite
         
         
         $_SESSION['name_of_user']  = $row['name'];
-        $_SESSION['email'] = $row['email'];
+        $_SESSION['email_of_user'] = $row['email'];
         
         return true;
     }

@@ -97,7 +97,7 @@
     background-position: -1798px 0;
 }
 
-.large.SJ {
+.large.SJ, .large.SJS {
     background-position: -1898px 0;
 }
 
@@ -231,7 +231,7 @@
     background-position: -900px -107px;
 }
 
-.small.SJ {
+.small.SJ, .small.SJS {
     background-position: -950px -107px;
 }
 

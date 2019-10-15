@@ -143,7 +143,8 @@
 				
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
-					<h1>Compare Player</h1>					
+					<h1>Compare Player</h1>			
+                    <a href="comparePlayer.php" class="square-button">New Roster Page</a>			                    		
                     
                     <form name="rosterForm" method="get" action="comparePlayer.php">
 

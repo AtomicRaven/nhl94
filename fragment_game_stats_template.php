@@ -15,6 +15,9 @@
 		$pStats = GetPlayerStatsByGameId($gameid, 'DESC');
 		$goalieStats = GetPlayerStatsByGameId($gameid, 'ASC');
 
+		$scoreStats = GetScoringSummary($gameid);
+		$penaltyStats = GetPenaltySummary($gameid);
+
 		$homeTeamAbv = GetTeamABVById($schedule["HomeTeamID"], $leagueid);
 		$awayTeamAbv = GetTeamABVById($schedule["AwayTeamID"], $leagueid);
 
@@ -225,12 +228,100 @@
 									<td class=""> <?=$savePct?><!-- 17 goals on 72 shots) --></td>
 								</tr>
 		<?php
+						$j++;
 						}
-					$j++;
+					
 					}
 		?>
 								<!-- end of loop -->
 
 							</table>
+
+							<!-- start of Scoring Sum table -->
+							<h3>Game <?=$gameNum?> Scoring Summary</h3>
+							<table class="standard">
+								<tr class="heading">
+									<td class="heading">Per</td>
+									<td class="heading">Time</td>
+									<td class="heading">Team</td>
+									<td class="heading">Goal Scorer</td>
+									<td class="heading">Assists</td>
+									<td class="heading">Type</td>
+								</tr>
+								<!-- start loop for all players with points -->
+		<?php
+					$j = 1;
+					while($row = mysqli_fetch_array($scoreStats))
+					{
+						$scorer = GetPlayerFromID($row["G"], $leagueid);
+						$assists = "";
+
+						if( $row["A1"] !=0){
+
+							$assist1 = GetPlayerFromID($row["A1"], $leagueid);
+							$assists = $assist1["JNo"] . "-" . $assist1["First"] . " " . $assist1["Last"];							
+
+							$assist2 = GetPlayerFromID($row["A2"], $leagueid);
+							$assists .= ", " . $assist2["JNo"] . "-" . $assist2["First"] . " " . $assist2["Last"];
+
+						}
+
+						$goalScorer = $scorer["JNo"] . "-" . $scorer["First"] . " " . $scorer["Last"];					
+
+		?>
+								<tr class="tight<?php print $stripe[$j & 1]; ?>">
+									<td class=""><?=$row["Period"]?></td>
+									<td class=""><?=$row["Time"]?></td>
+									<td class=""><?=GetTeamABVById($row["TeamID"], $leagueid)?></td>
+									<td class=""><?=$goalScorer?></td>
+									<td class=""><?=$assists?></td>
+									<td class=""><?=$row["Type"]?></td>
+								</tr>
+		<?php
+					$j++;
+					}
+
+		?>
+					<!-- end of loop -->
+
+					</table>
+
+							<!-- start of Penalty Sum table -->
+							<h3>Game <?=$gameNum?> Penalty Summary</h3>
+							<table class="standard">
+								<tr class="heading">
+									<td class="heading">Per</td>
+									<td class="heading">Time</td>
+									<td class="heading">Team</td>
+									<td class="heading">Player</td>
+									<td class="heading">Penalty</td>
+									<td class="heading">Min</td>
+								</tr>
+								<!-- start loop for all players with points -->
+		<?php
+					$j = 1;
+					while($row = mysqli_fetch_array($penaltyStats))
+					{
+						$player = GetPlayerFromID($row["PlayerID"], $leagueid);						
+						$penalized = $player["JNo"] . "-" . $player["First"] . " " . $player["Last"];					
+
+		?>
+								<tr class="tight<?php print $stripe[$j & 1]; ?>">
+									<td class=""><?=$row["Period"]?></td>
+									<td class=""><?=$row["Time"]?></td>
+									<td class=""><?=GetTeamABVById($row["TeamID"], $leagueid)?></td>
+									<td class=""><?=$penalized?></td>
+									<td class=""><?=$row["Type"]?></td>
+									<td class="">2:00</td>
+								</tr>
+		<?php
+					$j++;
+					}
+
+		?>
+					<!-- end of loop -->
+
+					</table>
+		
 
 					</div>

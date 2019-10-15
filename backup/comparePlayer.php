@@ -135,9 +135,9 @@
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
 					<h1>Compare Player</h1>					
                     
-                    <form name="rosterForm" method="get" action="comparePlayer.php">
+                    <form name="rosterForm" method="get" action="roster.php">
 
-                        &nbsp; <button id="clearBtn" type="button" onclick="javascript:location.href='comparePlayer.php'" style="margin-top: 10px;">Clear</button>                       
+                        &nbsp; <button id="clearBtn" type="button" onclick="javascript:location.href='roster.php'" style="margin-top: 10px;">Clear</button>                       
                         &nbsp; <button id="submitBtn" type="submit" style="margin-top: 10px;">Compare</button>   
 
                         <div style="display:inline;visibility: <?=$vis?>;">
@@ -258,7 +258,7 @@
                                 ?>
                         </table>
 
-                        &nbsp; <button id="clearBtn" type="button" onclick="javascript:location.href='comparePlayer.php'" style="margin-top: 10px;">Clear</button>                       
+                        &nbsp; <button id="clearBtn" type="button" onclick="javascript:location.href='roster.php'" style="margin-top: 10px;">Clear</button>                       
                         &nbsp; <button id="submitBtn" type="submit" style="margin-top: 10px;">Compare</button> 
                         
                     </form>

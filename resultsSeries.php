@@ -285,7 +285,7 @@
 						</tr>			
 						<tr class="heading">
 							<td class="c brt" style="padding: 2px 0 0 0;">
-							<a class="<?=$stanley?>"><br/></a>							
+							<a class="<?=$stanleyClass?>"><br/></a>							
 							</td>
 							<td class="" colspan="5"><?= $gamesCompleteText?><br /> 
 								<span class="note"><?= $lastEntryTime?></span></td>

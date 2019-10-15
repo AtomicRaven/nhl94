@@ -10,6 +10,7 @@
         $pos = "P";
         $fChecked = 'checked';
         $gChecked = '';
+        $totalTeamGoals = 0;
 
         $pTitleArray = array("Pos","GP","G","A","PTS","AvgPts","SOG","SPCT","Chk","PEN","PP","SH","TOIG");
         $gTitleArray = array("Pos","GP","GAA","GA","SV","TSA","SV%","SH","TOI/G","A","PTS","", "PTS/G");        
@@ -70,10 +71,13 @@
 				
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
-                    <h1>Player Stats</h1>		
+                    <h1>Player Stats</h1>	
+                                        	
                     <a href="resultsLeaderSeries.php" class="square-button">Series Stats</a>	
                     <a href="resultsLeader.php" class="square-button">Game Stats</a>
                     <a href="playerStats.php" class="square-button">Player Stats</a>			
+
+                    <div id="msg" style="color:red;"></div>
                     
                     <form name="rosterForm" method="get" action="playerStats.php">
                         <?php
@@ -98,6 +102,7 @@
                                             $SPCT = GetPercent($p["tG"], $p["tSOG"]);
                                             $player = GetPlayerFromID($p["PlayerID"], $p["LeagueID"]);
                                             $team = GetTeamABVById($p["TeamID"], $p["LeagueID"]);
+                                            $totalTeamGoals = $totalTeamGoals + $p["tG"];
 
                                             $sortedPlayers[] = array(
                                                 "Player"=>$player["First"] . " " . $player["Last"],
@@ -112,7 +117,7 @@
                                                 "SPCT"=>$SPCT,
                                                 "tChks"=>$p["tChks"],
                                                 "tPIM"=>$p["tPIM"],
-                                                "TOIG"=>$TOIG                                                
+                                                "TOIG"=>$TOIG                                                                                                
                                             );
                                     }
 

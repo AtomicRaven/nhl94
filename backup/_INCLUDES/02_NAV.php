@@ -40,7 +40,7 @@
 				if ($LOGGED_IN == 1 && $_SESSION['Admin'] == true) {					
 		?>		
 		<li>
-			<a href="./comparePlayer2.php">ROSTER</a>
+			<a href="./roster2.php">ROSTER</a>
 		</li>
 		<?php
 					
@@ -48,7 +48,7 @@
 				else {
 		?>		
 		<li>
-			<a href="./comparePlayer.php">ROSTER</a>
+			<a href="./roster.php">ROSTER</a>
 		</li>
 		<?php
 				}

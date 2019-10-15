@@ -1,0 +1,224 @@
+Lines
+
+
+Chicago Blackhawks
+
+	Murphy-Roenick-Larmer
+	Ruuttu-Roenick-Larmer
+	Roenick-Goulet-Larmer
+	
+	Chelios-Smith
+	
+
+Tampa Bay Lightning
+
+	Andersson-Bradley-Kasper
+	Kasper-Bradley-DiMaio
+	
+	Roman Hamrlik-Marc Bergevin
+	
+	
+St. Louis Blues
+
+	Shanahan-Hull-Emerson
+	Bassen-Hull-Emerson
+	
+	Brown-Butcher
+	
+	
+Toronto Maple Leafs
+
+	Borshevsky-Gilmour-Clark
+	Cullen-Gilmour-Borshevsky
+	
+	Gill-Ellett
+
+	
+Detroit Red Wings
+
+	Ciccarelli-Yzerman-Fedorov
+	Lidstrom-Konstantinov
+	
+	
+Florida Panthers
+
+	Lomakin-Skrudland-Hough
+	Lomakin-Skrudland-Belanger
+	
+	Hynes-Murphy
+	Murphy-Richer
+	
+	
+New York Rangers
+
+	Tikkanen-Gartner-Messier
+	Tikkanen-Gartner-Amonte
+	Turcotte-Gartner-Amonte
+	
+	Patrick-Leetch
+
+	
+Philadelphia Flyers
+
+	Lindros-Recchi-Eklund
+	Eklund-Recchi-Dineen
+	
+	Yushkevich-Hawgood
+	
+	
+New Jersey Devils
+
+	Zelepukin-Richer-Semak
+	Zelepukin-Semak-Nicholls
+	
+	Driver-Stevens
+	Driver-Niedermayer
+	
+	
+New York Islanders
+
+	Hogue-Turgeon-Thomas
+	Thomas-Hogue-Volek
+	
+	Kasparitis-Kurvers
+	Kasparitis-Norton
+
+	
+Washington Capitals
+
+	Khristich-Bondra-Ridley
+	Bondra-Khristich-Carpenter
+	
+	Johansson-Cote
+	Cote-Iafrate
+	
+	
+Pittsburgh Penguins
+
+	Mullen-Lemieux-Jagr
+	Mullen-Lemieux-Straka
+	Straka-Mullen-Mceachern
+	
+	Murphy-Samuelsson
+
+	
+Ottawa Senators
+
+	Turgeon-Baker-Smail
+	Baker-Kudelski-Smail
+	
+	MacIver-Shaw
+	
+	
+Hartford Whalers
+
+	Verbeek-Sanderson-Yake
+	Verbeek-Sanderson-Nylander/Kron
+	
+	Burt-Zalapski
+	Weinrich-Zalapski
+	
+	
+Buffalo Sabres
+
+	Hawerchuk-Mogilny-Lafontaine
+	Lafontaine-Mogilny-Errey	
+	Khmylev-Mogilny-Lafontaine
+	
+	Svoboda-Ledyard
+	Svoboda-Smehlik
+	
+	
+Montreal Canadiens
+
+	Damphousse-Lebeau-Savard
+	Lebeau-Muller-Savard
+	Savard-Lebeau-Leeman
+	
+	Schneider-Daigneault
+	Brisebois-Daigneault
+	
+	
+Quebec Nordiques
+
+	Sundin-Sakic-Kovalenko
+	Kamensky-Sakic-Kovalenko
+	Kovalenko-Sundin-Sakic
+	
+	Foote-Gusarov
+	Gusarov-Duchesne
+	Foote-Leschyshyn
+	
+	
+Boston Bruins
+
+	Donato-Juneau-Oates
+	Donato-Oates-Juneau
+	Donato-Neely-Oates
+	
+	Sweeney-Bourque
+	Sweeney-Wesley
+	
+	
+Edmonton Oilers
+
+	Simpson-Klima-Todd
+	Todd-Klima-Ciger
+	Todd-Klima-Elik
+	
+	Kravchuk-Manson
+	
+
+Vancouver Canucks
+
+	Ronning-Bure-Courtnall
+	Ronning-Linden-Bure
+	
+	Lumme-Lidster
+	Lumme-Plavsic
+
+	
+Winnipeg Jets
+
+	Davydov-Selanne-Borsato
+	Davydov-Selanne-Zhamnov
+	
+	Numminen-Housley
+	Bautin-Housley
+	
+	
+Los Angeles Kings
+
+	Gretzky-Sandstrom-Robitaille
+	Gretzky-Robitaille-Granato
+	
+	Blake-Zhitnik
+
+	
+San Jose Sharks
+
+	Gaudreau-Falloon-Berezan - who are deke masters and slashers
+	Berezan-Gaudreau-Falloon - one timer specialists who like to use speed on the wings to generate offense
+	Falloon-Gaudreau-Berezan - much like the second, but puts the bigger slap shot on the off wing with Falloon
+	
+	
+Calgary Flames
+
+	Fleury-Roberts-Reichel
+	Makarov-Fleury-Reichel
+	
+	MacInnis-Suter
+	
+	
+Mighty Ducks of Anaheim
+
+	Semenov-Yake-Loach
+	Semenov-Yake-Sweeney
+	
+	Kasatonov-Hill
+	Ladoucer-Kasatonov
+
+	
+	
+
+	
