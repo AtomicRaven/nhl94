@@ -1,6 +1,7 @@
 <?php
 
 		session_start();
+    // error_reporting( E_ALL );
 		$ADMIN_PAGE = false;
 		include_once './_INCLUDES/00_SETUP.php';
 		include_once './_INCLUDES/dbconnect.php';
@@ -90,6 +91,8 @@
 		//Checks
 		$BCH = 0;
 		$BCA = 0;
+    
+    $ShootPer = '';
 
 		while($row = mysqli_fetch_array($gamesplayed)){
 				
@@ -147,7 +150,7 @@
 
 						//Penalites
 						$PPH += $gStats["PIMH"];
-						$PPA += $gStats["PIMA"];						
+						$PPA += $gStats["PIMA"];			
 
 						//Breakaways
 						$BAH += $gStats["BAH"];
@@ -244,8 +247,10 @@
 		$saZoneP =  FormatZoneTime(date("Y-m-d H:i:s", $saZone));
 
 		//Divide Penaltie minutes by 2
-		$PPH = ($PPH /2) + $PSA;
-		$PPA = ($PPA /2) + $PSH;
+		//if(!BlitzChk($leagueid)){
+			//$PPH = ($PPH /2) + $PSA;
+			//$PPA = ($PPA /2) + $PSH;
+		//}
 
 		mysqli_data_seek($gamesplayed, 0);
 
@@ -280,7 +285,7 @@
 						</tr>			
 						<tr class="heading">
 							<td class="c brt" style="padding: 2px 0 0 0;">
-							<a class="<?=$stanley?>"><br/></a>							
+							<a class="<?=$stanleyClass?>"><br/></a>							
 							</td>
 							<td class="" colspan="5"><?= $gamesCompleteText?><br /> 
 								<span class="note"><?= $lastEntryTime?></span></td>
@@ -321,9 +326,9 @@
 						<tr class="tight<?php print $stripe[$i & 1]; ?>" >
 
 							<td class="c m"><?php print $i; ?></td>
-							<td class="<?=$homeClass?>"><?= GetTeamABVById($row["HomeTeamID"]) ?><?=$HOT?><div class='logo small <?= GetTeamABVById($row["HomeTeamID"]) ?>'></div></td>
+							<td class="<?=$homeClass?>"><?= GetTeamABVById($row["HomeTeamID"], $leagueid) ?><?=$HOT?><div class='logo small <?= GetTeamABVById($row["HomeTeamID"], $leagueid) ?>'></div></td>
 							<td class="<?=$homeClass?> m"><b class="billboard"><?=$row["HomeScore"]?></b></td>
-							<td class="<?=$awayClass?>"><?= GetTeamABVById($row["AwayTeamID"]) ?><?=$AOT?><div class='logo small <?= GetTeamABVById($row["AwayTeamID"]) ?>'></div></td>
+							<td class="<?=$awayClass?>"><?= GetTeamABVById($row["AwayTeamID"], $leagueid) ?><?=$AOT?><div class='logo small <?= GetTeamABVById($row["AwayTeamID"], $leagueid) ?>'></div></td>
 							<td class="<?=$awayClass?> m"><b class="billboard"><?=$row["AwayScore"]?></b></td>
 							<td class="c m"><button type="button" class="square details" onclick="showGameDetails(this, 'detail_<?php print $i; ?>', <?=$gameid?>, <?=$i?>, <?=$leagueid?>)">+ Details</button></td>
 						</tr>	
@@ -418,9 +423,10 @@
 							<td class="heading">PPG</td>							
 							<td class="heading">G</td>
 							<td class="heading">A</td>
+              <td class="heading c" style="font-size: 72%;">S<br/>h<br/>%</td>
 							<td class="heading c" style="font-size: 72%;">S<br/>O<br/>G</td>
 							<!-- <td class="heading">TOI/G</td> -->
-							<td class="heading c" style="font-size: 72%;">P<br/>e<br/>n</td>
+							<td class="heading c" style="font-size: 72%;">C<br/>h<br/>k</td>
 						</tr>	
 						<!-- start loop for all players with points -->
 		<?php 
@@ -435,23 +441,32 @@
 						$avgPts = number_format($row["tPoints"] / $row["GP"], 2);
 
 						if($pen > 0 )
-							$pen = $pen / 2;						
+							$pen = $pen / 2;			
 
+            $ShootPer = '-';
+            $ShootPerRaw = 0;
+            if ( $row["tSOG"] > 0 ) {
+              $ShootPerRaw = ( $row["tG"] / $row["tSOG"]) * 100;  
+              $ShootPer = number_format($ShootPerRaw, 0, '.', '');
+              $ShootPer .= '%';
+            }
+            
 						if($row["Pos"] != "G"){		?>							
 
 								<tr class="tight<?php print $stripe[$j & 1]; ?>">
 									<td class=""><?php print $j; ?></td>
 									<td class="" style="font-size: 80%;"><?=$player["First"] . " " . $player["Last"]?></td>
-									<td class=""><?=GetTeamABVById($row["TeamID"])?></td>
+									<td class=""><?=GetTeamABVById($row["TeamID"], $leagueid)?></td>
 									<td class=""><?=$row["Pos"]?></td>
-									<td class=""><?=$row["GP"]?></td>
-									<td class=""><?=$row["tPoints"]?></td>
+									<td class="c"><?=$row["GP"]?></td>
+									<td class="c"><?=$row["tPoints"]?></td>
 									<td class=""><?=$avgPts?></td>
 									<td class=""><?=$row["tG"]?></td>
 									<td class=""><?=$row["tA"]?></td>
-									<td class=""><?=$row["tSOG"]?></td>
+                  <td class="c"><?= $ShootPer ?></td>
+									<td class="c"><?=$row["tSOG"]?></td>
 									<!-- <td class=""><?=$TOIG?></td>		-->							
-									<td class=""><?=$pen?></td>
+									<td class="c"><?= $pen*2 ?></td>
 								</tr>	
 		<?php 
 					$j++;
@@ -495,7 +510,7 @@
 								<tr class="tight<?php print $stripe[$j & 1]; ?>">
 									<td class=""><?php print $j; ?></td>
 									<td class=""><?=$player["First"] . " " . $player["Last"]?></td>
-									<td class=""><?=GetTeamABVById($row["TeamID"])?></td>
+									<td class=""><?=GetTeamABVById($row["TeamID"], $leagueid)?></td>
 									<td class=""> <?=$savePct?><!-- 17 goals on 72 shots) --></td>
 								</tr>	
 		<?php 

@@ -1,8 +1,8 @@
 <?php
 
-include_once './_INCLUDES/config.php';
-include_once './_INCLUDES/utils.php';
-include_once './_INCLUDES/data.php';
+include_once realpath(dirname(__FILE__)). './config.php';
+include_once realpath(dirname(__FILE__)). './utils.php';
+include_once realpath(dirname(__FILE__)). './data.php';
 
 
 // Create connection

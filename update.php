@@ -48,7 +48,7 @@
 			$submitBtn .="<input type='hidden' name='seriesid' value='" . $seriesid ."' />";
 			$submitBtn .="<input type='hidden' name='leagueid' value='" . $series["LeagueID"] ."' />";
 
-			$fileInput = "Choose file: <input type='file' name='uploadfile' />";			
+			$fileInput = "Choose file: <input type='file' name='uploadfile' multiple/>";			
 			$fileInput .= "<input type='submit' name='submit' value='Upload' />";
 			
 ?><!DOCTYPE HTML>
@@ -71,9 +71,24 @@
 
 					<h2><?= $titleText ?></h2> 
 										
-					<form method="post" action="processUpdate.php" enctype="multipart/form-data">	
-					<?= $submitBtn?>
-					<table class="standard">
+					<form method="post" action="processUpdate.php" id="frmGameSubmit" enctype="multipart/form-data">	
+					<?= $submitBtn?>					
+
+					<!-- Matt this is new Table -->
+					<table id="tblBulkUpload" class="standard">					
+						<tr class="heading rowSpacer">
+							<td><button id="btnUploadBulk" type="button" class='square blue' onclick="UploadBulk();">Upload Bulk</button><br/><br/></td>
+						</tr>
+						<tr>
+							<td id="bulkUpload" style="padding-bottom: 30px;display:none;">
+								Choose files: <input type="file" id='uploadfile' name='uploadfile[]' multiple><input type='button' name='btnSubmit' onclick='UploadFiles()' value='Upload' />								
+							</td>
+						</tr>
+					</table>
+
+					<!-- Matt this END of new Table -->
+
+					<table id="tblStandardUpload" class="standard">
 						<tr class="heading rowSpacer">
 							<td class="seriesNum mainTD"></td>
 							<td class="seriesName mainTD"><?=$series["Name"]?>, starting at <?= $homeUserAlias ?>'s Home Arena</td>

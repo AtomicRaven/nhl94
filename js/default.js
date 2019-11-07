@@ -411,6 +411,32 @@
 
 	}
 
+	function UploadFiles(){
+
+		var fileInput = document.getElementById("uploadfile");
+		var form = document.getElementById("frmGameSubmit");
+
+		// files is a FileList object (simliar to NodeList)
+		var files = fileInput.files;
+
+		for (var i = 0; i < files.length; i++) {
+
+			var dateInputBox = "<input type='hidden' name='datemodified[]' value='" + files[i].name + "|" + files[i].lastModifiedDate.getTime() + "' />";				
+			$(form).append(dateInputBox);	
+		}
+		
+		$(form).submit();
+	}
+
+	function UploadBulk(){
+		
+		$("#bulkUpload").toggle();
+		$("#tblStandardUpload").toggle();
+
+		var btnTitle = $('#btnUploadBulk').html();
+		$('#btnUploadBulk').html(btnTitle == "Standard Upload" ? "Bulk Upload" : "Standard Upload");
+	}
+
 	function CheckHomeAwayEqual(){
 
 		var homeUser = $("#homeUser").val();

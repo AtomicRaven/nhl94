@@ -9,34 +9,7 @@
 
 			$msg = "";
 			if(isset($_GET['err'])){
-				switch ($_GET['err']){
-					
-					case 0:
-						$msg = "Game has been uploaded and submitted.";
-					break;
-					case 1:
-						$msg = "Teams in the save state file do not match the game on the schedule.  Please try a different file.";
-					break;
-					case 2:
-						$msg = "Password is incorrect.  Please try again.";
-					break;
-					case 3:
-						$msg = "File is not valid.  Please choose a file that ends in .gs (Genesis) or .zs (SNES).";
-					break; 
-					case 4:
-						$msg = "Error submitting game.  Please contact the administrator.";
-					break;			
-					case 5:
-						$msg = "Game could not be uploaded.  Please contact the administrator.";
-					break;
-					case 6:
-						$msg = "Game has been Deleted.";
-					break;
-					default:
-						$msg = "";
-					break;
-			
-				}
+				$msg = GetUploadMsg($_GET['err']);
 			}	
 
 			$creatednew = true;
@@ -52,6 +25,7 @@
 			$gamesplayed = GetGamesBySeriesId($seriesid);
 			$numGames = mysqli_num_rows($gamesplayed);
 			$gamesNeededToWin = NeededWins($seriesid);
+			$leagueid= $series["LeagueID"];	
 
 			//echo ("TotalGames: " . $numGames . "<br/> Winner must have " . $gamesNeededToWin . " to win series.");
 
@@ -82,20 +56,6 @@
 <head>
 <title>Update Series</title>
 <?php include_once './_INCLUDES/01_HEAD.php'; ?>
-
-			<script>			
-
-			function UploadFile(scheduleNum){
-
-				var fileInputBox = "<?= $fileInput ?><input type='hidden' name='scheduleid' value='" + scheduleNum + "' />";
-				var fileInputDiv = $("#fileInput" + scheduleNum);
-
-				fileInputDiv.html(fileInputBox);
-				fileInputDiv.show();					
-
-			}
-
-			</script>
 
 </head>
 
@@ -146,8 +106,8 @@
 							
 						?>
 						<tr>
-							<td><button type="button" class="square" onclick="DeleteGame('<?=$row['GameID']?>','<?=$seriesid?>')">X</button></td>
-							<td>Gm <?=$i?>. <?= GetTeamABVById($row["AwayTeamID"]) ?> (<?= GetUserAlias($row["AwayUserID"])?>) <?=$row["AwayScore"]?> | <?= GetTeamABVById($row["HomeTeamID"])?> (<?= GetUserAlias($row["HomeUserID"]) ?>) <?=$row["HomeScore"]?></td>
+							<td><button type="button" class="square" onclick="DeleteGame('<?=$row['GameID']?>','<?=$seriesid?>', 'update')">X</button></td>
+							<td>Gm <?=$i?>. <?= GetTeamABVById($row["AwayTeamID"], $leagueid) ?> (<?= GetUserAlias($row["AwayUserID"])?>) <?=$row["AwayScore"]?> | <?= GetTeamABVById($row["HomeTeamID"], $leagueid)?> (<?= GetUserAlias($row["HomeUserID"]) ?>) <?=$row["HomeScore"]?></td>
 							<td><button type="button" class="square" onclick="location.href='resultsSeries.php?seriesId=<?= $seriesid?>'">Game Stats</button></td>
 						</tr>
 						<?php

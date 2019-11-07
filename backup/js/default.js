@@ -2,8 +2,8 @@
 
 
 	function RosterSubmit(){
-
-		if(s!="" && s!='Off'){
+		
+		if(typeof s !== 'undefined' && s!="" && s!='Off'){
 
 			var theForm = document.forms['rosterForm'];
 			var sOrder = document.getElementById("sOrder");
@@ -165,40 +165,44 @@
 
 	}
 
-	function SubmitForm(){
-
-		var homeSelect = document.getElementById("homeTeam");
-		var awaySelect = document.getElementById("awayTeam");
-
-		var homeUserSelect = document.getElementById("homeUser");
-		var awayUserSelect = document.getElementById("awayUser");
+	function SubmitTournament(){
 
 		var submit = true;
 		var msgBox = $("#msg");
 		var msgHtml = "Please Select the following: ";
 
-		/* if(homeSelect.options[homeSelect.selectedIndex].value == 0){
+		var tournamentName = document.getElementById("tournamentName");
+		var tournamentType = document.getElementById("tournamentType");
+		var bracketSize = document.getElementById("bracketSize");
+		var leagueType = document.getElementById("leagueType");
+		var startDate = document.getElementById("startDate");
 
-			msgHtml += "Home Team, ";
+		if(tournamentName.value == ""){
 			submit = false;
-		} */
+			msgHtml += "Tournament Name, ";
+		}		
 
-		/* if(awaySelect.options[awaySelect.selectedIndex].value == 0){
-			
-			msgHtml += "Away Team, ";
-			submit = false;
-		} */
-
-		if(homeUserSelect.options[homeUserSelect.selectedIndex].value == -1){
-			
-			msgHtml += "Home User, ";
+		if(tournamentType.options[tournamentType.selectedIndex].value == -1){
+				
+			msgHtml += "Tournament Type, ";
 			submit = false;
 		}
 
-		if(awayUserSelect.options[awayUserSelect.selectedIndex].value == -1){
+		if(bracketSize.options[bracketSize.selectedIndex].value == -1){
 			
-			msgHtml += "Away User, ";
+			msgHtml += "Number of Particpants, ";
 			submit = false;
+		}
+
+		if(leagueType.options[leagueType.selectedIndex].value == -1){
+			
+			msgHtml += "League, ";
+			submit = false;
+		}
+
+		if(startDate.value == ""){
+			submit = false;
+			msgHtml += "Start Date, ";
 		}
 
 		if(submit){
@@ -210,6 +214,55 @@
 			msgBox.html(msgHtml.substring(0, msgHtml.length - 2) + "</br></br>");
 		}
 
+	}
+
+	function SubmitForm(){
+
+		if(CheckHomeAwayEqual()){
+		
+			var homeSelect = document.getElementById("homeTeam");
+			var awaySelect = document.getElementById("awayTeam");
+
+			var homeUserSelect = document.getElementById("homeUser");
+			var awayUserSelect = document.getElementById("awayUser");
+
+			var submit = true;
+			var msgBox = $("#msg");
+			var msgHtml = "Please Select the following: ";
+
+			/* if(homeSelect.options[homeSelect.selectedIndex].value == 0){
+
+				msgHtml += "Home Team, ";
+				submit = false;
+			} */
+
+			/* if(awaySelect.options[awaySelect.selectedIndex].value == 0){
+				
+				msgHtml += "Away Team, ";
+				submit = false;
+			} */
+
+			if(homeUserSelect.options[homeUserSelect.selectedIndex].value == -1){
+				
+				msgHtml += "Home User, ";
+				submit = false;
+			}
+
+			if(awayUserSelect.options[awayUserSelect.selectedIndex].value == -1){
+				
+				msgHtml += "Away User, ";
+				submit = false;
+			}
+
+			if(submit){
+
+				document.seriesForm.submit();
+
+			} else{
+
+				msgBox.html(msgHtml.substring(0, msgHtml.length - 2) + "</br></br>");
+			}
+		}
 
 	}
 
@@ -225,18 +278,73 @@
 
 	}
 
-	function DeleteGame(gameId, seriesId){
+	function DeleteTable(){
+
+		var tblSelect = document.getElementById("leagueType");
+
+		var tableId = tblSelect.options[tblSelect.selectedIndex].value;
+		var tableName = tblSelect.options[tblSelect.selectedIndex].innerHTML;
+
+		if(tableId != -1){
+
+			var deleteSeries = confirm("Are you sure you want to delete table #" + tableId  + " | " + tableName + "??");
+
+			if (deleteSeries == true) {
+
+				var deleteSeries2 = confirm("Are you really really sure you want to delete table #" + tableId  + " | " + tableName + "??");
+
+				if (deleteSeries2 == true) {
+					window.location.href="deleteTable.php?leagueType=" + tableId;	
+				}
+				
+			} else {
+				//txt = "You pressed Cancel!";
+			}
+		}
+
+	}
+
+	function ActivateTable(){
+
+		var tblSelect = document.getElementById("leagueType2");
+		var tblActivate = document.getElementById("activate");
+
+		var tableId = tblSelect.options[tblSelect.selectedIndex].value;
+		var tableName = tblSelect.options[tblSelect.selectedIndex].innerHTML;
+
+		var activateId = tblActivate.options[tblActivate.selectedIndex].value;
+
+		if(tableId != -1){
+
+			if(activateId == 1){
+				var changeActive = confirm("Are you sure you want to activate table #" + tableId  + " | " + tableName + "??");
+			}
+
+			if(activateId == 0){
+				var changeActive = confirm("Are you sure you want to Deactivate table #" + tableId  + " | " + tableName + "??");
+			}
+
+			if (changeActive == true) {								
+
+				window.location.href="activateTable.php?leagueType=" + tableId + "&activate=" + activateId;	
+								
+			} else {
+				//txt = "You pressed Cancel!";
+			}
+		}
+
+	}
+
+	function DeleteGame(gameId, seriesId, page, tId){
 
 
 		var deleteGame = confirm("Are you sure you want to delete game #" + gameId + "??");
 
 		if (deleteGame == true) {
-			location.href="processGameDelete.php?gameId=" + gameId + "&seriesId=" + seriesId;
+			location.href="processGameDelete.php?gameId=" + gameId + "&seriesId=" + seriesId + "&redirect=" + page + "&tId=" + tId;
 		} else {
 			//txt = "You pressed Cancel!";
-		}
-
-		
+		}		
 	}
 
 	//resultsSeries Page
@@ -291,9 +399,9 @@
 		var fileInput = "Choose file: <input type='file' name='uploadfile' />";
 
 		if(chk)
-			fileInput += "<input type='submit' name='submit' value='Upload' />";
+			fileInput += "<input type='button' onclick='SubmitForm()' value='Upload' />";			
 		else
-			fileInput += "<input type='submit' name='submit' value='Upload' />";
+			fileInput += "<input type='submit' name='submit' value='Upload' />";			
 
 		var fileInputBox = fileInput + "<input type='hidden' name='scheduleid' value='" + scheduleNum + "' />";
 		var fileInputDiv = $("#fileInput" + scheduleNum);
@@ -302,5 +410,26 @@
 		fileInputDiv.show();					
 
 	}
+
+	function CheckHomeAwayEqual(){
+
+		var homeUser = $("#homeUser").val();
+		var awayUser = $("#awayUser").val();
+        
+        if(homeUser !== undefined){
+    		if(homeUser == awayUser && homeUser != -1 && awayUser != -1){
+    			$("#msg").html('Dayum son! Home Coach and Away Coach are the same.')
+    			return false;
+    		}else{
+    			return true;
+    		}
+        }else{
+            return true;
+        }
+	}
+
+	$( "form" ).submit(function( event ) {
+		return CheckHomeAwayEqual();
+	});
 
 /// End of Create.js functions

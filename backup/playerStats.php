@@ -10,6 +10,7 @@
         $pos = "P";
         $fChecked = 'checked';
         $gChecked = '';
+        $totalTeamGoals = 0;
 
         $pTitleArray = array("Pos","GP","G","A","PTS","AvgPts","SOG","SPCT","Chk","PEN","PP","SH","TOIG");
         $gTitleArray = array("Pos","GP","GAA","GA","SV","TSA","SV%","SH","TOI/G","A","PTS","", "PTS/G");        
@@ -42,8 +43,9 @@
 
         }  
                 
-        $leagueTypeSelectBox = CreateSelectBox("leagueType", null, GetLeagueTypes(), "LeagueID", "Name", null, $leagueType);
-        $homeUserSelectBox = CreateSelectBox("homeUser", "Select Coach", GetUsers(true), "id_user", "username", null, $homeuserid);
+        $leagueTypeSelectBox = CreateSelectBox("leagueType", null, GetLeagueTypes(), "LeagueID", "Name", "this.form.submit()", $leagueType);
+        $homeUserSelectBox = CreateSelectBox("homeUser", "Select Coach", GetUsers(true), "id_user", "username", "this.form.submit()", $homeuserid);
+        $GLOBALS["subLg"] = GetSubLeagues($leagueType);
 
         if($homeuserid > 0){
             $rosters = GetPlayerStatsByCoachId($pos, $leagueType, $homeuserid, $limit);            
@@ -69,22 +71,23 @@
 				
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
-                    <h1>Player Stats</h1>		
+                    <h1>Player Stats</h1>	
+                                        	
                     <a href="resultsLeaderSeries.php" class="square-button">Series Stats</a>	
                     <a href="resultsLeader.php" class="square-button">Game Stats</a>
                     <a href="playerStats.php" class="square-button">Player Stats</a>			
+
+                    <div id="msg" style="color:red;"></div>
                     
                     <form name="rosterForm" method="get" action="playerStats.php">
                         <?php
                             echo $homeUserSelectBox;    
                             echo $leagueTypeSelectBox;                                                                                        
-                        ?>
-
-                        &nbsp; <button id="submitBtn" type="submit" style="margin-top: 10px;">Go</button>   
+                        ?>                         
 
                         <div style="display:inline;visibility: <?=  $vis?>;">
-                            <input type="radio" value="F" name="pos" <?=$fChecked?>/>Forwards                            
-                            <input type="radio" value="G" name="pos" <?=$gChecked?>/>Goalies                        
+                            <input type="radio" value="F" name="pos" onclick="RosterSubmit()" <?=$fChecked?>/>Forwards                            
+                            <input type="radio" value="G" name="pos" onclick="RosterSubmit()" <?=$gChecked?>/>Goalies                        
                         </div>
 
                         
@@ -99,6 +102,7 @@
                                             $SPCT = GetPercent($p["tG"], $p["tSOG"]);
                                             $player = GetPlayerFromID($p["PlayerID"], $p["LeagueID"]);
                                             $team = GetTeamABVById($p["TeamID"], $p["LeagueID"]);
+                                            $totalTeamGoals = $totalTeamGoals + $p["tG"];
 
                                             $sortedPlayers[] = array(
                                                 "Player"=>$player["First"] . " " . $player["Last"],
@@ -113,7 +117,7 @@
                                                 "SPCT"=>$SPCT,
                                                 "tChks"=>$p["tChks"],
                                                 "tPIM"=>$p["tPIM"],
-                                                "TOIG"=>$TOIG                                                
+                                                "TOIG"=>$TOIG                                                                                                
                                             );
                                     }
 

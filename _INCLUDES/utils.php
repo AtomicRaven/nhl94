@@ -6,6 +6,57 @@ function logMsg($msg){
 
 }
 
+function pFile($func, $file){
+
+	logMsg($func . ":");
+	logMsg($file['name']);
+	logMsg($file['datetime']);
+	logMsg($file['scheduleid']);
+	logMsg("-------------");
+    logMsg('');
+    
+}
+
+function ReArrayFiles(&$file_post, $datemodified, $schedule) {
+    
+    $file_ary = array();
+    $file_count = count($file_post['name']);
+    $file_keys = array_keys($file_post);       
+
+    for ($i=0; $i<$file_count; $i++) {
+
+        $dateArray = explode("|", $datemodified[$i]); 
+        $filename = $dateArray[0];				
+        $datetime = $dateArray[1];
+
+        foreach ($file_keys as $key) {
+
+            $file_ary[$i][$key] = $file_post[$key][$i];                       
+                        
+            if($filename == $file_ary[$i][$key]){                
+                $file_ary[$i]['datetime'] = $datetime;                
+            }                        
+        }        
+    }    
+    
+    usort($file_ary, 'SortByUnixTime'); 
+
+    //COmbine the arrays
+    foreach($file_ary as $key=>$val) {
+
+        $sortedGames[] = array(
+            "name"=> $val["name"],
+            "datetime" => $val["datetime"],
+            "tmp_name" => $val['tmp_name'],
+            "scheduleid" => $schedule[$key]["ID"],
+            "HomeUserID" => $schedule[$key]["HomeUserID"],
+		    "AwayUserID" => $schedule[$key]['AwayUserID']
+        );
+    }  
+
+    return $sortedGames;
+}
+
 function CleanTable($tableName){
 
 	$conn = $GLOBALS['$conn'];
@@ -259,6 +310,12 @@ function SortByGAA($x, $y) {
 }
 function SortByOverall($x, $y) {
     return $y['Overall'] > $x['Overall'];
+}
+function SortByUnixTime($x, $y) {
+    return $y['datetime'] < $x['datetime'];
+}
+function SortByID($x, $y) {
+    return $y['ID'] < $x['ID'];
 }
 function SortBy($x, $y, $field, $sOrder) {
 

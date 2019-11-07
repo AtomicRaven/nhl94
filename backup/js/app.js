@@ -9,6 +9,10 @@ app.controller("PostsCtrl", function($scope, $http) {
     $scope.prevSortType = $scope.defaultSortType;
     $scope.sortReverse  = true;  // set the default sort order
     $scope.searchPlayer   = '';     // set the default search/filter term
+
+    $scope.selectedLeagues = null;
+    $scope.leagues = [];
+    $scope.teams = [];
    
     $scope.Filter = {
         forwards: "F",
@@ -22,6 +26,18 @@ app.controller("PostsCtrl", function($scope, $http) {
             $scope.ChangeSortOrder();        
         }
     };
+
+    $scope.toggleAll = function() {
+
+       angular.forEach($scope.posts, function( post, idx) {
+
+           post.selected = !post.selected;
+            //if (post.selected) {
+              //  qString += "player" + idx + "=" + post.ID + "&";
+            //}
+            
+        });    
+    }
 
     $scope.ChangeSortOrder = function(){
 
@@ -85,6 +101,7 @@ app.controller("PostsCtrl", function($scope, $http) {
     $scope.Reset = function(){
 
         $scope.GetPlayers();
+        $scope.selectedTeams = "Select Team";
         $scope.searchPlayer = '';
         $scope.sortType = $scope.defaultSortType;
     }
@@ -131,7 +148,79 @@ app.controller("PostsCtrl", function($scope, $http) {
         
     }
 
+//Leagues
+
+    $scope.ChangeLeague = function(item) {
+        $scope.GetPlayers("?leagueType=" + item.LeagueID);        
+        $scope.GetTeams("?leagueType=" + item.LeagueID);
+        //$scope.sel
+    }
+
+    $scope.ChangeTeams = function(item) {
+        $scope.GetPlayers("?leagueType=" + $scope.selectedLeagues.LeagueID + "&teamId=" + item.TeamID);                
+    }
+
+    $scope.GetLeagues = function(params){
+
+        var uri = "./getBinsJson.php";
+
+        if(params == undefined){
+            params = "";
+        }
+
+        $http({
+            method: 'GET',
+            url: uri + params
+            }).then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available        
+                
+               // var result = jsObjects.filter(obj => {
+                 //   return obj.b === 6
+                  //})
+				
+                $scope.leagues = response.data;                                
+                $scope.selectedLeagues = $scope.leagues.filter(obj => {return obj.LeagueID === leagueType})[0];
+                $scope.loading = false;
+                
+
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                $scope.loading = false;
+        });
+        
+    }
+
+    $scope.GetTeams = function(params){
+
+        var uri = "./getTeamsJson.php";
+
+        if(params == undefined){
+            params = "";
+        }
+
+        $http({
+            method: 'GET',
+            url: uri + params
+            }).then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available        
+                $scope.teams = response.data;                                
+                $scope.selectedTeams = "Select Team";
+                $scope.loading = false;
+
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                $scope.loading = false;
+        });
+        
+    }
+
     
     $scope.GetPlayers();
+    $scope.GetTeams();
+    $scope.GetLeagues();
 });
 

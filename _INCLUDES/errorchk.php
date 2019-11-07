@@ -3,15 +3,18 @@
 
 require_once("dbconnect.php");
 
-function ErrorCheck($seriesid, $scheduleid, $tourneyid){	
+function ErrorCheck($seriesid, $scheduleid, $tourneyid, $file){	
 	
 	$filePath = $GLOBALS['$saveFilePath'];
+	$filename = $file['name'];
 
 	if($tourneyid >0){
 		$tourney = GetTourneyById($tourneyid);		
 		$leaguenm = $tourney["ABV"];
 		$filePath = $filePath . $leaguenm;
+
 	}else{
+
 		$filePath .= $seriesid;
 	}	
 
@@ -20,12 +23,11 @@ function ErrorCheck($seriesid, $scheduleid, $tourneyid){
 		mkdir($filePath, 0777, true);
 	}
 
-	$filename = $_FILES['uploadfile']['name']; // Get the name of the file (including file extension).
-	//echo "fileName:" . $filename;
+	logMsg("fileName:" . $filename);
 	$ext = substr($filename, strpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
 
 	$upload_path = $filePath . "/" . "Series-" . $seriesid. '-game-'. $scheduleid . '.sv';
-	//echo "uploadPath:" . $upload_path;
+	logMsg("uploadPath:" . $upload_path);
 	//Check to make sure game being uploaded is correct
 	$row = GetScheduleByID($scheduleid);
 
@@ -40,7 +42,7 @@ function ErrorCheck($seriesid, $scheduleid, $tourneyid){
 	
 		if(in_array($ext, $filetypes)){  // file ext is OK
 
-			if(move_uploaded_file($_FILES['uploadfile']['tmp_name'], $upload_path)){
+			if(move_uploaded_file($file['tmp_name'], $upload_path)){
 				
 				// Check if teams are correct
 				$fr = fopen("$upload_path", 'rb');	// reads file				

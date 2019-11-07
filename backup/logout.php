@@ -1,12 +1,14 @@
 <?php
 
+		include_once './_INCLUDES/00_SETUP.php';
+
 		session_start();
 		// make user name = '' to end sessions
 		$_SESSION['username'] = '';
+		$LOGGED_IN = false;
 		session_destroy();
+		setcookie("loginCredentials", "", time() - 3600); // "Expires" 1 hour ago
 
-		include_once './_INCLUDES/00_SETUP.php';
-		
 ?><!DOCTYPE HTML>
 <html>
 <head>

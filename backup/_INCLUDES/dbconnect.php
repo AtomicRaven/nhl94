@@ -1,8 +1,8 @@
 <?php
 
-include_once './_INCLUDES/./config.php';
-include_once './_INCLUDES/./utils.php';
-include_once './_INCLUDES/./data.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . './_INCLUDES/config.php';
+include_once $_SERVER['DOCUMENT_ROOT']. './_INCLUDES/utils.php';
+include_once $_SERVER['DOCUMENT_ROOT']. './_INCLUDES/data.php';
 
 
 // Create connection
@@ -13,7 +13,7 @@ if (!$GLOBALS['$conn']) {
 } else{
 	logMsg("DB Connected");
     date_default_timezone_set('America/Toronto'); // set timezone in php
-    mysql_query("SET `time_zone` = '".date('P')."'"); // set timezone in MySQL
+    mysqli_query($GLOBALS['$conn'], "SET `time_zone` = '".date('P')."'"); // set timezone in MySQL
 }
 
 ?>

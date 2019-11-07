@@ -24,23 +24,27 @@
 				else {
 	?>				
 		<li>
-			<a href="./manage.php">MANAGE</a>
+			<a href="./manage.php">EXIS</a>
 		</li>
 	<?php
 				}
 	?>		
+		<!--<li>
+			<a href="./tourneyList.php">LEAGUES</a>
+		</li>		-->	
+	
 		<li>
 			<a href="./results.php">RESULTS</a>
 		</li>
 		<li>
-			<a href="./resultsLeader.php">LEADER</a>
+			<a href="./resultsLeader.php">STATS</a>
 		</li>
 		<?php		
 
 				if ($LOGGED_IN == 1 && $_SESSION['Admin'] == true) {					
 		?>		
 		<li>
-			<a href="./roster2.php">ROSTER</a>
+			<a href="./roster.php">ROSTER</a>
 		</li>
 		<?php
 					
@@ -52,7 +56,12 @@
 		</li>
 		<?php
 				}
-		?>	
+		?>
+		
+		<li>
+			<a href="http://nhl94.com" target="nhl94">NHL94</a>
+		</li>
+
 		<?php
 
 	//echo "IsLoggedIn:" . $LOGGED_IN;
@@ -74,5 +83,6 @@
 			}
 		}
 		?>	
+
 
 </div>	

@@ -14,7 +14,6 @@ $dumppath = "C:/xampp/mysql/bin/";
 
 
 //prod
-
 /*
 $dbname = "nhl94db-31313577c2";
 $servername = "shareddb-p.hosting.stackcp.net";

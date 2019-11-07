@@ -1,9 +1,12 @@
 <?php
-
+        
 		session_start();
-		$ADMIN_PAGE = false;
+        $ADMIN_PAGE = false;
+        
+        
 		include_once './_INCLUDES/00_SETUP.php';
-		include_once './_INCLUDES/dbconnect.php';	
+        include_once './_INCLUDES/dbconnect.php';	       
+        
 
         if (isset($_GET["s"]) && !empty($_GET["s"])) {
 
@@ -15,16 +18,7 @@
         }
 
         $numGames = 0;
-        $homeuserid = 0;
-        $awayuserid = 0;
         $recordStyle = "all";
-
-        if (isset($_GET["homeUser"]) && isset($_GET["awayUser"])) {
-
-		    $homeuserid = $_GET['homeUser'];
-		    $awayuserid = $_GET['awayUser'];           
-
-        }  
         
         if($homeuserid==0 || $awayuserid==0){
             
@@ -44,6 +38,8 @@
         $homeUserSelectBox = CreateSelectBox("homeUser", "Select Coach", GetUsers(true), "id_user", "username", null, $homeuserid);
         $awayUserSelectBox = CreateSelectBox("awayUser", "Select Coach", GetUsers(true), "id_user", "username", null, $awayuserid);
         $leagueTypeSelectBox = CreateSelectBox("leagueType", "Select League", GetLeagueTypes(), "LeagueID", "Name", null, $leagueType);
+
+        $GLOBALS["subLg"] = GetSubLeagues($leagueType);
 
 
 ?><!DOCTYPE HTML>
