@@ -32,9 +32,9 @@
             $gamesleaders = CompareUsers($homeuserid, $awayuserid);
         }
        
-        $homeUserSelectBox = CreateSelectBox("homeUser", "Select Coach", GetUsers(true), "id_user", "username", null, $homeuserid);
-        $awayUserSelectBox = CreateSelectBox("awayUser", "Select Coach", GetUsers(true), "id_user", "username", null, $awayuserid);
-        $leagueTypeSelectBox = CreateSelectBox("leagueType", "Select League", GetLeagueTypes(), "LeagueID", "Name", null, $leagueType);
+        $homeUserSelectBox = CreateSelectBox("homeUser", "Select Coach", GetUsers(true), "id_user", "username", "this.form.submit()", $homeuserid);
+        $awayUserSelectBox = CreateSelectBox("awayUser", "Select Coach", GetUsers(true), "id_user", "username", "this.form.submit()", $awayuserid);
+        $leagueTypeSelectBox = CreateSelectBox("leagueType", "Select League", GetLeagueTypes(), "LeagueID", "Name", "this.form.submit()", $leagueType);
         $GLOBALS["subLg"] = GetSubLeagues($leagueType);
 
 
@@ -61,9 +61,8 @@
                     <div id="msg" style="color:red;"></div>
 
                     <form name="seriesForm" method="get" action="resultsLeaderSeries.php">                    
-                    <?=$homeUserSelectBox?> &nbsp; <?=$awayUserSelectBox?> &nbsp; <?=$leagueTypeSelectBox?>
-                    
-                    &nbsp; <button id="submitBtn" type="submit" style="margin-top: 10px;">Go</button>                    
+                    <?=$homeUserSelectBox?> &nbsp; <?=$awayUserSelectBox?> &nbsp; <?=$leagueTypeSelectBox?>                   
+                
 					
                         <?php 
                             $j = 1;
