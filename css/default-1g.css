@@ -82,11 +82,14 @@ div#page {
 
 #header {
 	background-color: #333;
-	overflow: hidden;
-	padding: 6px 10px 15px 164px;
-	background-image: url('../images/logo.png');
-	background-repeat: no-repeat;
-	background-position: 15px 11px;
+	overflow: hidden;		
+	padding: 8px 10px 9px 15px;
+}
+
+.site-logo{
+	cursor:pointer;
+	float: left;
+    padding-top: 5px;
 }
 
 ul#nav {
@@ -263,6 +266,10 @@ td.c {
 
 td.r {
 	text-align: right;
+}
+
+td.l {
+	text-align: left;
 }
 
 td.winner {
@@ -552,3 +559,7 @@ div.boxy{
 	border:1px solid black;
 	margin-bottom:10px;
 }	
+
+.td-top{
+	vertical-align: top;
+}

@@ -54,7 +54,7 @@
                 //echo "Session: " . $_SESSION['s'] . "<br/>";
                 //echo "SortBy: " . $s . "<br/>";
 
-                if($_SESSION['s']){                
+                if(isset($_SESSION['s'])){                
 
                     if($_SESSION['s'] == $s){                                       
 

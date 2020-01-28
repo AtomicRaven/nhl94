@@ -1,5 +1,5 @@
 <?php
-$file = fopen("https://docs.google.com/spreadsheets/d/1uNS6Ejp8d7QqOtqsY36D9gQPXc8QyuPhlFFx2pfe--A/export?format=csv&id=1uNS6Ejp8d7QqOtqsY36D9gQPXc8QyuPhlFFx2pfe--A&gid=1625831949","r");
+$file = fopen("https://docs.google.com/spreadsheets/d/1FPbQs0gWqhUwm6yCEZRGTRHBIgSXVxn1yoGCG3hyfn4/export?format=csv&id=1FPbQs0gWqhUwm6yCEZRGTRHBIgSXVxn1yoGCG3hyfn4&gid=0","r");
 $draftedPlayers = array();
   while(!feof($file))
   {

@@ -1,4 +1,5 @@
 <div id="header">
+<img src="images/logo.png" class="site-logo" onclick="location.href='index.php'"/>
 <?php
 			if ($LOGGED_IN == true) {
 
@@ -17,7 +18,7 @@
 				if ($LOGGED_IN != 1) {
 	?>				
 		<li>
-			<a href="./index.php">LOGIN</a>
+			<a href="./login.php">LOGIN</a>
 		</li>
 	<?php
 				}

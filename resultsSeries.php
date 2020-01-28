@@ -105,10 +105,6 @@
 				
 				if($row["GameID"] != NULL){
 					
-					//Get name of first team played by each coach
-					$homeTeam = GetTeamABVById($row["HomeTeamID"], $leagueid);
-					$awayTeam = GetTeamABVById($row["AwayTeamID"], $leagueid);
-
 					$gStats = GetGameById($row["GameID"]);
 
 					//Total FaceOffs
@@ -285,7 +281,7 @@
 					<table class="standard">
 						<tr class="heading">
 							<td class="c brt"><span class="note">series</span><br /><!-- Rob: series_id --><?= $seriesid ?></td>
-							<td class="" colspan="5" style="padding-top: .7em"><b class="billboard"><?= $awayUserAlias ?> <span class='logo small <?= $awayTeam ?>'></span> vs <?= $homeUserAlias ?><span class='logo small <?= $homeTeam ?>'></span></b></td>
+							<td class="" colspan="5" style="padding-top: .7em"><b class="billboard"><?= $awayUserAlias ?> vs <?= $homeUserAlias ?></b></td>
 						</tr>			
 						<tr class="heading">
 							<td class="c brt" style="padding: 2px 0 0 0;">

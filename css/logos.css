@@ -8,6 +8,9 @@
     height: 107px;
 }
 
+.logo.inline{
+    display:inline-block;
+}
 /* Large icons */
 .large.ANH, .large.ANA {
     background-position: 0 0;
@@ -282,6 +285,10 @@
 .small.CBJ {
     background-position: -1547px -107px;
 	width:55px;
+}
+
+.small.ARI {
+    background-position: -1606px -107px;
 }
 
 

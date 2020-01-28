@@ -13,6 +13,9 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 	$leagueTypeSelectBox = CreateSelectBox("leagueType", "Select Bin", GetLeagueTypes(), "LeagueID", "Name", null, null);
 	$leagueTypeSelectBox2 = CreateSelectBox("leagueType2", "Select Bin", GetAllLeagueTypes(), "LeagueID", "Name", null, null);
 
+	$childLg = CreateSelectBox("childLg", "Select Bin", GetAllLeagueTypes(), "LeagueID", "Name", null, null);
+	$parentLg = CreateSelectBox("parentLg", "Select Bin", GetAllLeagueTypes(), "LeagueID", "Name", null, null);
+
 	$msg = "";
 	if (isset($_GET["msg"])){
 		$msg = $_GET["msg"];
@@ -21,7 +24,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 ?><!DOCTYPE HTML>
 <html>
 <head>
-<title>Useful Stuff</title>
+<title>Admin</title>
 <?php include_once './_INCLUDES/01_HEAD.php'; ?>
 
 </head>
@@ -59,7 +62,10 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 							Delete Table: <?=$leagueTypeSelectBox?> 
 							<button id="submitBtn" onclick="DeleteTable(this)" style="margin-top: 10px;">Go</button><br/>
 							Activate Table: <?=$leagueTypeSelectBox2?> <select id="activate" name="activate"><option value="1">Active</option><option value="0">Deactivate</option></select>
-							<button id="submitBtn2" onclick="ActivateTable(this)" style="margin-top: 10px;">Go</button> 						
+							<button id="submitBtn2" onclick="ActivateTable(this)" style="margin-top: 10px;">Go</button><br/>
+
+							Assign SubLg: <?=$childLg?> to MasterLg: <?=$parentLg?>
+							<button id="submitBtn3" onclick="AssignTable(this)" style="margin-top: 10px;">Go</button>
 						</div>
 						<div style="padding:20px;border:1px solid black;margin-bottom:10px;">
 							<h2>Links</h2>

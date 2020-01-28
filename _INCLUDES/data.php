@@ -842,6 +842,15 @@ function ActivateTable($leagueType, $activate){
 
 }
 
+function AssignTable($childTableId, $parentTableId){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "UPDATE league SET subLeagueId= $parentTableId WHERE LeagueID= '$childTableId' LIMIT 1";
+
+	$tmr = mysqli_query($conn, $sql);
+}
+
+
 function MarkSeriesAsInactive($seriesid){
 
 	$conn = $GLOBALS['$conn'];

@@ -94,6 +94,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true) {
 					<p>UPDATE users SET name='Matt' WHERE id_user = 2</p>
 					<p>INSERT INTO `nhl94db`.`schedule` (`ID`, `HomeTeamID`, `AwayTeamID`, `HomeScore`, `AwayScore`, `OT`, `ConfirmTime`, `GameID`, `SeriesID`, `HomeUserID`, `AwayUserID`, `WinnerUserID`, `LeagueID`, `TourneyID`) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '696', '2', '1', NULL, '44', '0');</p>
 					<p>UPDATE  `nhl94db`.`league` SET  `Name` =  'JJ Summer 2018' WHERE  `league`.`LeagueID` =49;</p>
+					<p>SELECT * FROM `league` ORDER BY `LeagueID` ASC</p>
 					
 					<form method="post" action="sql.php">
 					
@@ -102,10 +103,10 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true) {
 					<button type="button" class="submit" onclick="window.open('backup.php')">BackUp DB</button>
 					
 <?php
-$servername = "localhost";
-$username = "nhl94";
-$password = "Mysp@ce2174";
-$dbname = "nhl94db";
+//$servername = "localhost";
+//$username = "nhl94";
+//$password = "Mysp@ce2174";
+//$dbname = "nhl94db";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);

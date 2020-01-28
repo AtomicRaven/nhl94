@@ -335,6 +335,34 @@
 
 	}
 
+	function AssignTable(){
+
+		var childLg = document.getElementById("childLg");
+		var parentLg = document.getElementById("parentLg");
+
+		var childTableId = childLg.options[childLg.selectedIndex].value;
+		var childTableName = childLg.options[childLg.selectedIndex].innerHTML;
+
+		var parentTableId = parentLg.options[parentLg.selectedIndex].value;
+		var parentTableName = parentLg.options[parentLg.selectedIndex].innerHTML;
+
+		if(childTableId != -1){
+
+			if(parentTableId != -1){
+				var changeActive = confirm("Are you sure you want to assign table #" + childTableId  + " | " + childTableName + " to " + parentTableName + "??");
+			}
+
+			if (changeActive == true) {								
+
+				window.location.href="assignTable.php?childTableId=" + childTableId + "&parentTableId=" + parentTableId;
+								
+			} else {
+				txt = "You pressed Cancel!";
+			}
+		}
+
+	}
+
 	function DeleteGame(gameId, seriesId, page, tId){
 
 

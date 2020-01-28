@@ -81,7 +81,7 @@
 			
 			$seriesHtml .= '>';
 			$seriesHtml .= '<td class="c">'.$row['SeriesID'].'</td>';
-			$seriesHtml .= '<td class="c">'.$awayTeam .'<br/>v<br/>'.$homeTeam.'</td>';
+			$seriesHtml .= '<td class="c"><div class="logo small ' . $awayTeam . '"></div>vs<div class="logo small '.$homeTeam.'"></div></td>';
 			$seriesHtml .= '<td class="">'.$gamesCompleteText.'<br />'; 
 			$seriesHtml .= '<span class="note">Best of ' . $bestofNum . '<br/>Updated ' . $formattedEntryDate. '<br/>Bin: ' . $leagueName . '</span></td>';
 			$seriesHtml .= '<td class="c"><button type="button" class="square" onclick="location.href=\'resultsSeries.php?seriesId='. $row['SeriesID'].'\'">Select</button>';
