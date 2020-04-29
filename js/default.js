@@ -360,6 +360,28 @@
 				txt = "You pressed Cancel!";
 			}
 		}
+	}
+
+	function SetDraft(){
+
+		var drafterLg = document.getElementById("drafterLg");
+		var drafterLink = document.getElementById("drafterLink").value;
+
+		var drafterTableId = drafterLg.options[drafterLg.selectedIndex].value;
+		var drafterTableName = drafterLg.options[drafterLg.selectedIndex].innerHTML;
+
+		if(drafterTableId != -1){
+			
+			var setDrafter = confirm("Are you sure you want to link table # " + drafterTableId  + " | " + drafterTableName + " to draft: " + drafterLink + "??");
+
+			if (setDrafter == true) {								
+
+				window.location.href="setDraft.php?drafterTableId=" + drafterTableId + "&drafterLink=" + drafterLink;
+								
+			} else {
+				txt = "You pressed Cancel!";
+			}
+		}
 
 	}
 

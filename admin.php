@@ -15,6 +15,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 
 	$childLg = CreateSelectBox("childLg", "Select Bin", GetAllLeagueTypes(), "LeagueID", "Name", null, null);
 	$parentLg = CreateSelectBox("parentLg", "Select Bin", GetAllLeagueTypes(), "LeagueID", "Name", null, null);
+	$drafterLg = CreateSelectBox("drafterLg", "Select Bin", GetAllLeagueTypes(), "LeagueID", "Name", null, null);
 
 	$msg = "";
 	if (isset($_GET["msg"])){
@@ -66,6 +67,11 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 
 							Assign SubLg: <?=$childLg?> to MasterLg: <?=$parentLg?>
 							<button id="submitBtn3" onclick="AssignTable(this)" style="margin-top: 10px;">Go</button>
+
+							<br/>
+							Drafter Table: <?=$drafterLg?> Drafter Link: <input type="text" id="drafterLink" name="drafterLink" style="width:500px">
+							<button id="submitBtn4" onclick="SetDraft(this)" style="margin-top: 10px;">Go</button>
+
 						</div>
 						<div style="padding:20px;border:1px solid black;margin-bottom:10px;">
 							<h2>Links</h2>

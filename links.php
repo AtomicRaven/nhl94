@@ -39,15 +39,15 @@ if (true) {
 							<li>
 								<a href="https://docs.google.com/spreadsheets/d/1FPbQs0gWqhUwm6yCEZRGTRHBIgSXVxn1yoGCG3hyfn4/edit#gid=0" target="_blank">VHL8 Draft Sheet</a>                        
 							</li>
-							<!--<li>
-								<a href="https://docs.google.com/spreadsheets/d/1h7B96W0vYYefgAlfhUTQz2x5LgVfYX-KgBQ0_8sxoEo/edit#gid=0" target="_blank">GDL 16 Draft Sheet</a>
+							<li>
+								<a href="https://docs.google.com/spreadsheets/d/1SdeD5hzxvWYoAMZxMU8Z3arpVVYtb70xwjADtpVjuIE/edit#gid=0" target="_blank">GDL 16 Draft Sheet</a>
 							</li>
 							<li>
 								<a href="https://docs.google.com/spreadsheets/d/1UcRu8RP7YzvoZmu35CzrqoGztCYQMD7jwgU1PFLSjAY/pubhtml/sheet?headers=false&gid=0" target="_blank">Player Appendix</a>
-							</li>-->
+							</li>
 						</ul>
 						<br/>
-						<div>
+						<!--<div>
 							<h2>VHL8 Notes:</h2>
 							
 							Timing: Draft - Today thru likely Monday<br/><br/>
@@ -62,7 +62,7 @@ if (true) {
 
 							Rosters - 6 fwds, 4 dmen, 2 goalies for 12 total rounds of drafting.<br/><br/>
 							
-						</div>
+						</div>-->
                     </div>
 				</div>
 			</div>			

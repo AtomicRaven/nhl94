@@ -134,10 +134,17 @@
         //echo "TeamId: " . $teamid;
         $teamSelectBox = CreateSelectBox("teamId", "Select Team", GetTeams($leagueid), "TeamID", "Team", "this.form.submit()", $teamid);
 
+        $draftLinkSheet = "";
+
+        if($selectedLg["DraftSheet"] != null){
+            $dArray = explode("/export",$selectedLg["DraftSheet"]); 
+            $draftLinkSheet = $dArray[0];
+        }
+
 ?><!DOCTYPE HTML
 <html>
 <head>
-<title>Drafter</title>
+<title>Player Drafterer</title>
 <?php include_once './_INCLUDES/01_HEAD.php';
 
     if($s != ""){
@@ -157,9 +164,11 @@
 				
 				<div id="main">
 					<?php include_once './_INCLUDES/03_LOGIN_INFO.php'; ?>
-					<h1>Compare Player</h1>				
-					<a href="filteredPlayers.php" class="square-button" target="_blank">Filtered Players List</a>					
-                    
+					<h1>Player Drafterer</h1>	
+
+                    <a href="<?=$draftLinkSheet?>" target="draftSheet"><?=$draftLinkSheet?></a><br/><br/>
+					<a href="filteredPlayers.php?binId=<?=$leagueid?>" class="square-button" target="_blank">Filtered Players List</a>					
+                     
                     <form name="rosterForm" method="get" action="draft.php">
 
                         &nbsp; <button id="clearBtn" type="button" onclick="javascript:location.href='draft.php?teamId=<?=$teamid?>&binId=<?=$leagueid?>'" style="margin-top: 10px;">Clear</button>
@@ -207,9 +216,7 @@
                                 <?php                                    
                                     $sortedPlayers = array();
                                     $draftedPlayers = array();
-                                    $diff = false;
-
-                                    
+                                    $diff = false;                                    
                                     
                                     if($selectedLg["DraftSheet"] != null){
 
@@ -222,42 +229,49 @@
                                         }
 
                                         fclose($file);
+                                    }else{
+                                        
+                                      echo 'There is no DraftSheet for this League';
+
                                     }
                                     
                                     $count = 0;
                                     while($row = mysqli_fetch_array($rosters)){                                          
 
-                                        $hField = $row["H/F"];
+                                        if($row["Team"] != "ASW" && $row["Team"] != "ASE"){
+                                            
+                                            $hField = $row["H/F"];
 
-                                        if ($hField & 1) {
-                                            $handed = 'R';
-                                        } else { 
-                                            $handed = 'L';
+                                            if ($hField & 1) {
+                                                $handed = 'R';
+                                            } else { 
+                                                $handed = 'L';
+                                            }
+
+                                                //$handed .= " " . $hField;
+
+                                            $overall = CalculateOverallRanking($row);
+
+                                            $sortedPlayers[] = array(
+                                                            "ID"=>$row["PlayerID"],
+                                                            "Name"=>$row["First"] . " " . $row["Last"],
+                                                            "Num"=>$row["JNo"],
+                                                            "Handed"=>$handed,
+                                                            "Overall"=>$overall,
+                                                            "Team"=>$row["Team"],
+                                                            "Pos"=>$row["Pos"],
+                                                            "Weight"=>$row["Wgt"],
+                                                            "Checking"=>$row["ChK"],
+                                                            "ShotP"=>$row["ShP"],
+                                                            "ShotA"=>$row["ShA"],
+                                                            "Speed"=>$row["Spd"],
+                                                            "Agility"=>$row["Agl"],
+                                                            "Stick"=>$row["StH"],
+                                                            "Pass"=>$row["Pas"],
+                                                            "Off"=>$row["OfA"],
+                                                            "Def"=>$row["DfA"]
+                                            );
                                         }
-
-                                         //$handed .= " " . $hField;
-
-                                        $overall = CalculateOverallRanking($row);
-
-                                        $sortedPlayers[] = array(
-                                                        "ID"=>$row["PlayerID"],
-                                                        "Name"=>$row["First"] . " " . $row["Last"],
-                                                        "Num"=>$row["JNo"],
-                                                        "Handed"=>$handed,
-                                                        "Overall"=>$overall,
-                                                        "Team"=>$row["Team"],
-                                                        "Pos"=>$row["Pos"],
-                                                        "Weight"=>$row["Wgt"],
-                                                        "Checking"=>$row["ChK"],
-                                                        "ShotP"=>$row["ShP"],
-                                                        "ShotA"=>$row["ShA"],
-                                                        "Speed"=>$row["Spd"],
-                                                        "Agility"=>$row["Agl"],
-                                                        "Stick"=>$row["StH"],
-                                                        "Pass"=>$row["Pas"],
-                                                        "Off"=>$row["OfA"],
-                                                        "Def"=>$row["DfA"]
-                                        );
                                     }
 
                                     //Filter out all the drafted players
@@ -277,7 +291,7 @@
 
                                         //print_r($sortedPlayers);
 
-                                        echo $count ." players filtered out";
+                                        echo "<h2>" . $count ." players filtered out </h2>";
 
                                     }
 

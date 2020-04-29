@@ -1,5 +1,20 @@
 <?php
-$file = fopen("https://docs.google.com/spreadsheets/d/1FPbQs0gWqhUwm6yCEZRGTRHBIgSXVxn1yoGCG3hyfn4/export?format=csv&id=1FPbQs0gWqhUwm6yCEZRGTRHBIgSXVxn1yoGCG3hyfn4&gid=0","r");
+
+  include_once './_INCLUDES/00_SETUP.php';
+  include_once './_INCLUDES/dbconnect.php';	
+    
+$leagueid = 1;
+
+if (isset($_GET["binId"])){
+  $leagueid = $_GET["binId"];
+}
+
+$selectedLg = GetLeague($leagueid);
+
+if($selectedLg["DraftSheet"] != null){
+  $file = fopen($selectedLg["DraftSheet"],"r");
+  echo $selectedLg["DraftSheet"] . "<br/><br/>";
+
 $draftedPlayers = array();
   while(!feof($file))
   {
@@ -15,5 +30,7 @@ $draftedPlayers = array();
   {
     echo $key." :". $value . "<br/>";
   }
-
+}else{
+  echo 'There is no DraftSheet for this League';
+}
 ?>

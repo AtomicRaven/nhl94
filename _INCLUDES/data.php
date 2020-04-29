@@ -839,7 +839,20 @@ function ActivateTable($leagueType, $activate){
 	$sql = "UPDATE league SET Visible= $activate WHERE LeagueID= '$leagueType' LIMIT 1";
 
 	$tmr = mysqli_query($conn, $sql);
+}
 
+function SetDraft($leagueType, $draftLink){
+
+	$conn = $GLOBALS['$conn'];
+	$sql = "UPDATE league SET DraftSheet='$draftLink',Visible=1,isLiveDraft=1 WHERE LeagueID= '$leagueType' LIMIT 1";
+
+	$tmr = mysqli_query($conn, $sql);
+
+	if ($tmr) {
+		logMsg("Draft successfully linked to table.  TableId: " . $leagueType);
+	} else {
+		echo("Error: SetDraft: " . $sql . "<br>" . mysqli_error($conn));
+	}
 }
 
 function AssignTable($childTableId, $parentTableId){

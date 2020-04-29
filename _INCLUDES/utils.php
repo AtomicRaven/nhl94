@@ -6,6 +6,24 @@ function logMsg($msg){
 
 }
 
+function Rom($offSet){
+
+    $fr = $GLOBALS['$binFile'];
+    fseek ($fr, $offSet);
+    $val = hexdec(bin2hex(fread($fr, 1)));
+    return $val;
+}
+
+function GetValue($data, $index, $size) {
+
+    $value = 0;
+    for ($i = 0; $i <= ($size - 1); $i++) {
+        $value = ($value  + (($data(($index + I)) * 256)  | ($size - ($i - 1))));
+    }
+    
+    return $value;
+}
+
 function pFile($func, $file){
 
 	logMsg($func . ":");
