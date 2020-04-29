@@ -202,6 +202,7 @@
                                     <td class="c"><button type="submit" name="s" value="Pos">Pos</button></td>                                                                                                  
                                     <td class="c"><button type="submit" name="s" value="Weight">Wgt</button></td>
                                     <td class="c"><button type="submit" name="s" value="Checking">Chk</button></td>                                    
+                                    <td class="c"><button type="submit" name="s" value="ChkAbl">ChkAbl</button></td>  
                                     <td class="c"><button type="submit" name="s" value="ShotP">ShP</button></td>                                    
                                     <td class="c"><button type="submit" name="s" value="ShotA">ShA</button></td>                                    
                                     <td class="c"><button type="submit" name="s" value="Speed">Spd</button></td>                                    
@@ -251,6 +252,7 @@
                                                 //$handed .= " " . $hField;
 
                                             $overall = CalculateOverallRanking($row);
+                                            $ChkAbl = round((6 * $row["Wgt"] + (10 * $row["ChK"]) -13) /8, 1);
 
                                             $sortedPlayers[] = array(
                                                             "ID"=>$row["PlayerID"],
@@ -262,6 +264,7 @@
                                                             "Pos"=>$row["Pos"],
                                                             "Weight"=>$row["Wgt"],
                                                             "Checking"=>$row["ChK"],
+                                                            "ChkAbl"=>$ChkAbl,
                                                             "ShotP"=>$row["ShP"],
                                                             "ShotA"=>$row["ShA"],
                                                             "Speed"=>$row["Spd"],
@@ -335,6 +338,7 @@
                                     <td class="c"><?=$p["Pos"]?></td>
                                     <td class="c"><?=$p["Weight"]?></td>
                                     <td class="c"><?=$p["Checking"]?></td>
+                                    <td class="c"><?=$p["ChkAbl"]?></td>
                                     <td class="c"><?=$p["ShotP"]?></td>
                                     <td class="c"><?=$p["ShotA"]?></td>
                                     <td class="c"><?=$p["Speed"]?></td>

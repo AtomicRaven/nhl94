@@ -43,42 +43,45 @@
     $sortedPlayers = array();    
 
         while($row = mysqli_fetch_array($rosters)){      
-                                                
-            if ( !in_array($row["First"], $nameFilter)) {
+            
+            if($row["Team"] != "ASW" && $row["Team"] != "ASE"){
 
-            $hField = $row["H/F"];
+                if ( !in_array($row["First"], $nameFilter)) {
 
-            if ($hField & 1) {
-                $handed = 'R';
-            } else { 
-                $handed = 'L';
+                $hField = $row["H/F"];
+
+                if ($hField & 1) {
+                    $handed = 'R';
+                } else { 
+                    $handed = 'L';
+                }
+
+                    //$handed .= " " . $hField;
+
+                $overall = CalculateOverallRanking($row);
+                $ChkAbl = round((6 * $row["Wgt"] + (10 * $row["ChK"]) -13) /8, 1);
+
+                $sortedPlayers[] = array(
+                                "ID"=>$row["PlayerID"],
+                                "Name"=>$row["First"] . " " . $row["Last"],
+                                "JNo"=>$row["JNo"],
+                                "Handed"=>$handed,
+                                "Overall"=>$overall,
+                                "Team"=>$row["Team"],
+                                "Pos"=>$row["Pos"],
+                                "Weight"=>$row["Wgt"],
+                                "Checking"=>$row["ChK"],
+                                "ChkAbl"=>$ChkAbl,
+                                "ShotP"=>$row["ShP"],
+                                "ShotA"=>$row["ShA"],
+                                "Speed"=>$row["Spd"],
+                                "Agility"=>$row["Agl"],
+                                "Stick"=>$row["StH"],
+                                "Pass"=>$row["Pas"],
+                                "Off"=>$row["OfA"],
+                                "Def"=>$row["DfA"]
+                );
             }
-
-                //$handed .= " " . $hField;
-
-            $overall = CalculateOverallRanking($row);
-            $ChkAbl = round((6 * $row["Wgt"] + (10 * $row["ChK"]) -13) /8, 1);
-
-            $sortedPlayers[] = array(
-                            "ID"=>$row["PlayerID"],
-                            "Name"=>$row["First"] . " " . $row["Last"],
-                            "JNo"=>$row["JNo"],
-                            "Handed"=>$handed,
-                            "Overall"=>$overall,
-                            "Team"=>$row["Team"],
-                            "Pos"=>$row["Pos"],
-                            "Weight"=>$row["Wgt"],
-                            "Checking"=>$row["ChK"],
-                            "ChkAbl"=>$ChkAbl,
-                            "ShotP"=>$row["ShP"],
-                            "ShotA"=>$row["ShA"],
-                            "Speed"=>$row["Spd"],
-                            "Agility"=>$row["Agl"],
-                            "Stick"=>$row["StH"],
-                            "Pass"=>$row["Pas"],
-                            "Off"=>$row["OfA"],
-                            "Def"=>$row["DfA"]
-            );
         }
     }
 

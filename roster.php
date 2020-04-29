@@ -177,7 +177,8 @@
                                     <td class="c"><button type="submit" name="s" value="Team">Tm</button></td>                                    
                                     <td class="c"><button type="submit" name="s" value="Pos">Pos</button></td>                                                                                                  
                                     <td class="c"><button type="submit" name="s" value="Weight">Wgt</button></td>
-                                    <td class="c"><button type="submit" name="s" value="Checking">Chk</button></td>                                    
+                                    <td class="c"><button type="submit" name="s" value="Checking">Chk</button></td> 
+                                    <td class="c"><button type="submit" name="s" value="ChkAbl">ChkAbl</button></td>                                     
                                     <td class="c"><button type="submit" name="s" value="ShotP">ShP</button></td>                                    
                                     <td class="c"><button type="submit" name="s" value="ShotA">ShA</button></td>                                    
                                     <td class="c"><button type="submit" name="s" value="Speed">Spd</button></td>                                    
@@ -194,39 +195,44 @@
 
                                     while($row = mysqli_fetch_array($rosters)){                                          
 
-                                        if ( !in_array($row["First"], $nameFilter)) {
-                                            
-                                            $hField = $row["H/F"];
+                                        if($row["Team"] != "ASW" && $row["Team"] != "ASE"){
 
-                                            if ($hField & 1) {
-                                                $handed = 'R';
-                                            } else { 
-                                                $handed = 'L';
+                                            if ( !in_array($row["First"], $nameFilter)) {
+                                                
+                                                $hField = $row["H/F"];
+
+                                                if ($hField & 1) {
+                                                    $handed = 'R';
+                                                } else { 
+                                                    $handed = 'L';
+                                                }
+
+                                                //$handed .= " " . $hField;
+
+                                                $overall = CalculateOverallRanking($row);
+                                                $ChkAbl = round((6 * $row["Wgt"] + (10 * $row["ChK"]) -13) /8, 1);
+
+                                                $sortedPlayers[] = array(
+                                                                "ID"=>$row["PlayerID"],
+                                                                "Name"=>$row["First"] . " " . $row["Last"],
+                                                                "Num"=>$row["JNo"],
+                                                                "Handed"=>$handed,
+                                                                "Overall"=>$overall,
+                                                                "Team"=>$row["Team"],
+                                                                "Pos"=>$row["Pos"],
+                                                                "Weight"=>$row["Wgt"],
+                                                                "Checking"=>$row["ChK"],
+                                                                "ChkAbl"=>$ChkAbl,
+                                                                "ShotP"=>$row["ShP"],
+                                                                "ShotA"=>$row["ShA"],
+                                                                "Speed"=>$row["Spd"],
+                                                                "Agility"=>$row["Agl"],
+                                                                "Stick"=>$row["StH"],
+                                                                "Pass"=>$row["Pas"],
+                                                                "Off"=>$row["OfA"],
+                                                                "Def"=>$row["DfA"]
+                                                );
                                             }
-
-                                            //$handed .= " " . $hField;
-
-                                            $overall = CalculateOverallRanking($row);
-
-                                            $sortedPlayers[] = array(
-                                                            "ID"=>$row["PlayerID"],
-                                                            "Name"=>$row["First"] . " " . $row["Last"],
-                                                            "Num"=>$row["JNo"],
-                                                            "Handed"=>$handed,
-                                                            "Overall"=>$overall,
-                                                            "Team"=>$row["Team"],
-                                                            "Pos"=>$row["Pos"],
-                                                            "Weight"=>$row["Wgt"],
-                                                            "Checking"=>$row["ChK"],
-                                                            "ShotP"=>$row["ShP"],
-                                                            "ShotA"=>$row["ShA"],
-                                                            "Speed"=>$row["Spd"],
-                                                            "Agility"=>$row["Agl"],
-                                                            "Stick"=>$row["StH"],
-                                                            "Pass"=>$row["Pas"],
-                                                            "Off"=>$row["OfA"],
-                                                            "Def"=>$row["DfA"]
-                                            );
                                         }
                                     }
 
@@ -268,6 +274,7 @@
                                     <td class="c"><?=$p["Pos"]?></td>
                                     <td class="c"><?=$p["Weight"]?></td>
                                     <td class="c"><?=$p["Checking"]?></td>
+                                    <td class="c"><?=$p["ChkAbl"]?></td>
                                     <td class="c"><?=$p["ShotP"]?></td>
                                     <td class="c"><?=$p["ShotA"]?></td>
                                     <td class="c"><?=$p["Speed"]?></td>

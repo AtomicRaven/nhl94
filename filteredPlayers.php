@@ -26,6 +26,8 @@ $draftedPlayers = array();
   //print_r($draftedPlayers);
   fclose($file);
 
+  echo "<h2>Drafted Players:</h2>";
+  
   foreach($draftedPlayers as $key => $value)
   {
     echo $key." :". $value . "<br/>";
