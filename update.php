@@ -43,7 +43,7 @@
 			$homeUserAlias = GetUserAlias($series["HomeUserID"]);
 			$awayUserAlias = GetUserAlias($series["AwayUserID"]);
 
-			$submitBtn ="<input type='hidden' name='MAX_FILE_SIZE' value='400000' />";
+			$submitBtn ="<input type='hidden' name='MAX_FILE_SIZE' value='4194304' />";
 			$submitBtn .="<input type='hidden' name='userid' value='" . $_SESSION['userId'] . "' />"; 
 			$submitBtn .="<input type='hidden' name='seriesid' value='" . $seriesid ."' />";
 			$submitBtn .="<input type='hidden' name='leagueid' value='" . $series["LeagueID"] ."' />";

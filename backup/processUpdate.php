@@ -8,37 +8,85 @@ require_once("./_INCLUDES/addgame.php");
 	logMsg ("New Save State");
 
 	// retrieve variables	
-//print_r($_POST);
+
+	$datemodified = [];
+	$gamesUploaded = [];
+	$scheduleid = 0;
+	$error = "";
+	$isBulk = false;
+
 	$seriesid = $_POST['seriesid'];
 	$leagueid = $_POST['leagueid'];
-	$filename = $_FILES['uploadfile']['name'];
-	$scheduleid = $_POST['scheduleid'];
-
 	$homeuserid = $_POST['homeUser'];
 	$awayuserid = $_POST['awayUser'];
-
-	$error ="";
-
-	//echo "FileName: " . $filename . "</br>";
-
-	logMsg("ScheduleID:" . $scheduleid);
-	logMsg("HomeUser:" . $homeuserid);
-	logMsg("AwayUser:" . $awayuserid);
 	
-	$chk = ErrorCheck($seriesid, $scheduleid, 0);
-	
-	if(!$chk)
-		$chk = AddGame($seriesid, $scheduleid, $homeuserid, $awayuserid, $leagueid, 0);
-	else
-		$error = $chk;	
-
-	logMsg("Error:" . $error);
-	
-	$qString = "seriesId=" . $seriesid;
-
-	if($error != ""){
-		$qString .= "&err=". $error;
+	if(isset($_POST['scheduleid'])){
+		$scheduleid = $_POST['scheduleid'];
 	}
-	
+
+	if(isset($_POST['datemodified'])){
+		$datemodified = $_POST['datemodified'];
+		$isBulk = true;
+	}
+
+	$gamesplayed = GetGamesBySeriesId($seriesid);
+
+	if($isBulk){
+		
+		logMsg("BeforeSort:");
+		while($row = mysqli_fetch_array($gamesplayed, MYSQL_ASSOC)){
+
+			$schedule[] = array(
+				"ID"=> $row["ID"],
+				"HomeUserID" => $row["HomeUserID"],
+				"AwayUserID" => $row['AwayUserID']
+			);
+		}		
+
+		$gamesUploaded = ReArrayFiles($_FILES['uploadfile'], $datemodified, $schedule);
+		
+		foreach ($gamesUploaded as $file) {										
+
+			$scheduleid = $file['scheduleid'];
+			$homeuser = $file['HomeUserID'];
+			$awayuser = $file['AwayUserID'];
+			
+			$chk = ErrorCheck($seriesid, $scheduleid, 0, $file);			
+			
+			if(!$chk)
+				$chk = AddGame($seriesid, $scheduleid, $homeuser, $awayuser, $leagueid, 0);
+			else
+				$error = $chk;	
+
+			logMsg("Error:" . $error);
+
+			$qString = "seriesId=" . $seriesid;
+
+			if($error != ""){
+				$qString .= "&err=". $error;
+			}
+						
+		}
+		
+
+	}else{
+
+		$chk = ErrorCheck($seriesid, $scheduleid, 0, $_FILES['uploadfile']);
+				
+		if(!$chk)
+			$chk = AddGame($seriesid, $scheduleid, $homeuserid, $awayuserid, $leagueid, 0);
+		else
+			$error = $chk;	
+
+		logMsg("Error:" . $error);
+
+		$qString = "seriesId=" . $seriesid;
+
+		if($error != ""){
+			$qString .= "&err=". $error;
+		}
+	}	
+
 	header("Location: update.php?" . $qString );	
+	
 ?>

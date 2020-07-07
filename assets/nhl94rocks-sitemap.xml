@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<url>
+  <loc>https://nhl94rocks.com/</loc>
+  <lastmod>2020-07-02T19:59:26+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://nhl94rocks.com/login.php</loc>
+  <lastmod>2020-07-02T19:59:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://nhl94rocks.com/results.php</loc>
+  <lastmod>2020-07-02T19:59:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://nhl94rocks.com/resultsLeader.php</loc>
+  <lastmod>2020-07-02T19:59:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://nhl94rocks.com/roster.php</loc>
+  <lastmod>2020-07-02T19:59:26+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://nhl94rocks.com/register.php</loc>
+  <lastmod>2020-07-02T19:59:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://nhl94rocks.com/reg/reset-pwd-req.php</loc>
+  <lastmod>2020-07-02T19:59:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://nhl94rocks.com/resultsLeaderSeries.php</loc>
+  <lastmod>2020-07-02T19:59:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://nhl94rocks.com/playerStats.php</loc>
+  <lastmod>2020-07-02T19:59:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://nhl94rocks.com/roster2.php</loc>
+  <lastmod>2020-07-02T19:59:26+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+</urlset>

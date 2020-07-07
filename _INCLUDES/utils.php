@@ -2,7 +2,7 @@
 
 function logMsg($msg){
 
-	//echo $msg . "</br>";
+    //echo $msg . "</br>";
 
 }
 
@@ -161,11 +161,39 @@ function CreateSelectBox($selectName, $selectTitle, $data, $id, $value, $onChang
 function GetDateFromSQL($time){
 
     $lastEntryDate = new DateTime($time);
-    $lastEntryDate->add(new DateInterval('PT2H'));
-    $formattedEntryDate = date_format($lastEntryDate, 'M d, Y @ h:i A');
+
+    //$lastEntryDate->sub(new DateInterval('PT2H'));
+    $formattedEntryDate = date_format($lastEntryDate, 'M d, Y @ h:i A') . " " . GetTimeZone();
 
     return $formattedEntryDate;
 
+}
+
+function GetFileType($filename){
+
+    $type = "";
+    $ext = substr($filename, strpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.    
+
+    $filetypes = array('.gs0','.gs1','.gs2','.gs3','.gs4','.gs5','.gs6','.gs7','.gs8','.gs9');
+	$filetypesRA = array ('.state0','.state1','.state2','.state3','.state4','.state5','.state6','.state7','.state8','.state9');
+	
+    if(in_array($ext, $filetypes)){  // file ext is GEns 
+        $type = "gens";
+    }
+
+    if(in_array($ext, $filetypesRA)){  // file ext is RA
+        $type = "ra";
+    }
+
+    return $type;
+}
+
+function GetTimeZone(){
+
+    $dateTime = new DateTime();
+    $timeZone = $dateTime->getTimezone();       
+    $dateTime->setTimeZone(new DateTimeZone($timeZone->getName()));
+    return $dateTime->format('T');
 }
 
 function HumanTiming ($time)

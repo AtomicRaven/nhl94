@@ -29,7 +29,7 @@ require_once("./_INCLUDES/addgame.php");
 		$isBulk = true;
 	}
 
-	$gamesplayed = GetGamesBySeriesId($seriesid);
+	$gamesplayed = GetGamesBySeriesId($seriesid);	
 
 	if($isBulk){
 		
@@ -45,16 +45,20 @@ require_once("./_INCLUDES/addgame.php");
 
 		$gamesUploaded = ReArrayFiles($_FILES['uploadfile'], $datemodified, $schedule);
 		
-		foreach ($gamesUploaded as $file) {										
+		foreach ($gamesUploaded as $file) {		
+
+			$type = GetFileType($file['name']);
+			logMsg("FileType:" . $type);
 
 			$scheduleid = $file['scheduleid'];
 			$homeuser = $file['HomeUserID'];
 			$awayuser = $file['AwayUserID'];
 			
-			$chk = ErrorCheck($seriesid, $scheduleid, 0, $file);			
+			$chk = ErrorCheck($seriesid, $scheduleid, 0, $file, $type);			
 			
-			if(!$chk)
-				$chk = AddGame($seriesid, $scheduleid, $homeuser, $awayuser, $leagueid, 0);
+			if(!$chk){				
+				$chk = AddGame($seriesid, $scheduleid, $homeuser, $awayuser, $leagueid, 0, $type);
+			}
 			else
 				$error = $chk;	
 
@@ -71,10 +75,13 @@ require_once("./_INCLUDES/addgame.php");
 
 	}else{
 
-		$chk = ErrorCheck($seriesid, $scheduleid, 0, $_FILES['uploadfile']);
+		$type = GetFileType($_FILES['uploadfile']['name']);
+		logMsg("FileType:" . $type);
+
+		$chk = ErrorCheck($seriesid, $scheduleid, 0, $_FILES['uploadfile'], $type);
 				
 		if(!$chk)
-			$chk = AddGame($seriesid, $scheduleid, $homeuserid, $awayuserid, $leagueid, 0);
+			$chk = AddGame($seriesid, $scheduleid, $homeuserid, $awayuserid, $leagueid, 0, $type);
 		else
 			$error = $chk;	
 

@@ -3,11 +3,11 @@
 
 require_once("dbconnect.php");
 
-function ErrorCheck($seriesid, $scheduleid, $tourneyid, $file){	
+function ErrorCheck($seriesid, $scheduleid, $tourneyid, $file, $type){	
 	
 	$filePath = $GLOBALS['$saveFilePath'];
 	$filename = $file['name'];
-
+	 
 	if($tourneyid >0){
 		$tourney = GetTourneyById($tourneyid);		
 		$leaguenm = $tourney["ABV"];
@@ -22,37 +22,39 @@ function ErrorCheck($seriesid, $scheduleid, $tourneyid, $file){
 
 		mkdir($filePath, 0777, true);
 	}
-
-	logMsg("fileName:" . $filename);
-	$ext = substr($filename, strpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
-
-	$upload_path = $filePath . "/" . "Series-" . $seriesid. '-game-'. $scheduleid . '.sv';
-	logMsg("uploadPath:" . $upload_path);
-	//Check to make sure game being uploaded is correct
-	$row = GetScheduleByID($scheduleid);
-
-	if($row){
-
-		// Check type of league and check file
-		
-		$e = '.bad';
-		
-		$filetypes = array('.gs0','.gs1','.gs2','.gs3','.gs4','.gs5','.gs6','.gs7','.gs8','.gs9');
-		$e = '.gs0';	
 	
-		if(in_array($ext, $filetypes)){  // file ext is OK
+	logMsg("fileName:" . $filename);
+
+	//Check to make sure game being uploaded is correct
+	$row = GetScheduleByID($scheduleid);	
+
+	if($row){		
+	
+		if($type != ""){  // file ext is OK
+			
+			$upload_path = $filePath . "/" . "Series-" . $seriesid. '-game-'. $scheduleid . '.sv';
+			logMsg("uploadPath:" . $upload_path);
 
 			if(move_uploaded_file($file['tmp_name'], $upload_path)){
 				
 				// Check if teams are correct
 				$fr = fopen("$upload_path", 'rb');	// reads file				
 				
+				if($type == 'ra'){
+					$offset = 9320;
+					$endianfix = 1;
+				}				
+				else {
+					$offset = 0;
+					$endianfix = 0;
+				}
+				
 				// Away Team
-				fseek ($fr,59307);
+				fseek ($fr,59307 - $offset - $endianfix);
 				$StateAwayID = hexdec(bin2hex(fread($fr, 1))) + 1;
 
 				// Home Team
-				fseek ($fr,59305);
+				fseek ($fr,59305 - $offset - $endianfix);
 				$StateHomeID = hexdec(bin2hex(fread($fr, 1))) + 1;				
 
 				logMsg("StateHomeID: " . $StateHomeID . "| ScheduleHomeID: " . $row['HomeTeamID']);	
