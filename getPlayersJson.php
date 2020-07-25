@@ -44,7 +44,7 @@
 
         while($row = mysqli_fetch_array($rosters)){      
             
-            if($row["Team"] != "ASW" && $row["Team"] != "ASE"){
+            //if($row["Team"] != "ASW" && $row["Team"] != "ASE"){
 
                 if ( !in_array($row["First"], $nameFilter)) {
 
@@ -81,7 +81,7 @@
                                 "Off"=>$row["OfA"],
                                 "Def"=>$row["DfA"]
                 );
-            }
+           //}
         }
     }
 

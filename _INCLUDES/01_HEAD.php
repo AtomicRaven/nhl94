@@ -1,4 +1,4 @@
-<meta property="og:image" content="https://nhl94rocks.com/images/nhl94.gif">
+<meta property="og:image" content="https://nhl94rocks.com/images/nhl-94-rocks-logo.png">
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="og:title" content="NHL&#039;94 Rocks">
