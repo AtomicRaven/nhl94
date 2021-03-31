@@ -82,7 +82,7 @@ function TransferPlayerRoster($newTable, $newCsv, $isblitz, $binName){
 
 			//$sql = "SELECT * FROM roster WHERE (First = '$firstname' AND Last = '$lastname') LIMIT 1";
 			//$tmr = mysqli_query($conn, $sql);
-			//$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+			//$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 			//$pos = $row["Pos"];
 
 			 $sql = "INSERT INTO $newTable (ID, PlayerID, First, Last, Team, Pos, JNo,
@@ -139,7 +139,7 @@ function GetNextGameId(){
 	$sql = "SELECT GameID FROM gamestats ORDER BY GameID DESC";
 
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	return $row['GameID'] + 1;
 
@@ -179,7 +179,7 @@ function GetGameById($gameid){
 	$sql = "SELECT * FROM gamestats Where GameID='$gameid' LIMIT 1";
 
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	if ($row) {
 		logMsg("Retrieved GameById");
@@ -236,12 +236,12 @@ function GetScheduleByID($scheduleid){
 	$sql = "SELECT * FROM schedule WHERE ID = '$scheduleid' LIMIT 1";
 
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	if ($row) {
 		logMsg("Retrieved GameById");
 	} else {
-		echo("Error: GetGameById: " . $sql . "<br>" . mysqli_error($conn));
+		echo("Error: GetScheduleByID: " . $sql . "<br>" . mysqli_error($conn));
 	}
 
 	return $row;
@@ -253,12 +253,12 @@ function  GetScheduleByGameId($gameid){
 	$sql = "SELECT * FROM schedule WHERE GameID = '$gameid' LIMIT 1";
 
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	if ($row) {
 		logMsg("Retrieved GameById");
 	} else {
-		echo("Error: GetGameById: " . $sql . "<br>" . mysqli_error($conn));
+		echo("Error: GetScheduleByGameId: " . $sql . "<br>" . mysqli_error($conn));
 	}
 
 	return $row;
@@ -271,12 +271,12 @@ function GetScheduleBySeriesID($seriesid){
 	$sql = "SELECT * FROM schedule WHERE SeriesID = '$seriesid' LIMIT 1";
 
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	if ($row) {
 		logMsg("Retrieved GameById");
 	} else {
-		echo("Error: GetGameById: " . $sql . "<br>" . mysqli_error($conn));
+		echo("Error: GetScheduleBySeriesID: " . $sql . "<br>" . mysqli_error($conn));
 	}
 
 	return $row["ID"];
@@ -289,12 +289,12 @@ function GetTournamentIDFromSeriesID($seriesid){
 	$sql = "SELECT * FROM series WHERE SeriesID = '$seriesid' LIMIT 1";
 
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	if ($row) {
 		logMsg("Retrieved GameById");
 	} else {
-		echo("Error: GetGameById: " . $sql . "<br>" . mysqli_error($conn));
+		echo("Error: GetTournamentIDFromSeriesID: " . $sql . "<br>" . mysqli_error($conn));
 	}
 
 	return $row["TourneyID"];
@@ -575,10 +575,10 @@ function AddFakeUser($username, $email, $password){
 
 	if ($sqlr) {
 		logMsg("Fake User Added: " . $username);
-		return 1;
+		 return 1;
 	} else {
-		echo("Error: AddFakeUser: " . $sql . "<br>" . mysqli_error($conn));
-		return 0;
+		$msg = "Error: AddFakeUser: " . $sql . "<br>" . mysqli_error($conn);
+		return $msg;
 	}
 }
 
@@ -650,7 +650,7 @@ function GetSeriesLeadersByUserID($userid){
 			FROM series WHERE active=1 LIMIT 1";
 
 	$result = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($result, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
 	if ($row) {
 		//logMsg("Games Grabbed.  NumGames: " . mysqli_num_rows($result));
@@ -707,7 +707,7 @@ function GetSeriesTypes(){
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) {
-		die(mysql_error()); // TODO: better error handling
+		die(mysqli_error()); // TODO: better error handling
 	}
 
 	return $result;
@@ -723,7 +723,7 @@ function GetLeagueTypes(){
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) {
-		die(mysql_error()); // TODO: better error handling
+		die(mysqli_error()); // TODO: better error handling
 	}
 
 	return $result;
@@ -753,7 +753,7 @@ function GetAllLeagueTypes(){
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) {
-		die(mysql_error()); // TODO: better error handling
+		die(mysqli_error()); // TODO: better error handling
 	}
 
 	return $result;
@@ -808,10 +808,10 @@ function BlitzChk($leagueid){
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) {
-		die(mysql_error()); // TODO: better error handling
+		die(mysqli_error()); // TODO: better error handling
 	}
 
-	$row = mysqli_fetch_array($result, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 	return $row["Blitz"];
 
 }
@@ -823,7 +823,7 @@ function MarkSeriesAsWon($seriesid, $winneruserid, $losernumgames){
 	WHERE ID= '$seriesid' LIMIT 1";
 
 	$tmr = mysqli_query($conn, $sql);
-	//$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	//$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	//if ($row) {
 	//	logMsg("Updated Series Won");
@@ -879,7 +879,7 @@ function MarkSeriesAsInactive($seriesid){
 
 	//Delete all the games for this series (actual delete)
 	$gamestodelete = GetGamesBySeriesId($seriesid);
-	while($row = mysqli_fetch_array($gamestodelete, MYSQL_ASSOC)){
+	while($row = mysqli_fetch_array($gamestodelete, MYSQLI_ASSOC)){
 		DeleteGameDataById($row["GameID"], $seriesid);
 	}
 
@@ -984,10 +984,11 @@ function GetLeagueTableName($leagueid){
 	if($leagueid == -1) {$leagueid = 1;};
 
 	$conn = $GLOBALS['$conn'];
-	$sql = "SELECT TableName FROM league WHERE LeagueID='$leagueid' Limit 1";
-	$result = mysqli_query($conn, $sql);
+	$sql = "SELECT * FROM league WHERE LeagueID='$leagueid' Limit 1";
 
-	$row = mysqli_fetch_array($result, MYSQL_ASSOC);
+	$result = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		
 	return $row["TableName"];
 
 }
@@ -998,7 +999,7 @@ function GetLeague($leagueid){
 	$sql = "SELECT * FROM league WHERE LeagueID='$leagueid' Limit 1";
 	$result = mysqli_query($conn, $sql);
 
-	$row = mysqli_fetch_array($result, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 	return $row;
 
 }
@@ -1009,7 +1010,7 @@ function GetLeagueTableABV($leagueid){
 	$sql = "SELECT Name FROM league WHERE LeagueID='$leagueid' Limit 1";
 	$result = mysqli_query($conn, $sql);
 
-	$row = mysqli_fetch_array($result, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 	return str_replace(".bin","",$row["Name"]);
 
 }
@@ -1020,7 +1021,7 @@ function GetSeriesById($seriesid){
 	$sql = "SELECT * FROM series Where ID='$seriesid'";
 
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	return $row;
 
@@ -1032,7 +1033,7 @@ function GetTourneyById($tourneyid){
 	$sql = "SELECT * FROM tourney Where ID='$tourneyid'";
 
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	return $row;
 }
@@ -1053,7 +1054,7 @@ function GetTournament($tournamentid){
 	$sql = "SELECT * FROM tournament Where ID='$tournamentid'";
 
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	return $row;
 }
@@ -1098,7 +1099,7 @@ function UpdateRoster(){
 		echo("Error: UpdateRoster" . $sql . "<br>" . mysqli_error($conn));
 	}
 
-	while($row = mysqli_fetch_array($tmr, MYSQL_ASSOC)){
+	while($row = mysqli_fetch_array($tmr, MYSQLI_ASSOC)){
 
 		$Abv = $row['ABV'];
 		$teamId = $row['TeamID'];
@@ -1130,7 +1131,7 @@ function GetPlayerID($teamid, $offset, $leagueid){
 	$index = 0;
 
 	logMsg("Offset:" . $offset);
-	while($row = mysqli_fetch_array($tmr, MYSQL_ASSOC)) {
+	while($row = mysqli_fetch_array($tmr, MYSQLI_ASSOC)) {
 
 		if($index == $offset){
 
@@ -1151,7 +1152,7 @@ function GetPlayerFromID($playerid, $leagueid){
 	$sql = "SELECT * FROM $tblName WHERE PlayerID = '$playerid' LIMIT 1";
 
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	if ($row) {
 		//logMsg("Retrieved GameById");
@@ -1165,17 +1166,22 @@ function GetPlayerFromID($playerid, $leagueid){
 function GetTeams($leagueid){
 
 	$tblName = GetLeagueTableName($leagueid);	
-	$conn = $GLOBALS['$conn'];
+	$result = "";
+	
+	if(!empty($tblName)){
+		
+		$conn = $GLOBALS['$conn'];
 
-	$sql = "SELECT * FROM $tblName GROUP BY Team ORDER BY Team ASC";
-	$result = mysqli_query($conn, $sql);
+		$sql = "SELECT * FROM $tblName GROUP BY Team ORDER BY Team ASC";
+		$result = mysqli_query($conn, $sql);
 
-	//echo "sql: " . $sql;
+		//echo "sql: " . $sql;
 
-	if ($result) {
-		//logMsg("Retrieved GameById");
-	} else {
-		echo("Error: GetTeams: " . $sql . "<br>" . mysqli_error($conn));
+		if ($result) {
+			//logMsg("Retrieved GameById");
+		} else {
+			echo("Error: GetTeams: " . $sql . "<br>" . mysqli_error($conn));
+		}
 	}
 
 	return $result;
@@ -1189,7 +1195,7 @@ function GetTeamById($teamid, $leagueid){
 	$sql = "SELECT * FROM $tblName WHERE TeamID='$teamid' LIMIT 1";
 
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	if ($row) {
 		logMsg("Retrieved TeamById");
@@ -1211,7 +1217,7 @@ function GetTeamNameById($teamid){
 
 	$sql = "SELECT * FROM nhlteam WHERE TeamID='$teamid' LIMIT 1";
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	if ($row) {
 		//logMsg("Retrieved GetTeamNameById");
@@ -1230,19 +1236,20 @@ function GetTeamABVById($teamid, $leagueid){
 
 	//this is becuase the table name for original is not the same as bin name
 	//if($leagueid == '1'){
-		//$leagueName = "nhlteam";
+	//	$leagueName = "nhlteam";
 	//}else{
 		$leagueName = GetLeagueTableName($leagueid);
 	//}
-
+	
+    
 	$sql = "SELECT * FROM $leagueName WHERE TeamID='$teamid' LIMIT 1";
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	if ($row) {
 		logMsg("Retrieved GetTeamABVById");
 	} else {
-		echo("Error: GetTeamABVById: " . $sql . "<br>" . mysqli_error($conn) . "<br/>");
+		echo("Error: GetTeamABVById: " . $sql . "<br>" . mysqli_error($conn) . "tblName: <br/>");
 	}
 
 	//if($leagueid == '1'){
@@ -1261,7 +1268,7 @@ function GetTeamIdByABV($abv){
 
 	$sql = "SELECT * FROM nhlteam WHERE ABV='$abv' LIMIT 1";
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	if ($row) {
 		//logMsg("Retrieved GetTeamABVById:" .$row["TeamID"]);
@@ -1279,7 +1286,7 @@ function GetUserName($userid){
 
 	$sql = "SELECT Name FROM users WHERE id_user='$userid'";
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	return $row['Name'];
 
@@ -1291,7 +1298,7 @@ function GetUserAlias($userid){
 
 	$sql = "SELECT username FROM users WHERE id_user='$userid'";
 	$tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	return strtoupper($row['username']);
 
@@ -1309,7 +1316,22 @@ function GetUsers($orderAsc){
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) {
-		die(mysql_error()); // TODO: better error handling
+		die(mysqli_error()); // TODO: better error handling
+	}
+
+	return $result;
+}
+
+function GetUsersById(){
+
+	$conn = $GLOBALS['$conn'];
+	
+	$sql = "SELECT * FROM users WHERE confirmcode='y'";	
+
+	$result = mysqli_query($conn, $sql);
+
+	if($result === FALSE) {
+		die(mysqli_error()); // TODO: better error handling
 	}
 
 	return $result;
@@ -1368,37 +1390,41 @@ function GetRosters($pFilter, $leagueid, $teamid){
 	$conn = $GLOBALS['$conn'];
 
 	$tblName = GetLeagueTableName($leagueid);
-
 	
-	$sql = "SELECT * FROM $tblName WHERE Team != 'blah'";
+	$result = "";
 	
-	//if($tblName == "roster")
-		//$sql = "SELECT * FROM $tblName WHERE Team != 'NHL' AND Team != 'ASW' AND Team != 'ASE' AND Team!='ANH' AND Team !='FLA'";
-	//else 
-		//$sql = $sql = "SELECT * FROM $tblName WHERE Team != 'ASW' AND Team != 'ASE'";
+	if(!empty($tblName)){
+		
+		$sql = "SELECT * FROM $tblName WHERE Team != 'blah'";
+		
+		//if($tblName == "NHL51")
+			//$sql = "SELECT * FROM $tblName WHERE Team != 'NHL' AND Team != 'ASW' AND Team != 'ASE' AND Team!='ANH' AND Team !='FLA'";
+		//else 
+			//$sql = $sql = "SELECT * FROM $tblName WHERE Team != 'ASW' AND Team != 'ASE'";
 
-	if($pFilter['forwards'] != "checked")
-		$sql .= " AND Pos!='F'";
+		if($pFilter['forwards'] != "checked")
+			$sql .= " AND Pos!='F'";
 
-	if($pFilter['defense'] !== "checked")
-		$sql .= " AND Pos!='D'";
+		if($pFilter['defense'] !== "checked")
+			$sql .= " AND Pos!='D'";
 
-	if($pFilter['goalies'] != "checked")
-		$sql .= " AND Pos!='G'";
+		if($pFilter['goalies'] != "checked")
+			$sql .= " AND Pos!='G'";
 
-	if($teamid != -1)
-		$sql .= " AND TeamID='$teamid'";
+		if($teamid != -1)
+			$sql .= " AND TeamID='$teamid'";
 
-	$sql .=" ORDER BY Last ASC";
+		$sql .=" ORDER BY Last ASC";
 
-	//echo "sql: " . $sql;
+		//echo "sql: " . $sql;
 
-	$result = mysqli_query($conn, $sql);
+		$result = mysqli_query($conn, $sql);
 
-	if ($result) {
-		logMsg("Retrieved PlayerRosters" );
-	} else {
-		echo("Error: GetRosters: " . $sql . "<br>" . mysqli_error($conn));
+		if ($result) {
+			logMsg("Retrieved PlayerRosters" );
+		} else {
+			echo("Error: GetRosters: " . $sql . "<br>" . mysqli_error($conn));
+		}
 	}
 
 	return $result;
@@ -1430,7 +1456,7 @@ function ComparePlayers($playerArray, $leagueid){
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) {
-		die(mysql_error()); // TODO: better error handling
+		die(mysqli_error()); // TODO: better error handling
 	}
 
 	return $result;
@@ -1446,7 +1472,7 @@ function CompareUsers($userid1, $userid2){
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) {
-		die(mysql_error()); // TODO: better error handling
+		die(mysqli_error()); // TODO: better error handling
 	}
 
 	return $result;
@@ -1464,7 +1490,7 @@ function GetUsersFromSeries($seriesid){
 	$result = mysqli_query($conn, $sql);
 
 	if($result === FALSE) {
-		die(mysql_error()); // TODO: better error handling
+		die(mysqli_error()); // TODO: better error handling
 	}
 
 	return $result;
@@ -1480,7 +1506,7 @@ function ChkPass($userid, $pwd){
 
 	$sql = "Select * from users where username='$userid' and password='$pwdmd5' and confirmcode='y'";
     $tmr = mysqli_query($conn, $sql);
-	$row = mysqli_fetch_array($tmr, MYSQL_ASSOC);
+	$row = mysqli_fetch_array($tmr, MYSQLI_ASSOC);
 
 	if ($row) {
 		return $row;

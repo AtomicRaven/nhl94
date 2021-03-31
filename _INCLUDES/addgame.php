@@ -406,7 +406,7 @@
         //echo $plq;
 
         logMsg("Home Player Stats<br/>");
-        while($prow = mysqli_fetch_array($plr, MYSQL_ASSOC)){	// Team Roster
+        while($prow = mysqli_fetch_array($plr, MYSQLI_ASSOC)){	// Team Roster
 
  			// Home Player Stats
 
@@ -524,7 +524,7 @@
 
         logMsg("Away Player Stats<br/>");
         $array = array();
-        while($prow = mysqli_fetch_array($plr, MYSQL_ASSOC)){  // Team Roster
+        while($prow = mysqli_fetch_array($plr, MYSQLI_ASSOC)){  // Team Roster
         
 
 			// Away Player Stats

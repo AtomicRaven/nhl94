@@ -102,7 +102,7 @@
 						$awayWinnerCount = 0;
 						$uploadCount = 0;
 
-						while($row = mysqli_fetch_array($gamesplayed, MYSQL_ASSOC)){						
+						while($row = mysqli_fetch_array($gamesplayed, MYSQLI_ASSOC)){						
 
 
 							$homeUserSelectBox = CreateSelectBox("homeUser", null, GetUsersFromSeries($seriesid), "id_user", "username", null, $row["HomeUserID"]);

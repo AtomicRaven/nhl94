@@ -1,8 +1,14 @@
 <?php
 
-include_once realpath(dirname(__FILE__)). './config.php';
-include_once realpath(dirname(__FILE__)). './utils.php';
-include_once realpath(dirname(__FILE__)). './data.php';
+//Local
+$GLOBALS['$appPath'] = $_SERVER['DOCUMENT_ROOT'] . '/nhl94/';
+
+//Prod
+//$GLOBALS['$appPath'] = $_SERVER['DOCUMENT_ROOT'];
+
+include_once $GLOBALS['$appPath'] . '_INCLUDES/config.php';
+include_once $GLOBALS['$appPath']. '_INCLUDES/utils.php';
+include_once $GLOBALS['$appPath']. '_INCLUDES/data.php';
 
 
 // Create connection
