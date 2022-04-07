@@ -1,6 +1,15 @@
 Lines
 
+Dallas Stars
 
+	Modano-Courtnall-Broten
+	Gagner-Courtnall-Modano
+	Broten-Modano-Courtnall
+	
+	Johnson-Sjodin
+	Sjodin-Tinordi
+	
+	
 Chicago Blackhawks
 
 	Murphy-Roenick-Larmer

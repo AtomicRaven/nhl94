@@ -259,13 +259,8 @@
 <head>
 <title>Series Results</title>
 <?php include_once './_INCLUDES/01_HEAD.php'; ?>
-<script>
-
-	
-
-</script>	
+<meta property="og:description" content="<?= $awayUserAlias ?> vs <?= $homeUserAlias ?>.  <?= strip_tags($gamesCompleteText)?>">
 </head>
-
 <body>
 
 		<div id="page">

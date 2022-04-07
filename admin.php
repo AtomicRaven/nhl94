@@ -106,7 +106,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 								</thead>
 								<tbody>
 									<?php
-										$users = GetUsers(true);
+										$users = GetUsersById(true);
 										while($user = mysqli_fetch_array($users)){
 									?>
 									<tr class="resultsLg">

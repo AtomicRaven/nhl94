@@ -27,7 +27,7 @@
 			header('Location: create.php');
 		}
 		else {
-			header('Location: index.php?m=1');
+			header('Location: login.php?m=1');
 		}
 		
 		

@@ -34,7 +34,7 @@ require_once("./_INCLUDES/addgame.php");
 	if($isBulk){
 		
 		logMsg("BeforeSort:");
-		while($row = mysqli_fetch_array($gamesplayed, MYSQL_ASSOC)){
+		while($row = mysqli_fetch_array($gamesplayed, MYSQLI_ASSOC)){
 
 			$schedule[] = array(
 				"ID"=> $row["ID"],

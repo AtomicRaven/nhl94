@@ -103,6 +103,10 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true) {
 					<button type="button" class="submit" onclick="window.open('backup.php')">BackUp DB</button>
 					
 <?php
+//$servername = "localhost";
+//$username = "nhl94";
+//$password = "Mysp@ce2174";
+//$dbname = "nhl94db";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);

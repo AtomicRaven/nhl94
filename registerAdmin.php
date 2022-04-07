@@ -6,7 +6,7 @@
 		
 
 		
-		if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
+		if ($LOGGED_IN == true && $_SESSION['Admin'] == true && ($_SESSION['username'] == 'Atomic' || $_SESSION['username'] == 'aqua')){
 			
 			$msg = "";
 			if (isset($_GET["msg"])){
@@ -40,9 +40,9 @@
 							<input type="text" id="username" name="username" maxlength="15" value=""><br>
 							<label>email</label><br>
 							<input type="text" id="email" name="email" maxlength="50" value=""><br>
-							<!--<label>password</label><br>
+							<label>password</label><br>
 							<input type="password" id="password" name="password" maxlength="50" value=""><br>
-							<label>confirm password</label><br>
+							<!--<label>confirm password</label><br>
 							<input type="password" id="confirmPassword" name="confirmPassword" maxlength="50" value=""><br>-->
 					
 							<button id="submitBtn" type="submit" style="margin-top: 10px;">SUBMIT</button>

@@ -1,14 +1,8 @@
 <?php
 
-//Local
-$GLOBALS['$appPath'] = $_SERVER['DOCUMENT_ROOT'] . '/nhl94/';
-
-//Prod
-//$GLOBALS['$appPath'] = $_SERVER['DOCUMENT_ROOT'];
-
-include_once $GLOBALS['$appPath'] . '_INCLUDES/config.php';
-include_once $GLOBALS['$appPath']. '_INCLUDES/utils.php';
-include_once $GLOBALS['$appPath']. '_INCLUDES/data.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . './nhl94/_INCLUDES/config.php';
+include_once $_SERVER['DOCUMENT_ROOT']. './nhl94/_INCLUDES/utils.php';
+include_once $_SERVER['DOCUMENT_ROOT']. './nhl94/_INCLUDES/data.php';
 
 
 // Create connection
