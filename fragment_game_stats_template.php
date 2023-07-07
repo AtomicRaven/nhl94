@@ -34,8 +34,8 @@
 		$awayGoals = $schedule["AwayScore"];
 
 		//Shots per game
-		$homeShots = $gStats["SHP1"] + $gStats["SHP2"] + $gStats["SHP3"];
-		$awayShots = $gStats["SAP1"] + $gStats["SAP2"] + $gStats["SAP3"];
+		$homeShots = $gStats["SHP1"] + $gStats["SHP2"] + $gStats["SHP3"] + $gStats["SHOT"];
+		$awayShots = $gStats["SAP1"] + $gStats["SAP2"] + $gStats["SAP3"] + $gStats["SAOT"];
 
 		//Penalites per game
 		$homePen = $gStats["PIMH"];
@@ -191,6 +191,44 @@
 								<!-- end of loop -->
 
 							</table>
+							
+							<!--
+									$homeShots = $gStats["SHP1"] + $gStats["SHP2"] + $gStats["SHP3"];
+									$awayShots = $gStats["SAP1"] + $gStats["SAP2"] + $gStats["SAP3"];
+							-->
+							
+							<!-- Period stats Table -->
+							<h3>Game <?=$gameNum?> Period Stats (Goals-Shots)</h3>
+							<table class="standard">
+								<tr class="heading">
+									<td class="heading">Team</td>
+									<td class="heading">1st</td>
+									<td class="heading">2nd</td>
+									<td class="heading">3rd</td>
+									<td class="heading">OT</td>
+									<td class="heading">Total</td>
+								</tr>								
+								<tr class="tight stripe">
+									<td class="logoleft"><div class='logo small <?=$homeTeamAbv?>'></div></td>
+									<td class="m"><?= $gStats["GHP1"]?> - <?= $gStats["SHP1"]?></td>
+									<td class="m"><?= $gStats["GHP2"]?> - <?= $gStats["SHP2"]?></td>
+									<td class="m"><?= $gStats["GHP3"]?> - <?= $gStats["SHP3"]?></td>
+									<td class="m"><?= $gStats["GHOT"]?> - <?= $gStats["SHOT"]?></td>
+									<td class="m"><?=$homeGoals?> - <?=$homeShots?></td>
+								</tr>
+								<tr class="tight">
+									<td class="logoleft"><div class='logo small <?= $awayTeamAbv ?>'></div></td>
+									<td class="m"><?= $gStats["GAP1"]?> - <?= $gStats["SAP1"]?></td>
+									<td class="m"><?= $gStats["GAP2"]?> - <?= $gStats["SAP2"]?></td>
+									<td class="m"><?= $gStats["GAP3"]?> - <?= $gStats["SAP3"]?></td>
+									<td class="m"><?= $gStats["GAOT"]?> - <?= $gStats["SAOT"]?></td>
+									<td class="m"><?=$awayGoals?> - <?=$awayShots?></td>
+								</tr>
+								<tr class="tight stripe" >
+									<td colspan="5" class="heading">Peak Crowd Level</td> 
+									<td  class="heading"><?= $gStats["Crowd"]?>db</td>
+								</tr>
+							<table>
 
 
 							<!-- rob: start of series goalies table -->

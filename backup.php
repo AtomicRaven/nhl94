@@ -12,7 +12,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
     //echo 'User: ' . $username . "<br/>";
     //echo 'Pass: ' . $password . "<br/>";
     //echo 'DB: ' . $dbname . "<br/>";
-    //echo 'DumpPath: ' . $dumppath . "<br/>";
+    echo 'DumpPath: ' . $dumppath . "<br/>";
     
 
     $date = date('Y-m-d');

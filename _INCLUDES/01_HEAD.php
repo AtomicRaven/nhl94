@@ -17,7 +17,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width">
 
-<link rel="stylesheet" type="text/css" href="./css/default-1g.css" />
+<link rel="stylesheet" type="text/css" href="./css/default-1h.css" />
 <link rel="stylesheet" type="text/css" href="./css/logos.css?v=3" />
 
 <style>
