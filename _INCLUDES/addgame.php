@@ -25,7 +25,7 @@
             if($type == 'ra'){
                 //$filetypes = array('st', 'gp');
                 //$e = '.gpgx';
-                $offset = 9320;
+                $offset = 9304;
                 $endian = 'little';
                 $endianfix = 1;
             }				
