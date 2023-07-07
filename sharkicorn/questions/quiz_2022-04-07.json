@@ -1,0 +1,68 @@
+{
+   "module":{
+      "number":1,
+      "questions":5,
+      "date":"2022-04-06"
+   },
+   "questions":[
+      {
+         "category":"Math",
+         "number":1,
+         "question":"Eighteen thousandths, written as a decimal, is:",
+         "answers":[
+            "0.0018",
+            "0.018",
+            "0.18"
+         ],
+         "correct_answer":1
+      },
+      {
+         "category":"Science",
+         "number":2,
+         "question":"Which is the main gas that makes up the Earth's atmosphere?",
+         "answers":[
+            "Hydrogen",
+            "Helium",
+            "Oxygen",
+            "Farts"
+         ],
+         "correct_answer":4
+      },
+      {
+         "category":"English",
+         "number":3,
+         "question":"What is a 12 letter word meaning 'having the ability of using both hands with equal skill or ease'?",
+         "answers":[
+            "Autistic",
+            "Autoimmune",
+            "Zoonotic",
+            "Ambidextrous"
+         ],
+         "correct_answer":4
+      },
+      {
+         "category":"Geography",
+         "number":4,
+         "question":"What U.S. state is home to no documented poisonous snakes?",
+         "answers":[
+            "Maine",
+            "Hawaii",
+            "Alaska",
+            "Prince Edward Island"
+         ],
+         "correct_answer":3
+      },
+      {
+         "category":"History",
+         "number":5,
+         "question":"Who was the first human to journey into space?",
+         "answers":[
+            "Chuck Yeager",
+            "Yuri Gagarin",
+            "Gus Grissom",
+            "Leopold the Monkey Boy"
+         ],
+         "correct_answer":2
+      }
+   ]
+}
