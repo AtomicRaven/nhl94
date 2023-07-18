@@ -486,12 +486,10 @@
                 // Insert Stats into PlayerStats
                 if($Goals != '0'){
                     logMsg("Index:" . $i);
-                        logMsg("PlayerId:" . $pid);
-                        logMsg("PlayerName:" . $name);
-            logMsg("Pos:" . $pos);
-
-
-            logMsg("Goals:" . $Goals . "<br/>");
+                    logMsg("PlayerId:" . $pid);
+                    logMsg("PlayerName:" . $name);
+					logMsg("Pos:" . $pos);
+					logMsg("Goals:" . $Goals . "<br/>");
                 }
 
                 $psq = "INSERT INTO playerstats (GameID, TeamID, PlayerID, Pos, G, A, SOG, PIM, Chks, TOI, ChksA, PlusMinus, LeagueID)

@@ -418,7 +418,7 @@
 							<td class="heading">PPG</td>							
 							<td class="heading">G</td>
 							<td class="heading">A</td>
-              <td class="heading c" style="font-size: 72%;">S<br/>h<br/>%</td>
+							<td class="heading c" style="font-size: 72%;">S<br/>h<br/>%</td>
 							<td class="heading c" style="font-size: 72%;">S<br/>O<br/>G</td>
 							<!-- <td class="heading">TOI/G</td> -->
 							<td class="heading c" style="font-size: 72%;">C<br/>h<br/>k</td>
@@ -458,7 +458,7 @@
 									<td class=""><?=$avgPts?></td>
 									<td class=""><?=$row["tG"]?></td>
 									<td class=""><?=$row["tA"]?></td>
-                  <td class="c"><?= $ShootPer ?></td>
+									<td class="c"><?= $ShootPer ?></td>
 									<td class="c"><?=$row["tSOG"]?></td>
 									<!-- <td class=""><?=$TOIG?></td>		-->							
 									<td class="c"><?= $pen*2 ?></td>
@@ -494,10 +494,10 @@
 
 						if($row["Pos"] == "G"){
 
-								if($row["SOG"]!= 0){									
+								if($row["tSOG"]!= 0){									
 
 									$savePct = 100 - GetPercent($row["tG"], $row["tSOG"]);
-									$savePct = $row["tG"] . "/" . $row["tSOG"] . " (" . $savePct . "%)";
+									$savePct = $row["tG"] . "/" . $row["tSOG"] . " (" . $savePct . "%)";									
 								}
 								else 
 									$savePct = "0 SOG";
@@ -506,7 +506,7 @@
 									<td class=""><?php print $j; ?></td>
 									<td class=""><?=$player["First"] . " " . $player["Last"]?></td>
 									<td class=""><?=GetTeamABVById($row["TeamID"], $leagueid)?></td>
-									<td class=""> <?=$savePct?><!-- 17 goals on 72 shots) --></td>
+									<td class=""> <?=$savePct?><!--/<?=$ShootPer?> | tg = <?=$row["tG"]?> | tSOG = <?=$row["tSOG"]?> --></td>
 								</tr>	
 		<?php 
 						$j++;
