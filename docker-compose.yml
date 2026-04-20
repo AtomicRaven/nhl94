@@ -1,0 +1,39 @@
+services:
+  db:
+    image: mariadb:10.5
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nhl94_restore
+    ports:
+      - "3307:3306"
+    volumes:
+      - nhl94_db:/var/lib/mysql
+
+  web:
+    build: .
+    depends_on:
+      - db
+    environment:
+      NHL94_DB_HOST: db:3306
+      NHL94_DB_NAME: nhl94_restore
+      NHL94_DB_USER: root
+      NHL94_DB_PASS: root
+      NHL94_DUMP_PATH: /usr/bin/mysqldump
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+
+  phpmyadmin:
+    image: phpmyadmin:5
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8081:80"
+
+volumes:
+  nhl94_db:
