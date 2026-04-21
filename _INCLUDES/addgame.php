@@ -18,11 +18,26 @@
                 $filePath .= $seriesid;
             }
             $file = $filePath . "/" . "Series-" . $seriesid. '-game-'. $scheduleid . '.sv';
+            if (isset($GLOBALS['$recoveryFilePath']) && $GLOBALS['$recoveryFilePath'] != '') {
+                $file = $GLOBALS['$recoveryFilePath'];
+            }
 
             //ParseFile
             $fr = fopen("$file", 'rb');	// reads file
+            $header = fread($fr, 32);
+            rewind($fr);
            
-            if($type == 'ra'){
+            if(substr($header, 0, 7) == 'RASTATE'){
+                $offset = 9304;
+                $endian = 'little';
+                $endianfix = 1;
+            }
+            elseif(substr($header, 0, 10) == 'GENPLUS-GX'){
+                $offset = 9320;
+                $endian = 'little';
+                $endianfix = 1;
+            }
+            elseif($type == 'ra'){
                 //$filetypes = array('st', 'gp');
                 //$e = '.gpgx';
                 $offset = 9304;
@@ -289,7 +304,7 @@
             // OT Game?
             //$time = gameLength($lg);  // Retrieve Period and OT Length
             $time = 5;
-            $regtime = $time[0] * 3;  // Length of Regulation Game
+            $regtime = $time * 3;  // Length of Regulation Game
 
             $HTotalGoals = $H1stGoals + $H2ndGoals + $H3rdGoals + $HOTGoals;
             $ATotalGoals = $A1stGoals + $A2ndGoals + $A3rdGoals + $AOTGoals;            
@@ -965,7 +980,9 @@
     	/**********************************************************************************/
 
         fclose($fr);
-        rename ($file, $filePath . "/" . $awayTeamAbv["Team"] . "-" . $awayUserAlias . "_at_" . $homeTeamAbv["Team"] . "-" . $homeUserAlias . "_gameId-" . $gameid . "_seriesId-" .$seriesid . "_bin-" . $leagueName . ".gs0" );
+        if (!isset($GLOBALS['$recoveryFilePath']) || $GLOBALS['$recoveryFilePath'] == '') {
+            rename ($file, $filePath . "/" . $awayTeamAbv["Team"] . "-" . $awayUserAlias . "_at_" . $homeTeamAbv["Team"] . "-" . $homeUserAlias . "_gameId-" . $gameid . "_seriesId-" .$seriesid . "_bin-" . $leagueName . ".gs0" );
+        }
 
 	//mysqli_close($conn);
 	}  // end of function

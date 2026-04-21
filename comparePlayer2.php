@@ -4,6 +4,7 @@
 		$ADMIN_PAGE = false;
 		include_once './_INCLUDES/00_SETUP.php';
 		include_once './_INCLUDES/dbconnect.php';	
+        $vis = "show";
 
 if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
     
@@ -15,7 +16,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 <head>
 <title>Compare Player</title>
     <?php include_once './_INCLUDES/01_HEAD.php'; ?>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
 
     <script> var leagueType = <?=$leagueType?>; </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>

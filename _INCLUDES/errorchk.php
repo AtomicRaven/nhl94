@@ -39,8 +39,14 @@ function ErrorCheck($seriesid, $scheduleid, $tourneyid, $file, $type){
 				
 				// Check if teams are correct
 				$fr = fopen("$upload_path", 'rb');	// reads file				
-				
-				if($type == 'ra'){
+				$header = fread($fr, 32);
+				rewind($fr);
+
+				if(substr($header, 0, 7) == 'RASTATE'){
+					$offset = 9304;
+					$endianfix = 1;
+				}
+				elseif($type == 'ra' || substr($header, 0, 10) == 'GENPLUS-GX'){
 					$offset = 9320;
 					$endianfix = 1;
 				}				
