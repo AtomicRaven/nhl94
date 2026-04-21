@@ -7,7 +7,7 @@
 
 if ($LOGGED_IN == true){
 
-        $seriesid = $_GET['seriesId'];
+        $seriesid = (int) $_GET['seriesId'];
 
         MarkSeriesAsInactive($seriesid);
 

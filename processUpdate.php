@@ -1,11 +1,19 @@
 <?php
 
+session_start();
+$ADMIN_PAGE = true;
+require_once("./_INCLUDES/00_SETUP.php");
 
 require_once("./_INCLUDES/dbconnect.php");
 require_once("./_INCLUDES/errorchk.php");	
 require_once("./_INCLUDES/addgame.php");		
 
-	logMsg ("New Save State");
+if ($LOGGED_IN != true) {
+	header('Location: index.php');
+	exit;
+}
+
+		logMsg ("New Save State");
 
 	// retrieve variables	
 
@@ -15,13 +23,13 @@ require_once("./_INCLUDES/addgame.php");
 	$error = "";
 	$isBulk = false;
 
-	$seriesid = $_POST['seriesid'];
-	$leagueid = $_POST['leagueid'];
-	$homeuserid = $_POST['homeUser'];
-	$awayuserid = $_POST['awayUser'];
+	$seriesid = (int) $_POST['seriesid'];
+	$leagueid = (int) $_POST['leagueid'];
+	$homeuserid = (int) $_POST['homeUser'];
+	$awayuserid = (int) $_POST['awayUser'];
 	
 	if(isset($_POST['scheduleid'])){
-		$scheduleid = $_POST['scheduleid'];
+		$scheduleid = (int) $_POST['scheduleid'];
 	}
 
 	if(isset($_POST['datemodified'])){

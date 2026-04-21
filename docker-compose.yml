@@ -5,7 +5,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: nhl94_restore
     ports:
-      - "3307:3306"
+      - "127.0.0.1:3307:3306"
     volumes:
       - nhl94_db:/var/lib/mysql
 
@@ -33,7 +33,7 @@ services:
       PMA_PORT: 3306
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - "8081:80"
+      - "127.0.0.1:8081:80"
 
 volumes:
   nhl94_db:

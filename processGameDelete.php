@@ -7,13 +7,16 @@
 
 if ($LOGGED_IN == true){
 
-        $seriesid = $_GET['seriesId'];
-        $gameid = $_GET['gameId'];
-        $redirect = $_GET['redirect'];
+        $seriesid = (int) $_GET['seriesId'];
+        $gameid = (int) $_GET['gameId'];
+        $redirect = basename($_GET['redirect']);
+        if ($redirect != 'update' && $redirect != 'tourney') {
+            $redirect = 'update';
+        }
         $tId = 0;
 
         if(isset($_GET['tId']))
-            $tId = $_GET['tId'];
+            $tId = (int) $_GET['tId'];
 
         DeleteGameDataById($gameid, $seriesid);
 

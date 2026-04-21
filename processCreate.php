@@ -3,6 +3,11 @@
 		$ADMIN_PAGE = true;
 		include_once './_INCLUDES/00_SETUP.php';
 		require_once("./_INCLUDES/dbconnect.php");
+
+		if ($LOGGED_IN != true) {
+			header('Location: index.php');
+			exit;
+		}
 		
 		// custom code
 		// add new series to db

@@ -4,6 +4,7 @@
 function DuplicateRosterTable($newTable){
 
 	$conn = $GLOBALS['$conn'];
+	$newTable = preg_replace('/[^A-Za-z0-9_]/', '', $newTable);
 
 	//Duplicate Table structure
 	$sql = "CREATE TABLE $newTable LIKE roster";
@@ -108,6 +109,7 @@ function TransferPlayerRoster($newTable, $newCsv, $isblitz, $binName){
 function DropNewRosterTable($newTable){
 
 	$conn = $GLOBALS['$conn'];
+	$newTable = preg_replace('/[^A-Za-z0-9_]/', '', $newTable);
 
 	$sql = "DELETE FROM league WHERE TableName='$newTable'";
 	//echo $sql + "<br/>";
@@ -147,6 +149,9 @@ function GetNextGameId(){
 
 function DeleteGameDataById($gameid, $seriesid){
 
+	$gameid = (int) $gameid;
+	$seriesid = (int) $seriesid;
+
 	//Tables gamestats, pensum, playerstats, scoresum, schedule
 	DeleteGameFromTable('gamestats', $gameid);
 	DeleteGameFromTable('pensum', $gameid);
@@ -161,6 +166,7 @@ function DeleteGameDataById($gameid, $seriesid){
 function DeleteGameFromTable($tableName, $gameid){
 
 	$conn = $GLOBALS['$conn'];
+	$gameid = (int) $gameid;
 	$sql = "DELETE FROM " . $tableName . " WHERE GameID='$gameid'";
 
 	$tmr = mysqli_query($conn, $sql);
@@ -176,6 +182,7 @@ function DeleteGameFromTable($tableName, $gameid){
 function GetGameById($gameid){
 
 	$conn = $GLOBALS['$conn'];
+	$gameid = (int) $gameid;
 	$sql = "SELECT * FROM gamestats Where GameID='$gameid' LIMIT 1";
 
 	$tmr = mysqli_query($conn, $sql);
@@ -566,6 +573,8 @@ function GetSeriesByUser($userId, $lg){
 function AddFakeUser($username, $email, $password){
 
 	$conn = $GLOBALS['$conn'];
+	$username = mysqli_real_escape_string($conn, $username);
+	$email = mysqli_real_escape_string($conn, $email);
 	$password = md5($password);
 
 	$sql = "INSERT INTO users (name, email, username, password, confirmcode, role)
@@ -763,6 +772,9 @@ function GetAllLeagueTypes(){
 function AddLeague($tablename, $isblitz, $binName){
 
 	$conn = $GLOBALS['$conn'];
+	$tablename = preg_replace('/[^A-Za-z0-9_]/', '', $tablename);
+	$binName = mysqli_real_escape_string($conn, $binName);
+	$isblitz = (int) $isblitz;
 
 	$sql = "INSERT INTO league (Name, TableName, Visible, Blitz)
 			VALUES ('$binName', '$tablename', 1, '$isblitz')";
@@ -780,9 +792,12 @@ function AddLeague($tablename, $isblitz, $binName){
 
 function AddNewTournament($tournamentName, $tournamentType, $leaguetype, $bracketSize, $startDate){
 
-	echo "date: " . $startDate;
-
 	$conn = $GLOBALS['$conn'];
+	$tournamentName = mysqli_real_escape_string($conn, $tournamentName);
+	$tournamentType = (int) $tournamentType;
+	$leaguetype = (int) $leaguetype;
+	$bracketSize = (int) $bracketSize;
+	$startDate = mysqli_real_escape_string($conn, $startDate);
 
 	$sql = "INSERT INTO tournament (Name, Type, LeagueID, BracketSize, Status, StartDate)
 			VALUES ('$tournamentName', $tournamentType, $leaguetype, $bracketSize, 'Created', '$startDate')";
@@ -836,6 +851,8 @@ function MarkSeriesAsWon($seriesid, $winneruserid, $losernumgames){
 function ActivateTable($leagueType, $activate){
 
 	$conn = $GLOBALS['$conn'];
+	$leagueType = (int) $leagueType;
+	$activate = (int) $activate;
 	$sql = "UPDATE league SET Visible= $activate WHERE LeagueID= '$leagueType' LIMIT 1";
 
 	$tmr = mysqli_query($conn, $sql);
@@ -844,6 +861,8 @@ function ActivateTable($leagueType, $activate){
 function SetDraft($leagueType, $draftLink){
 
 	$conn = $GLOBALS['$conn'];
+	$leagueType = (int) $leagueType;
+	$draftLink = mysqli_real_escape_string($conn, $draftLink);
 	$sql = "UPDATE league SET DraftSheet='$draftLink',Visible=1,isLiveDraft=1 WHERE LeagueID= '$leagueType' LIMIT 1";
 
 	$tmr = mysqli_query($conn, $sql);
@@ -858,6 +877,8 @@ function SetDraft($leagueType, $draftLink){
 function AssignTable($childTableId, $parentTableId){
 
 	$conn = $GLOBALS['$conn'];
+	$childTableId = (int) $childTableId;
+	$parentTableId = (int) $parentTableId;
 	$sql = "UPDATE league SET subLeagueId= $parentTableId WHERE LeagueID= '$childTableId' LIMIT 1";
 
 	$tmr = mysqli_query($conn, $sql);
@@ -867,6 +888,7 @@ function AssignTable($childTableId, $parentTableId){
 function MarkSeriesAsInactive($seriesid){
 
 	$conn = $GLOBALS['$conn'];
+	$seriesid = (int) $seriesid;
 
 	//Mark series as inactive
 
@@ -902,6 +924,13 @@ function ResetScheduleByGameID($gameid){
 function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGames, $leagueid, $tourneyid){
 
 	$conn = $GLOBALS['$conn'];
+	$seriesname = mysqli_real_escape_string($conn, $seriesname);
+	$homeuserid = (int) $homeuserid;
+	$awayuserid = (int) $awayuserid;
+	$seriestype = (int) $seriestype;
+	$numGames = (int) $numGames;
+	$leagueid = (int) $leagueid;
+	$tourneyid = (int) $tourneyid;
 
 	$sql = "INSERT INTO series (Name, HomeUserId, AwayUserId, DateCreated, Active, LeagueID, TourneyID)
 			VALUES ('$seriesname', '$homeuserid', '$awayuserid', NOW(), 1, $leagueid, $tourneyid)";
@@ -981,6 +1010,7 @@ function AddNewSeries($seriesname, $homeuserid, $awayuserid, $seriestype, $numGa
 
 function GetLeagueTableName($leagueid){
 
+	$leagueid = (int) $leagueid;
 	if($leagueid == -1) {$leagueid = 1;};
 
 	$conn = $GLOBALS['$conn'];
@@ -996,6 +1026,7 @@ function GetLeagueTableName($leagueid){
 function GetLeague($leagueid){
 
 	$conn = $GLOBALS['$conn'];
+	$leagueid = (int) $leagueid;
 	$sql = "SELECT * FROM league WHERE LeagueID='$leagueid' Limit 1";
 	$result = mysqli_query($conn, $sql);
 
@@ -1007,6 +1038,7 @@ function GetLeague($leagueid){
 function GetLeagueTableABV($leagueid){
 
 	$conn = $GLOBALS['$conn'];
+	$leagueid = (int) $leagueid;
 	$sql = "SELECT Name FROM league WHERE LeagueID='$leagueid' Limit 1";
 	$result = mysqli_query($conn, $sql);
 
@@ -1018,6 +1050,7 @@ function GetLeagueTableABV($leagueid){
 function GetSeriesById($seriesid){
 
 	$conn = $GLOBALS['$conn'];
+	$seriesid = (int) $seriesid;
 	$sql = "SELECT * FROM series Where ID='$seriesid'";
 
 	$tmr = mysqli_query($conn, $sql);
@@ -1030,6 +1063,7 @@ function GetSeriesById($seriesid){
 function GetTourneyById($tourneyid){
 
 	$conn = $GLOBALS['$conn'];
+	$tourneyid = (int) $tourneyid;
 	$sql = "SELECT * FROM tourney Where ID='$tourneyid'";
 
 	$tmr = mysqli_query($conn, $sql);
@@ -1502,6 +1536,7 @@ function ChkPass($userid, $pwd){
     // Retrieve password
 
     $conn = $GLOBALS['$conn'];
+	$userid = mysqli_real_escape_string($conn, $userid);
 	$pwdmd5 = md5($pwd);
 
 	$sql = "Select * from users where username='$userid' and password='$pwdmd5' and confirmcode='y'";
@@ -1523,20 +1558,11 @@ function SetUser($user){
 	$_SESSION['email'] = $user['email'];
 	$_SESSION['loggedin'] = true;								
 	$_SESSION['userId'] = $user['id_user'];
+	$_SESSION['Admin'] = false;
 
 	if($user['Role'] == 'admin'){
 		$_SESSION['Admin'] = true;
 	}
-
-	$user = array(
-		'username' => $_SESSION['username'],
-		'email' => $_SESSION['email'],
-		'loggedin' => $_SESSION['loggedin'],
-		'id_user' => $_SESSION['userId'],
-		'Role' => $_SESSION['Admin']
-	);
-
-	setcookie("loginCredentials", serialize($user), time() + (10 * 365 * 24 * 60 * 60)); // Expiring after 2 hours
 }
 
 ?>

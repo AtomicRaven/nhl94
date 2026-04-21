@@ -1,5 +1,10 @@
 results - Copy.php
 _INCLUDES/config.php
+.DS_Store
+.env
+docker-compose.prod.yml
+error_log
+*/error_log
 nhl94/bin/
 uploads/
 db/

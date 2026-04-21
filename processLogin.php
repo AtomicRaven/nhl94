@@ -23,6 +23,7 @@
 		
 		if ($user !== FALSE) {			
 				
+			session_regenerate_id(true);
 			SetUser($user);
 			header('Location: create.php');
 		}

@@ -9,9 +9,9 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 
             if (isset($_FILES['csv']['name'])) {
 
-                $filename = $_FILES['csv']['name'];
-                $isblitz = $_POST["blitz"];                
-                $binName = $_POST["binName"];                
+                $filename = basename($_FILES['csv']['name']);
+                $isblitz = (int) $_POST["blitz"];
+                $binName = $_POST["binName"];
                 $upload_path = $GLOBALS['$csvUploadPath'] . $filename;
 
                 //echo "CSV Path:" . $upload_path. $filename;
@@ -25,7 +25,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
 
                         $newCsv = $upload_path;
                         $newTable = str_replace(".csv","",$filename);        
-                        $newTable = str_replace("_","",$newTable);
+                        $newTable = preg_replace('/[^A-Za-z0-9]/', '', $newTable);
                         $newTable = "roster_" . $newTable;
 
                         echo "newTable:" . $newTable . "<br/>";

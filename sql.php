@@ -105,7 +105,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true) {
 <?php
 //$servername = "localhost";
 //$username = "nhl94";
-//$password = "Mysp@ce2174";
+//$password = "";
 //$dbname = "nhl94db";
 
 // Create connection

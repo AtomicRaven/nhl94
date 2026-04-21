@@ -6,7 +6,7 @@
 		include_once './_INCLUDES/dbconnect.php';			
 		
 
-		if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
+			if ($LOGGED_IN == true && $_SESSION['Admin'] == true && ($_SESSION['username'] == 'Atomic' || $_SESSION['username'] == 'aqua')){
 			
 	
 
@@ -35,12 +35,8 @@
 
             if(!empty($username) && !empty($email) && !empty($password)){				
 				
-					if($password == 'crowslap69'){
-						$returnCode = AddFakeUser($username, $email, $password);
-						echo $username . " Added.";
-					}else{
-						header('Location: logout.php');
-					}				
+					$returnCode = AddFakeUser($username, $email, $password);
+					echo $username . " Added.";
 
             }else{
 				echo "u fcked up";				

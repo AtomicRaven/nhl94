@@ -16,7 +16,7 @@ if ($LOGGED_IN == true && $_SESSION['Admin'] == true){
     
 
     $date = date('Y-m-d');
-    exec($dumppath . ' --host=' . $servername . ' --user=' . $username . ' --password=' . $password . ' ' . $dbname . ' > ./db/nhl94db_backup_'.$date.'.sql');
+    exec(escapeshellcmd($dumppath) . ' --host=' . escapeshellarg($servername) . ' --user=' . escapeshellarg($username) . ' --password=' . escapeshellarg($password) . ' ' . escapeshellarg($dbname) . ' > ./db/nhl94db_backup_'.$date.'.sql');
 
     echo $dbname . " backed up.";
 

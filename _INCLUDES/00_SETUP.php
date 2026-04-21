@@ -14,12 +14,9 @@
         $awayuserid = 0;
 		$nameFilter = ["Forward","Goaltender", "Defenseman"];		
 
-		//Check for previous login
-
-		if(isset($_COOKIE["loginCredentials"])) {			
-			$user = unserialize($_COOKIE["loginCredentials"]);
-			SetUser($user);
-		}		
+		if (!isset($_SESSION['Admin'])) {
+			$_SESSION['Admin'] = false;
+		}
 
 		if (isset($_SESSION['username'])) {		
 				if ($_SESSION['username'] != '' ) {
@@ -30,31 +27,31 @@
 
 		//Set cookie for League
 		if(isset($_COOKIE["leagueType"])) {
-			$leagueType = $_COOKIE["leagueType"];
+			$leagueType = (int) $_COOKIE["leagueType"];
 		}	
 
 		if (isset($_GET["leagueType"])){
-			$leagueType = $_GET["leagueType"];
+			$leagueType = (int) $_GET["leagueType"];
 			setcookie("leagueType",$leagueType,time() + (10 * 365 * 24 * 60 * 60));
 		}
 
 		//Set cookie for homeuserid
 		if(isset($_COOKIE["homeuserid"])) {
-			$homeuserid = $_COOKIE["homeuserid"];
+			$homeuserid = (int) $_COOKIE["homeuserid"];
 		}	
 
 		if (isset($_GET["homeUser"])){
-			$homeuserid = $_GET["homeUser"];
+			$homeuserid = (int) $_GET["homeUser"];
 			setcookie("homeuserid",$homeuserid,time() + (10 * 365 * 24 * 60 * 60));
 		}
 
 		//Set cookie for awayuserid
 		if(isset($_COOKIE["awayuserid"])) {
-			$awayuserid = $_COOKIE["awayuserid"];
+			$awayuserid = (int) $_COOKIE["awayuserid"];
 		}	
 
 		if (isset($_GET["awayUser"])){
-			$awayuserid = $_GET["awayUser"];
+			$awayuserid = (int) $_GET["awayUser"];
 			setcookie("awayuserid",$awayuserid,time() + (10 * 365 * 24 * 60 * 60));
 		}
 		

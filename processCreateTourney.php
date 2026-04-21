@@ -5,6 +5,11 @@
 		require_once("./_INCLUDES/dbconnect.php");
 		require_once("./_INCLUDES/errorchk.php");	
 		require_once("./_INCLUDES/addgame.php");
+
+		if ($LOGGED_IN != true) {
+			header('Location: index.php');
+			exit;
+		}
 		
 		// custom code
 		// add new series to db

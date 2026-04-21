@@ -3,6 +3,11 @@
 set_time_limit(0);
 header('Content-Type: text/plain');
 
+if (PHP_SAPI !== 'cli' && getenv('NHL94_ENABLE_RECOVERY') !== '1') {
+    http_response_code(404);
+    exit;
+}
+
 require_once("./_INCLUDES/dbconnect.php");
 require_once("./_INCLUDES/addgame.php");
 
