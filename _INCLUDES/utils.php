@@ -360,20 +360,20 @@ function SortByGAA($x, $y) {
     return $y['GAA'] > $x['GAA'] ? 1 : -1;
 }
 function SortByOverall($x, $y) {
-    return $y['Overall'] > $x['Overall'];
+    return $y['Overall'] <=> $x['Overall'];
 }
 function SortByUnixTime($x, $y) {
-    return $y['datetime'] < $x['datetime'];
+    return $x['datetime'] <=> $y['datetime'];
 }
 function SortByID($x, $y) {
-    return $y['ID'] < $x['ID'];
+    return $x['ID'] <=> $y['ID'];
 }
 function SortBy($x, $y, $field, $sOrder) {
 
     if($sOrder == "ASC")
-        return $y[$field] < $x[$field];
+        return $x[$field] <=> $y[$field];
     else
-        return $y[$field] > $x[$field];
+        return $y[$field] <=> $x[$field];
 }
 
 function CalculateOverallRanking($p){

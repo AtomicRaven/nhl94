@@ -1,13 +1,22 @@
 <?php
 
+		session_start();
 		include_once './_INCLUDES/00_SETUP.php';
 
-		session_start();
-		// make user name = '' to end sessions
-		$_SESSION['username'] = '';
+		$_SESSION = [];
 		$LOGGED_IN = false;
-		session_destroy();
-		setcookie("loginCredentials", "", time() - 3600); // "Expires" 1 hour ago
+
+		if (ini_get("session.use_cookies")) {
+			$params = session_get_cookie_params();
+			setcookie(session_name(), '', time() - 3600, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+		}
+
+		if (session_status() === PHP_SESSION_ACTIVE) {
+			@session_destroy();
+		}
+
+		setcookie("loginCredentials", "", time() - 3600);
+		setcookie("loginCredentials", "", time() - 3600, "/");
 
 ?><!DOCTYPE HTML>
 <html>
